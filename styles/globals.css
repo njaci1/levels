@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+#link {
+  @apply text-blue-500 hover:text-blue-600;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    color: white;
+    background: black;
+  }
+}
+
+.card {
+  @apply mb-5 block rounded-lg border border-gray-200 shadow-md;
+}
+
+.primary-button {
+  @apply rounded text-white bg-red-500 py-2 px-4 shadow outline-none hover:bg-red-600 active:bg-red-700;
+}
+.default-button {
+  @apply rounded bg-gray-100 py-2  px-4 text-black shadow outline-none hover:bg-gray-200  active:bg-gray-300;
+}
+.pay-button {
+  @apply rounded bg-green-300 py-2 px-4 shadow outline-none hover:bg-green-400 active:bg-green-600;
+}
+.confirm-button {
+  @apply rounded bg-yellow-300 py-2 px-4 shadow outline-none hover:bg-yellow-400 active:bg-yellow-600;
+}
+.update-button {
+  @apply rounded bg-yellow-300 py-2 px-4 shadow outline-none hover:bg-yellow-400 active:bg-yellow-600;
+}
+.delete-button {
+  @apply rounded bg-red-300 py-2 px-4 shadow outline-none hover:bg-red-400 active:bg-red-600;
+}
+
+input,
+select,
+textarea {
+  @apply rounded border p-2 outline-none ring-indigo-300 focus:ring;
+}
+
+.dropdown-link {
+  @apply flex p-2 hover:bg-gray-200;
+}
+
+.alert-error {
+  @apply my-3 rounded-lg bg-red-100 p-3 text-red-700;
+}
+.alert-pending {
+  @apply my-3 rounded-lg bg-yellow-100 p-3 text-yellow-700;
+}
+
+.alert-success {
+  @apply my-3 rounded-lg bg-green-100 p-3 text-green-700;
+}
+.names {
+  display: flex;
+  justify-content: space-between;
+}
