@@ -4,14 +4,17 @@ import { useSession } from 'next-auth/react';
 
 export default function BalanceCard({ balance }) {
   const { data: session } = useSession();
-  console.log(session);
   const handleCashOut = () => {
     // Here you can add functionality to handle the cash out process
     console.log('Cash Out button clicked');
   };
   const handleInviteFriend = () => {
     const inviteLink = `http://localhost:3000/register?inviteCode=${session.user.inviteCode}&redirect=/`;
-    window.open(inviteLink, '_blank');
+    let whatsappMessage = `Hey, I would like to invite you to join this cool platform. Please use the following link to register:${inviteLink}`;
+    let whatsappUrl = `https://wa.me/?text=${encodeURIComponent(
+      whatsappMessage
+    )}`;
+    window.open(whatsappUrl);
   };
 
   const handleBuyAirtime = () => {

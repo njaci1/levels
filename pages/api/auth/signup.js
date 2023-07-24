@@ -14,7 +14,7 @@ async function handler(req, res) {
     password,
     phoneNumber,
   } = req.body;
-
+  console.log(req.body);
   if (
     !firstName ||
     firstName.trim() === '' ||
@@ -41,6 +41,7 @@ async function handler(req, res) {
     let inviter;
 
     if (inviteCode) {
+      console.log(inviteCode);
       inviter = await User.findOne({ inviteCode: inviteCode });
     }
 
@@ -50,7 +51,7 @@ async function handler(req, res) {
       // Replace 'seedUserInviteCode' with the actual invite code of your seed user
       inviter = await User.findOne({ inviteCode: 'TD5tkLcdE' });
     }
-    console.log(inviter._id);
+
     const newUser = new User({
       username: username,
       firstName: firstName,
@@ -70,14 +71,19 @@ async function handler(req, res) {
 
     // Check if the inviter is not the seed user before updating ancestors
     if (inviter.inviteCode !== 'TD5tkLcdE') {
+      console.log('inviter is not seed user');
+      console.log(inviter.inviter);
       if (inviter.inviter) {
-        inviter.inviter.inviteesLevel2.push(user._id);
-        await inviter.inviter.save();
-      }
+        const inviterL2 = await User.findById(inviter.inviter);
+        inviterL2.inviteesLevel2.push(user._id);
+        await inviterL2.save();
 
-      if (inviter.inviter && inviter.inviter.inviter) {
-        inviter.inviter.inviter.inviteesLevel3.push(user._id);
-        await inviter.inviter.inviter.save();
+        if (inviterL2.inviter) {
+          console.log('going to level 3');
+          let inviterL3 = await User.findById(inviterL2.inviter);
+          inviterL3.inviteesLevel3.push(user._id);
+          await inviterL3.save();
+        }
       }
     }
 

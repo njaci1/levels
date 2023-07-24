@@ -12,20 +12,24 @@ export default function LoginScreen() {
   const { data: session } = useSession();
   const router = useRouter();
   const { redirect, inviteCode } = router.query;
+  console.log(inviteCode);
+  const {
+    handleSubmit,
+    register,
+    getValues,
+    setValue,
+    formState: { errors },
+  } = useForm();
 
   useEffect(() => {
     if (session?.user) {
       console.log('user found');
       router.push(redirect || '/');
     }
-  }, [router, session, redirect]);
-
-  const {
-    handleSubmit,
-    register,
-    getValues,
-    formState: { errors },
-  } = useForm();
+    if (inviteCode) {
+      setValue('inviteCode', inviteCode);
+    }
+  }, [router, session, setValue, inviteCode, redirect]);
 
   const submitHandler = async ({
     f_name,
@@ -183,7 +187,7 @@ export default function LoginScreen() {
             type="text"
             className="w-full"
             id="inviteCode"
-            {...register('inviteCode', { defaultValue: inviteCode || '' })}
+            {...register('inviteCode')}
             autoFocus
           />
         </div>

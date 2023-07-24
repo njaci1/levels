@@ -27,17 +27,15 @@ export default async function handler(req, res) {
   } = user;
 
   // Send the levels as response
-  res
-    .status(200)
-    .json({
-      inviteesLevel1,
-      inviteesLevel2,
-      inviteesLevel3,
-      earningsLevel1,
-      earningsLevel2,
-      earningsLevel3,
-      totalEarnings,
-      balance,
-      withdrawals,
-    });
+  res.status(200).json({
+    inviteesLevel1,
+    inviteesLevel2,
+    inviteesLevel3,
+    earningsLevel1,
+    earningsLevel2,
+    earningsLevel3,
+    totalEarnings,
+    balance,
+    withdrawals,
+  });
 }
