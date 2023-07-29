@@ -44,7 +44,7 @@ export default function NetworkTable({ networkData }) {
               </TableRow>
               <TableRow>
                 <TableCell colSpan={2}>Current Balance</TableCell>
-                <TableCell>{networkData.balance}</TableCell>
+                <TableCell>{Math.floor(networkData.balance)}</TableCell>
               </TableRow>
             </>
           )}

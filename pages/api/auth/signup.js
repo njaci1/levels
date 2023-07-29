@@ -63,7 +63,7 @@ async function handler(req, res) {
 
     const user = await newUser.save();
 
-    console.log('Creating user successful');
+    console.log('user created successfully');
 
     // Update the invitees arrays of the inviter and its ancestors
     inviter.inviteesLevel1.push(user._id);

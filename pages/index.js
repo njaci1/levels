@@ -7,16 +7,5 @@ import { useSession } from 'next-auth/react';
 
 export default function Home() {
   const { data: session } = useSession();
-  return (
-    <Layout title="Home">{session ? <Mainpage /> : <Hello />}</Layout>
-    // <div>
-    //   <Head>
-    //     <title>Levels</title>
-    //   </Head>
-
-    //   <main>
-    //     <Hello />
-    //   </main>
-    // </div>
-  );
+  return <Layout title="Home">{session ? <Mainpage /> : <Hello />}</Layout>;
 }

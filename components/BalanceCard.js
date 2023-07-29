@@ -1,6 +1,8 @@
 import React, { use } from 'react';
 import { Card, CardContent, Typography, Button, Grid } from '@mui/material';
 import { useSession } from 'next-auth/react';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
 export default function BalanceCard({ balance }) {
   const { data: session } = useSession();
@@ -20,9 +22,20 @@ export default function BalanceCard({ balance }) {
   const handleBuyAirtime = () => {
     // Implement buy airtime functionality here
   };
-
-  const handleLipa = () => {
+  const handleLipa = async () => {
     // Implement Lipa functionality here
+    const userId = session.user._id;
+    try {
+      const { data } = await axios.post('/api/transactions/commissions', {
+        amount: 1000,
+        userId,
+      });
+
+      toast.success('Lipa successful');
+    } catch (error) {
+      console.error('Error while making the request: ', error.message);
+      // Handle error here. For instance, you can show an error message to the user
+    }
   };
 
   return (
@@ -34,7 +47,7 @@ export default function BalanceCard({ balance }) {
           Current Balance
         </Typography>
         <Typography variant="h5" component="div">
-          ksh.{balance}
+          ksh.{Math.floor(balance)}
         </Typography>
         <Button
           variant="contained"
