@@ -25,15 +25,29 @@ export default function BalanceCard({ balance }) {
   const handleLipa = async () => {
     // Implement Lipa functionality here
     const userId = session.user._id;
+    const phoneNumber = session.user.phoneNumber;
+    const transType = 'lipa';
     try {
-      const { data } = await axios.post('/api/transactions/commissions', {
-        amount: 1000,
-        userId,
-      });
+      const { data } = await axios.post(
+        '/api/transactions/initiateTransaction',
+        {
+          amount: 1,
+          userId,
+          phoneNumber,
+          transType,
+        }
+      );
+      if (data.result.ResponseCode == 0) {
+        // paymentResult = { status: 'pending_confirmation' };
 
-      toast.success('Lipa successful');
+        // alert('confirm transaction on your phone: ' + phonenumber);
+        toast.success('confirm transaction on your phone: ' + phonenumber);
+      } else {
+        toast.error('unable to push authorization request to your phone');
+      }
     } catch (error) {
-      console.error('Error while making the request: ', error.message);
+      console.error('unable to handle your request: ', error.message);
+      toast.error('unable to handle your request: ');
       // Handle error here. For instance, you can show an error message to the user
     }
   };
