@@ -37,17 +37,17 @@ export default function BalanceCard({ balance }) {
           transType,
         }
       );
-      if (data.result.ResponseCode == 0) {
-        // paymentResult = { status: 'pending_confirmation' };
 
-        // alert('confirm transaction on your phone: ' + phonenumber);
-        toast.success('confirm transaction on your phone: ' + phonenumber);
+      if (data.ResponseCode == '0') {
+        // toast.success('transaction initiated successfully');
+        alert('confirm transaction on your phone: ' + phoneNumber);
       } else {
-        toast.error('unable to push authorization request to your phone');
+        alert('unable to push authorization request to your phone');
       }
     } catch (error) {
       console.error('unable to handle your request: ', error.message);
-      toast.error('unable to handle your request: ');
+      alert('unable to handle your request: ');
+      // toast.error('unable to handle your request: ');
       // Handle error here. For instance, you can show an error message to the user
     }
   };

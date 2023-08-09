@@ -8,22 +8,22 @@ export default async function handler(req, res) {
   // if (!session) {
   //   return res.status(401).json({ error: 'Unauthorized' });
   // }
-  console.log(req.body);
+
   const transactionAmount = req.body.amount;
   const userId = req.body.userId;
   const transType = req.body.transType;
   const phoneNumber = req.body.phoneNumber;
 
-  const result = await createTransaction(
-    transactionAmount,
-    userId,
-    transType,
-    phoneNumber
-  );
   try {
+    const result = await createTransaction(
+      transactionAmount,
+      userId,
+      transType,
+      phoneNumber
+    );
     if (result) {
-      console.log(result.ResponseCode);
-      res.status(200).json({ result });
+      console.log(result);
+      res.status(200).json(result);
     }
   } catch (error) {
     console.error(error);

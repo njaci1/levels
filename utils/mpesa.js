@@ -66,14 +66,20 @@ export default async function checkout(amount, phoneNumber) {
           console.log(
             `sent request for authorization to MPesa for :${phoneNumber}`
           );
-          if (data.ResponseCode == 0) {
-            console.log('push request successful to users phone');
-            console.log(data);
+
+          if (data.ResponseCode) {
+            console.log('successful push request to users phone');
 
             return {
               ResponseCode: data.ResponseCode,
               CheckoutRequestID: data.CheckoutRequestID,
-              MerchantRequestID: data.MerchantRequestID,
+            };
+          } else {
+            console.log('failed push request to users phone');
+            console.log(data);
+            return {
+              ResponseCode: data.errorCode,
+              CheckoutRequestID: data.requestId,
             };
           }
         })

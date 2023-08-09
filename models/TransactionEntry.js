@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const TransactionSchema = new mongoose.Schema({
+const TransactionEntrySchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   transactionAmount: Number, // The total transaction amount
   commissionAmount: Number, // The commission derived from the transaction
@@ -19,8 +19,8 @@ const TransactionSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
 });
 
-const Transactions =
-  mongoose.models.Transactions ||
-  mongoose.model('Transactions', TransactionSchema);
+const TransactionEntry =
+  mongoose.models.TransactionEntry ||
+  mongoose.model('TransactionEntry', TransactionEntrySchema);
 
-module.exports = Transactions;
+module.exports = TransactionEntry;
