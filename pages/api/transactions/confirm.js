@@ -1,4 +1,6 @@
 import db from '../../../lib/db';
+import distributeCommission from '../../../lib/distributeCommission';
+import Transactions from '../../../models/Transactions';
 
 const handler = async (req, res) => {
   if (req.method !== 'POST') {
@@ -15,31 +17,43 @@ const handler = async (req, res) => {
 
   await db.connect();
 
-  const order = await Order.findOne({ paymentResponseCode: requestID });
-  if (order) {
+  const entry = await Transactions.findOne({ paymentRequestID: requestID });
+  if (entry) {
     if (resultCode == 0) {
-      order.paymentConfirmedAt = Date.now();
-      order.paymentResult = {
-        id: mpesaReceiptNumber,
-        status: 'confirmed',
-        email_address: 'null',
-      };
-      order.paymentResultCode = resultCode;
-      order.paymentConfirmedAt = Date.now();
-      await order.save();
-      console.log('order confirmation successful');
+      // update payment details in the database
+      entry.paymentResultCode = resultCode;
+      entry.mpesaReceiptNumber = mpesaReceiptNumber;
+      entry.status = 'confirmed';
+      await entry.save();
+      console.log('confirmation successful');
       await db.disconnect();
+      // trigger commission payment to all levels
+
+      const result = await distributeCommission(
+        entry.transactionAmount,
+        entry.user
+      );
+      if (result) {
+        await db.connect();
+        entry.commissions = {
+          level1: result.level1Inviter,
+          level2: result.level2Inviter,
+          level3: result.level3Inviter,
+        };
+        await entry.save();
+        await db.disconnect();
+        console.log(result);
+      }
     } else {
-      order.isPaid = false;
-      order.paymentResult = {
-        status: 'failed',
-      };
-      await order.save();
-      console.log('order not paid');
+      entry.paymentResultCode = resultCode;
+      entry.status = 'failed';
+
+      await entry.save();
+      console.log('confirmation failed');
       await db.disconnect();
     }
   } else {
-    console.log('order not found');
+    console.log('transaction not found');
     await db.disconnect();
   }
 
