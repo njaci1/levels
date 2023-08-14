@@ -28,9 +28,10 @@ const handler = async (req, res) => {
       console.log('confirmation successful');
       await db.disconnect();
       // trigger commission payment to all levels
-
+      const amount = 10000;
       const result = await distributeCommission(
-        entry.transactionAmount,
+        amount, // hardcode for now, to be replaced with entry.transactionAmount
+        // entry.transactionAmount,
         entry.user
       );
       if (result) {
