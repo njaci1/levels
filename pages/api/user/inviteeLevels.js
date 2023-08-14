@@ -14,12 +14,9 @@ export default async function handler(req, res) {
 
   // Fetch invitee levels from the user database
   const user = await User.findById(session.user._id).select(
-    -'password',
-    -'createdAt',
-    -'updatedAt',
-    -'inviter'
+    '-password -createdAt -updatedAt -inviter'
   );
-  const {
+  var {
     inviteesLevel1,
     inviteesLevel2,
     inviteesLevel3,
@@ -30,14 +27,25 @@ export default async function handler(req, res) {
     balance,
     withdrawals,
   } = user;
+  const inviteesLevel1Count = await User.countDocuments({
+    _id: { $in: user.inviteesLevel1 },
+  });
+  const inviteesLevel2Count = await User.countDocuments({
+    _id: { $in: user.inviteesLevel2 },
+  });
+  const inviteesLevel3Count = await User.countDocuments({
+    _id: { $in: user.inviteesLevel3 },
+  });
+
+  totalEarnings = Math.floor(earningsLevel1 + earningsLevel2 + earningsLevel3);
 
   console.log(user);
 
   // Send the levels as response
   res.status(200).json({
-    inviteesLevel1,
-    inviteesLevel2,
-    inviteesLevel3,
+    inviteesLevel1Count,
+    inviteesLevel2Count,
+    inviteesLevel3Count,
     earningsLevel1,
     earningsLevel2,
     earningsLevel3,

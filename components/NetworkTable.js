@@ -29,9 +29,11 @@ export default function NetworkTable({ networkData }) {
                     {level}
                   </TableCell>
                   <TableCell>
-                    {networkData[`inviteesLevel${level}`].length}
+                    {networkData[`inviteesLevel${level}Count`]}
                   </TableCell>
-                  <TableCell>{networkData[`earningsLevel${level}`]}</TableCell>
+                  <TableCell>
+                    {Math.floor(networkData[`earningsLevel${level}`])}
+                  </TableCell>
                 </TableRow>
               ))}
               <TableRow>
