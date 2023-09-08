@@ -58,10 +58,10 @@ export default function BalanceCard({ balance }) {
     >
       <CardContent>
         <Typography color="textSecondary" gutterBottom>
-          Current Balance
+          Unredeemed Points: {Math.floor(balance)}
         </Typography>
-        <Typography variant="h5" component="div">
-          ksh.{Math.floor(balance)}
+        <Typography variant="h7" component="div">
+          Cash Equivalent KES: {Math.floor(balance * 0.9)}
         </Typography>
         <Button
           variant="contained"
