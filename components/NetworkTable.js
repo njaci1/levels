@@ -17,7 +17,7 @@ export default function NetworkTable({ networkData }) {
           <TableRow>
             <TableCell>Level</TableCell>
             <TableCell>Invitees</TableCell>
-            <TableCell>Earnings</TableCell>
+            <TableCell>Points</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -37,15 +37,15 @@ export default function NetworkTable({ networkData }) {
                 </TableRow>
               ))}
               <TableRow>
-                <TableCell colSpan={2}>Total Earnings</TableCell>
+                <TableCell colSpan={2}>Points to Date</TableCell>
                 <TableCell>{networkData.totalEarnings}</TableCell>
               </TableRow>
               <TableRow>
-                <TableCell colSpan={2}>Total Cash Out</TableCell>
+                <TableCell colSpan={2}>Redeemed Points</TableCell>
                 <TableCell>{networkData.withdrawals}</TableCell>
               </TableRow>
               <TableRow>
-                <TableCell colSpan={2}>Current Balance</TableCell>
+                <TableCell colSpan={2}>Points Balance</TableCell>
                 <TableCell>{Math.floor(networkData.balance)}</TableCell>
               </TableRow>
             </>

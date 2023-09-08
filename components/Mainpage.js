@@ -22,7 +22,7 @@ export default function Mainpage() {
       const res = await fetch('/api/user/inviteeLevels');
       const data = await res.json();
       setNetworkData(data); // Save the network data in state
-      console.log(data);
+      // console.log(data);
     };
 
     fetchUserNetwork();
