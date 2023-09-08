@@ -39,7 +39,7 @@ export default async function handler(req, res) {
 
   totalEarnings = Math.floor(earningsLevel1 + earningsLevel2 + earningsLevel3);
 
-  console.log(user);
+  // console.log(user);
 
   // Send the levels as response
   res.status(200).json({
