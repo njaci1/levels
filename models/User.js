@@ -15,6 +15,7 @@ const UserSchema = new mongoose.Schema(
     inviteesLevel1: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     inviteesLevel2: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     inviteesLevel3: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    earningsLevel0: { type: Number, default: 0 }, // self-earned points
     earningsLevel1: { type: Number, default: 0 },
     earningsLevel2: { type: Number, default: 0 },
     earningsLevel3: { type: Number, default: 0 },
