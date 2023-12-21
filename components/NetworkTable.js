@@ -37,6 +37,10 @@ export default function NetworkTable({ networkData }) {
                 </TableRow>
               ))}
               <TableRow>
+                <TableCell colSpan={2}>myPoints</TableCell>
+                <TableCell>{networkData.earningsLevel0}</TableCell>
+              </TableRow>
+              <TableRow>
                 <TableCell colSpan={2}>Points to Date</TableCell>
                 <TableCell>{networkData.totalEarnings}</TableCell>
               </TableRow>
