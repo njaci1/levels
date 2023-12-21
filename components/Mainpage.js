@@ -8,6 +8,7 @@ export default function Mainpage() {
     inviteesLevel1: [],
     inviteesLevel2: [],
     inviteesLevel3: [],
+    earningsLevel0: 0,
     earningsLevel1: 0,
     earningsLevel2: 0,
     earningsLevel3: 0,

@@ -20,6 +20,7 @@ export default async function handler(req, res) {
     inviteesLevel1,
     inviteesLevel2,
     inviteesLevel3,
+    earningsLevel0,
     earningsLevel1,
     earningsLevel2,
     earningsLevel3,
@@ -37,7 +38,9 @@ export default async function handler(req, res) {
     _id: { $in: user.inviteesLevel3 },
   });
 
-  totalEarnings = Math.floor(earningsLevel1 + earningsLevel2 + earningsLevel3);
+  totalEarnings = Math.floor(
+    earningsLevel0 + earningsLevel1 + earningsLevel2 + earningsLevel3
+  );
 
   // console.log(user);
 
@@ -46,6 +49,7 @@ export default async function handler(req, res) {
     inviteesLevel1Count,
     inviteesLevel2Count,
     inviteesLevel3Count,
+    earningsLevel0,
     earningsLevel1,
     earningsLevel2,
     earningsLevel3,
