@@ -98,7 +98,7 @@ export default function BalanceCard({ balance }) {
           </Grid>
           <Grid item>
             <Button variant="contained" color="info" onClick={handleLipa}>
-              Lipa
+              Watch to Earn
             </Button>
           </Grid>
         </Grid>
