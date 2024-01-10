@@ -22,6 +22,8 @@ const UserSchema = new mongoose.Schema(
     totalEarnings: { type: Number, default: 0 },
     balance: { type: Number, default: 0 },
     withdrawals: { type: Number, default: 0 },
+    registrationStatus: { type: String, default: 'pending' },
+    adsWatched: { type: Number, default: 0 },
   },
   {
     timestamps: true,
