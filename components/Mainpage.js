@@ -15,6 +15,7 @@ export default function Mainpage() {
     totalEarnings: 0,
     balance: 0,
     withdrawals: 0,
+    status: 'pending',
   });
 
   // Fetch user network on component mount
@@ -31,7 +32,7 @@ export default function Mainpage() {
 
   return (
     <div>
-      <BalanceCard balance={networkData.balance} />
+      <BalanceCard balance={networkData.balance} status={networkData.status} />
       <NetworkTable networkData={networkData} />
     </div>
   );
