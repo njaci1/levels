@@ -1,0 +1,6 @@
+there are 2 ways 2 earn:
+1. by clicking on ads: gets you an entry into a draw where you can win a jackpot of $1000
+2. by referring others: gets you an entry into the weekly draw where you can win a jackpot of $10000. the user you 
+must be active for you to get the referral bonus. use is active if they click on at least 10 ads after signing up.
+For every dollar in revenue, 20% goes to the platform and 40% goes to the daily draw and 40% goes to the weekly draw.
+The jackpot for ads is won after x clicks and the jackpot for referrals is won after y referrals.
