@@ -4,3 +4,6 @@ there are 2 ways 2 earn:
 must be active for you to get the referral bonus. use is active if they click on at least 10 ads after signing up.
 For every dollar in revenue, 20% goes to the platform and 40% goes to the daily draw and 40% goes to the weekly draw.
 The jackpot for ads is won after x clicks and the jackpot for referrals is won after y referrals.
+
+next steps: figure out how registration status will be updated when new user activates by watching ads and how that will trigger 
+an update to the referral network for the inviters.
