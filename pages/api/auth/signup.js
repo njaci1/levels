@@ -37,20 +37,20 @@ async function handler(req, res) {
     return;
   }
   try {
-    // // Find the inviter by invite code, or default to the seed user if not found
-    // let inviter;
+    // Find the inviter by invite code, or default to the seed user if not found
+    let inviter;
 
-    // if (inviteCode) {
-    //   console.log(inviteCode);
-    //   inviter = await User.findOne({ inviteCode: inviteCode });
-    // }
+    if (inviteCode) {
+      console.log(inviteCode);
+      inviter = await User.findOne({ inviteCode: inviteCode });
+    }
 
-    // if (!inviter) {
-    //   console.log('inviter not found');
-    //   // The invite code could be invalid or missing, so we default to the seed user
-    //   // Replace 'seedUserInviteCode' with the actual invite code of your seed user
-    //   inviter = await User.findOne({ inviteCode: 'TD5tkLcdE' });
-    // }
+    if (!inviter) {
+      console.log('inviter not found');
+      // The invite code could be invalid or missing, so we default to the seed user
+      // Replace 'seedUserInviteCode' with the actual invite code of your seed user
+      inviter = await User.findOne({ inviteCode: 'TD5tkLcdE' });
+    }
 
     const newUser = new User({
       username: username,

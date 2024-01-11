@@ -14,6 +14,8 @@ export default NextAuth({
       if (user?.isAdmin) token.isAdmin = user.isAdmin;
       if (user?.inviteCode) token.inviteCode = user.inviteCode;
       if (user?.phoneNumber) token.phoneNumber = user.phoneNumber;
+      if (user?.registrationStatus)
+        token.registrationStatus = user.registrationStatus;
 
       // return { ...token, ...user };
       return token;
@@ -22,6 +24,8 @@ export default NextAuth({
       if (token?._id) session.user._id = token._id;
       if (token?.inviteCode) session.user.inviteCode = token.inviteCode;
       if (token?.phoneNumber) session.user.phoneNumber = token.phoneNumber;
+      if (token?.registrationStatus)
+        session.user.registrationStatus = token.registrationStatus;
 
       // session.user = token;
       // console.log(session.user);
@@ -44,6 +48,7 @@ export default NextAuth({
             image: 'f',
             inviteCode: user.inviteCode,
             phoneNumber: user.phoneNumber,
+            registrationStatus: user.registrationStatus,
           };
         }
         throw new Error('Invalid email or password');

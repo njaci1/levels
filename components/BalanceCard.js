@@ -6,9 +6,11 @@ import axios from 'axios';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-export default function BalanceCard({ balance, status }) {
+export default function BalanceCard({ balance }) {
   const router = useRouter();
   const { data: session } = useSession();
+  console.log(session);
+
   const handleCashOut = () => {
     // Here you can add functionality to handle the cash out process
     console.log('Cash Out button clicked');
@@ -105,7 +107,7 @@ export default function BalanceCard({ balance, status }) {
           </Grid>
           <Grid item>
             <Button variant="contained" color="info" onClick={handleClick}>
-              {session.user.status === 'pending'
+              {session.user.registrationStatus === 'pending'
                 ? 'Watch Ad to Complete Registration'
                 : 'Watch Ads'}
             </Button>
