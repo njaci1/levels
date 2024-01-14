@@ -1,11 +1,18 @@
+import React from 'react';
 import { Menu } from '@headlessui/react';
-import { signOut, useSession } from 'next-auth/react';
+import { signOut, useSession, getSession } from 'next-auth/react';
 import Head from 'next/head';
 import Link from 'next/link';
-import React from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 export default function Layout({ title, children }) {
-  const { status, data: session } = useSession();
+  const [session, setSession] = useState(null);
+  const router = useRouter();
+  useEffect(() => {
+    getSession().then((session) => setSession(session));
+  }, [router.asPath]);
+  // const { status, data: session } = useSession();
   // console.log(session.user);
   const logoutClickHandler = () => {
     signOut({ callbackUrl: '/login' });
@@ -24,7 +31,7 @@ export default function Layout({ title, children }) {
             <Link className="text-lg font-bold" href="/">
               Levels
             </Link>
-            {status === 'loading' ? (
+            {session === null ? (
               'Loading..'
             ) : session?.user ? (
               <Menu as="div" className="relative inline-block z-60">
@@ -53,7 +60,15 @@ export default function Layout({ title, children }) {
             )}
           </nav>
         </header>
-        <main className="container m-auto mt-4 px-4">{children}</main>
+        {/* <main className="container m-auto mt-4 px-4">{children}</main> */}
+        <main className="container m-auto mt-4 px-4">
+          {React.Children.map(children, (child) => {
+            if (React.isValidElement(child)) {
+              return React.cloneElement(child, { session });
+            }
+            return child;
+          })}
+        </main>
         <footer className="flex h-10 justify-center items-center shadow-inner">
           <p>Copyright © </p>
         </footer>
