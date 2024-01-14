@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import NetworkTable from './NetworkTable';
 import BalanceCard from './BalanceCard';
+import Layout from './Layout';
 
 export default function Mainpage() {
   // State for storing network data
@@ -32,8 +33,13 @@ export default function Mainpage() {
 
   return (
     <div>
-      <BalanceCard balance={networkData.balance} status={networkData.status} />
-      <NetworkTable networkData={networkData} />
+      <Layout>
+        <BalanceCard
+          balance={networkData.balance}
+          status={networkData.status}
+        />
+        <NetworkTable networkData={networkData} />
+      </Layout>
     </div>
   );
 }
