@@ -1,14 +1,15 @@
-import React, { use } from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, Typography, Button, Grid } from '@mui/material';
-import { useSession } from 'next-auth/react';
+import { useSession, getSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import Layout from '../components/Layout';
 
-export default function BalanceCard({ balance }) {
+export default function BalanceCard({ balance, session }) {
   const router = useRouter();
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
   console.log(session);
 
   const handleCashOut = () => {
@@ -61,6 +62,30 @@ export default function BalanceCard({ balance }) {
     router.push('/ads');
   };
 
+  const [isWatchingAd, setIsWatchingAd] = useState(false);
+
+  const handleWatchAd = () => {
+    setIsWatchingAd(true);
+  };
+
+  const handleAdEnded = async () => {
+    setIsWatchingAd(false);
+
+    // Send a request to your server to update the user's status and enter them in the draw
+    await axios.put(`/api/user/${session.user._id}/completeRegistration`);
+
+    // Fetch the latest session data
+    const latestSession = await getSession();
+
+    // Show an alert congratulating the user and informing them about the draw
+    alert(
+      'Congratulation! You have been entered into a draw where you stand to win a joiners jackpot. Click OK to watch more ads to enter todays draw.'
+    );
+
+    // Redirect the user to the ads page
+    router.push('/ads');
+  };
+
   return (
     <Card
       style={{ marginTop: '20px', marginBottom: '20px', textAlign: 'center' }}
@@ -106,11 +131,19 @@ export default function BalanceCard({ balance }) {
             </Button>
           </Grid>
           <Grid item>
-            <Button variant="contained" color="info" onClick={handleClick}>
-              {session.user.registrationStatus === 'pending'
+            <Button variant="contained" color="info" onClick={handleWatchAd}>
+              {session?.user?.registrationStatus === 'pending'
                 ? 'Watch Ad to Complete Registration'
                 : 'Watch Ads'}
             </Button>
+            {isWatchingAd && (
+              <video
+                src="/testfile1.mp4"
+                onEnded={handleAdEnded}
+                autoPlay
+                controls
+              />
+            )}
           </Grid>
         </Grid>
       </CardContent>
