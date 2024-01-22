@@ -5,9 +5,9 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import Layout from '../components/Layout';
+import { set } from 'mongoose';
 
-export default function BalanceCard({ balance, session }) {
+export default function BalanceCard({ balance, session, setSession }) {
   const router = useRouter();
   // const { data: session } = useSession();
   console.log(session);
@@ -76,6 +76,7 @@ export default function BalanceCard({ balance, session }) {
 
     // Fetch the latest session data
     const latestSession = await getSession();
+    setSession(latestSession); // Update the session state
 
     // Show an alert congratulating the user and informing them about the draw
     alert(
@@ -131,7 +132,15 @@ export default function BalanceCard({ balance, session }) {
             </Button>
           </Grid>
           <Grid item>
-            <Button variant="contained" color="info" onClick={handleWatchAd}>
+            <Button
+              variant="contained"
+              color="info"
+              onClick={
+                session?.user?.registrationStatus === 'pending'
+                  ? handleWatchAd
+                  : handleClick
+              }
+            >
               {session?.user?.registrationStatus === 'pending'
                 ? 'Watch Ad to Complete Registration'
                 : 'Watch Ads'}

@@ -1,4 +1,10 @@
+import Layout from './Layout';
+
 // components/Hello.js
 export default function Hello() {
-  return <h1>Hello, world!</h1>;
+  return (
+    <Layout title="Hello Page">
+      <h1>Hello, world!</h1>
+    </Layout>
+  );
 }

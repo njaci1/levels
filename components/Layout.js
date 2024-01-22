@@ -8,9 +8,13 @@ import { useRouter } from 'next/router';
 
 export default function Layout({ title, children }) {
   const [session, setSession] = useState(null);
+  const [loading, setLoading] = useState(true); // Add a loading state
   const router = useRouter();
   useEffect(() => {
-    getSession().then((session) => setSession(session));
+    getSession().then((session) => {
+      setSession(session);
+      setLoading(false); // Update the loading state when the session data has been fetched
+    });
   }, [router.asPath]);
   // const { status, data: session } = useSession();
   // console.log(session.user);
@@ -31,7 +35,7 @@ export default function Layout({ title, children }) {
             <Link className="text-lg font-bold" href="/">
               Levels
             </Link>
-            {session === null ? (
+            {loading ? (
               'Loading..'
             ) : session?.user ? (
               <Menu as="div" className="relative inline-block z-60">
@@ -64,7 +68,7 @@ export default function Layout({ title, children }) {
         <main className="container m-auto mt-4 px-4">
           {React.Children.map(children, (child) => {
             if (React.isValidElement(child)) {
-              return React.cloneElement(child, { session });
+              return React.cloneElement(child, { session, setSession });
             }
             return child;
           })}
