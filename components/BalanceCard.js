@@ -7,9 +7,9 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { set } from 'mongoose';
 
-export default function BalanceCard({ balance, session, setSession }) {
+export default function BalanceCard({ balance }) {
   const router = useRouter();
-  // const { data: session } = useSession();
+  const { data: session, update } = useSession();
   console.log(session);
 
   const handleCashOut = () => {
@@ -72,11 +72,16 @@ export default function BalanceCard({ balance, session, setSession }) {
     setIsWatchingAd(false);
 
     // Send a request to your server to update the user's status and enter them in the draw
-    await axios.put(`/api/user/${session.user._id}/completeRegistration`);
-
-    // Fetch the latest session data
-    const latestSession = await getSession();
-    setSession(latestSession); // Update the session state
+    await axios
+      .put(`/api/user/${session.user._id}/completeRegistration`)
+      .then(() => {
+        // Update the session after the request is resolved
+        update();
+      })
+      .catch((error) => {
+        // Handle any errors here
+        console.error(error);
+      });
 
     // Show an alert congratulating the user and informing them about the draw
     alert(
@@ -84,7 +89,7 @@ export default function BalanceCard({ balance, session, setSession }) {
     );
 
     // Redirect the user to the ads page
-    router.push('/ads');
+    // router.push('/ads');
   };
 
   return (
