@@ -2,55 +2,51 @@ import exp from 'constants';
 import db from '../lib/db';
 import ads from '../models/AdsCollection';
 
+const path = require('path');
+const baseAdsDirectory = path.join(__dirname, 'utils', 'sampleAds');
+
 const sampleAds = [
   {
-    title: 'Summer Sale Banner',
+    title: 'Banner4',
     description: 'Get up to 50% off on summer essentials!',
     type: 'banner',
     priority: 5,
-    imageUrl: 'https://example.com/summer-sale-banner.jpg',
+    imageUrl: path.join(baseAdsDirectory, 'banner-4.jpg'),
   },
   {
-    title: 'New Arrivals Video Ad',
+    title: 'cocacola',
     description: 'Discover our latest collection now!',
     type: 'video',
     priority: 7,
-    videoUrl: 'https://example.com/new-arrivals-video.mp4',
+    videoUrl: path.join(baseAdsDirectory, 'cocacola.mp4'),
   },
   {
-    title: 'Limited Time Offer Banner',
+    title: 'Banner-05',
     description: 'Hurry! Limited time offer. Shop now!',
     type: 'banner',
     priority: 6,
-    imageUrl: 'https://example.com/limited-time-offer-banner.jpg',
+    imageUrl: path.join(baseAdsDirectory, 'banner-05.jpg'),
   },
   {
-    title: 'Flash Sale Video Ad',
+    title: 'Coffee Ad',
     description: "Don't miss out on our exclusive flash sale!",
     type: 'video',
     priority: 8,
-    videoUrl: 'https://example.com/flash-sale-video.mp4',
+    videoUrl: path.join(baseAdsDirectory, 'coffee.mp4'),
   },
   {
-    title: 'Special Discount Banner',
+    title: 'Banner-06',
     description: 'Get an extra 10% off with code SPECIAL10',
     type: 'banner',
     priority: 4,
-    imageUrl: 'https://example.com/special-discount-banner.jpg',
+    imageUrl: path.join(baseAdsDirectory, 'banner-06.jpg'),
   },
   {
-    title: 'Product Showcase Video Ad',
+    title: 'cookie Video Ad',
     description: 'Explore our top products in this exclusive video!',
     type: 'video',
     priority: 7,
-    videoUrl: 'https://example.com/product-showcase-video.mp4',
-  },
-  {
-    title: 'Winter Collection Banner',
-    description: 'Stay cozy with our winter collection!',
-    type: 'banner',
-    priority: 5,
-    imageUrl: 'https://example.com/winter-collection-banner.jpg',
+    videoUrl: path.join(baseAdsDirectory, 'cookie.mp4'),
   },
 ];
 
