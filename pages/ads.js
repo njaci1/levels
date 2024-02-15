@@ -4,6 +4,7 @@ import Layout from '../components/Layout';
 import { useSession } from 'next-auth/react';
 import Hello from '../components/hello';
 import { Container, Typography, Box, Paper } from '@mui/material';
+import AdPlayer from '../components/AdsPlayer'; // Import the AdPlayer component
 
 function Ads() {
   const { data: session } = useSession();
@@ -23,37 +24,25 @@ function Ads() {
             <Typography variant="body1" gutterBottom>
               Here are some ads for you to watch:
             </Typography>
-            <Box my={2}>
+            {/* Replace Google text ad with AdPlayer */}
+            {/* <Box my={2}>
               <Paper elevation={3}>
                 <Box p={2}>
                   <Typography variant="h6" gutterBottom>
                     Text Ad
                   </Typography>
-                  <ins
-                    className="adsbygoogle"
-                    style={{ display: 'block' }}
-                    data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-                    data-ad-slot="1234567890"
-                    data-ad-format="auto"
-                    data-full-width-responsive="true"
-                  ></ins>
+                  <AdPlayer type="banner" />
                 </Box>
               </Paper>
-            </Box>
+            </Box> */}
+            {/* Replace Google video ad with AdPlayer */}
             <Box my={2}>
               <Paper elevation={3}>
                 <Box p={2}>
                   <Typography variant="h6" gutterBottom>
                     Video Ad
                   </Typography>
-                  <ins
-                    className="adsbygoogle"
-                    style={{ display: 'block' }}
-                    data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-                    data-ad-slot="1234567890"
-                    data-ad-format="video"
-                    data-full-width-responsive="true"
-                  ></ins>
+                  <AdPlayer type="video" />
                 </Box>
               </Paper>
             </Box>
@@ -67,31 +56,3 @@ function Ads() {
 }
 
 export default Ads;
-
-// import React from 'react';
-// import Head from 'next/head';
-// import Layout from '../components/Layout';
-// import { useSession } from 'next-auth/react';
-// import Hello from '../components/hello';
-
-// function Ads() {
-//   const { data: session } = useSession();
-//   return (
-//     <Layout title="Ads">
-//       {session ? (
-//         <div>
-//           <Head>
-//             <title>Ads</title>
-//           </Head>
-//           <h1>Watch Ads</h1>
-//           <p>Here are some ads for you to watch:</p>
-//           {/* Add your ads here */}
-//         </div>
-//       ) : (
-//         <Hello />
-//       )}
-//     </Layout>
-//   );
-// }
-
-// export default Ads;

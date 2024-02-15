@@ -44,7 +44,7 @@ const adSchema = new mongoose.Schema({
 });
 
 // Create the Ad model
-const Ad = mongoose.model('Ad', adSchema);
+const Ad = mongoose.models.Ad || mongoose.model('Ad', adSchema);
 
 // Export the Ad model
 module.exports = Ad;
