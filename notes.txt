@@ -7,3 +7,19 @@ The jackpot for ads is won after x clicks and the jackpot for referrals is won a
 
 next steps: figure out how registration status will be updated when new user activates by watching ads and how that will trigger 
 an update to the referral network for the inviters.
+
+const startDate = new Date('2024-01-01'); // Replace with your start date
+const endDate = new Date('2024-01-31'); // Replace with your end date
+
+Interaction.aggregate([
+  { $match: { timestamp: { $gte: startDate, $lte: endDate }, liked: true } }, // Filter interactions within the specified time period where ad is liked
+  { $group: { _id: '$adId', totalLikes: { $sum: 1 } } }, // Group by adId and count total likes
+  { $sort: { totalLikes: -1 } }, // Sort by total likes in descending order
+  { $limit: 1 } // Limit to one result
+]).exec((err, result) => {
+  if (err) {
+    console.error('Error finding most liked ad:', err);
+    return;
+  }
+  console.log('Most liked ad within the specified time period:', result);
+});

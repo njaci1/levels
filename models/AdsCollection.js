@@ -1,4 +1,3 @@
-// Import Mongoose
 const mongoose = require('mongoose');
 
 // Define the schema for ads
@@ -31,7 +30,7 @@ const adSchema = new mongoose.Schema({
   },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Reference to the User collection (for future use if you implement user authentication)
+    ref: 'User', // Reference to the User collection
   },
   createdAt: {
     type: Date,
