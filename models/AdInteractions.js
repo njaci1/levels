@@ -23,10 +23,14 @@ const interactionSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  viewed: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const Interaction =
-  mongoose.model.Interaction ||
+  mongoose.models.Interaction ||
   mongoose.model('Interaction', interactionSchema);
 
 module.exports = Interaction;

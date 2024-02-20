@@ -1,14 +1,31 @@
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
+import { useSession } from 'next-auth/react';
 
 function AdsPlayer() {
   const [adsQueue, setAdsQueue] = useState(null);
   const [currentAdIndex, setCurrentAdIndex] = useState(0);
   const [showButtons, setShowButtons] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [thumbsUp, setThumbsUp] = useState(false);
-  const [thumbsDown, setThumbsDown] = useState(false);
+  const [liked, setLiked] = useState(false);
+  const [disliked, setDisliked] = useState(false);
   const videoRef = useRef(null);
+  const { data: session } = useSession();
+  const userId = session.user._id;
+
+  const fetchInteractionData = async (adId) => {
+    // Fetch the interaction data for the current ad and user
+    const response = await fetch(
+      `/api/getInteraction?adId=${adId}&userId=${userId}`
+    );
+    const data = await response.json();
+    console.log(data);
+
+    // Initialize the liked and disliked states based on the interaction data
+    setLiked(data.liked);
+    setDisliked(data.disliked);
+    console.log(adId, '|', userId, '|', liked, '|', disliked);
+  };
 
   useEffect(() => {
     const fetchAds = async () => {
@@ -18,6 +35,8 @@ function AdsPlayer() {
 
         if (ads && ads.length > 0) {
           setAdsQueue(ads);
+          // Fetch the interaction data for the first ad
+          fetchInteractionData(ads[0]._id);
         } else {
           setAdsQueue([]);
         }
@@ -25,6 +44,22 @@ function AdsPlayer() {
         console.error('Error fetching ads:', error);
       }
     };
+
+    // const fetchInteractionData = async (adId) => {
+    //   try {
+    //     const response = await axios.post('/api/interactions', {
+    //       adId,
+    //       userId, // Replace with the actual user ID
+    //     });
+    //     const data = response.data;
+
+    //     // Initialize the liked and disliked states based on the interaction data
+    //     setLike(data.liked);
+    //     setDislike(data.disliked);
+    //   } catch (error) {
+    //     console.error('Error fetching interaction data:', error);
+    //   }
+    // };
 
     fetchAds();
   }, []);
@@ -49,36 +84,10 @@ function AdsPlayer() {
   }, [adsQueue, currentAdIndex]);
 
   useEffect(() => {
-    setThumbsUp(false);
-    setThumbsDown(false);
+    setLiked(false);
+    setDisliked(false);
     setShowButtons(false);
   }, [currentAdIndex]);
-
-  //   useEffect(() => {
-  //     if (adsQueue && adsQueue.length > 0) {
-  //       setShowButtons(false);
-  //       setIsPlaying(false);
-  //       setCurrentAdIndex(0);
-
-  //       const video = videoRef.current;
-
-  //       if (!video) return;
-
-  //       const handleVideoEnd = () => {
-  //         setShowButtons(true);
-  //         setIsPlaying(false);
-  //         setCurrentAdIndex((prevIndex) =>
-  //           prevIndex + 1 < adsQueue.length ? prevIndex + 1 : 0
-  //         );
-  //       };
-
-  //       video.addEventListener('ended', handleVideoEnd);
-
-  //       return () => {
-  //         video.removeEventListener('ended', handleVideoEnd);
-  //       };
-  //     }
-  //   }, [adsQueue]);
 
   const handlePlayPause = () => {
     const video = videoRef.current;
@@ -108,18 +117,46 @@ function AdsPlayer() {
           video.play(); // Autoplay the next video
         };
       }
+
+      // Fetch the interaction data for the new ad
+      fetchInteractionData(adsQueue[newIndex]._id);
+
       return newIndex;
     });
   };
 
-  const handleThumbsUp = () => {
-    setThumbsUp(true);
-    setThumbsDown(false);
+  const handleLike = async () => {
+    setLiked(true);
+    setDisliked(false);
+    const response = await fetch('/api/interactions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        adId: adsQueue[currentAdIndex]._id,
+        userId,
+        liked: true,
+        disliked: false,
+      }),
+    });
+    const data = await response.json();
+    // Handle the response data...
   };
 
-  const handleThumbsDown = () => {
-    setThumbsDown(true);
-    setThumbsUp(false);
+  const handleDislike = async () => {
+    setLiked(false);
+    setDisliked(true);
+    const response = await fetch('/api/interactions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        adId: adsQueue[currentAdIndex]._id,
+        userId,
+        liked: false,
+        disliked: true,
+      }),
+    });
+    const data = await response.json();
+    // Handle the response data...
   };
 
   return adsQueue ? (
@@ -162,16 +199,16 @@ function AdsPlayer() {
               Next
             </button>
             <button
-              onClick={handleThumbsUp}
-              style={{ color: thumbsUp ? 'green' : 'blue', padding: '10px' }}
+              onClick={handleLike}
+              style={{ color: liked ? 'green' : 'blue', padding: '10px' }}
             >
-              Thumbs Up
+              Like
             </button>
             <button
-              onClick={handleThumbsDown}
-              style={{ color: thumbsDown ? 'red' : 'blue', padding: '10px' }}
+              onClick={handleDislike}
+              style={{ color: disliked ? 'red' : 'blue', padding: '10px' }}
             >
-              Thumbs Down
+              Dislike
             </button>
           </div>
         )}
