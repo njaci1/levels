@@ -3,7 +3,7 @@ import Interaction from '../../models/AdInteractions'; // Import your Interactio
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    const { adId, userId, liked, disliked } = req.body;
+    const { adId, userId, doubleLiked, liked, disliked } = req.body;
 
     // Connect to the database
     await db.connect();
@@ -13,6 +13,7 @@ export default async function handler(req, res) {
 
     if (interaction) {
       // If an interaction exists, update it
+      interaction.doubleLiked = doubleLiked;
       interaction.liked = liked;
       interaction.disliked = disliked;
       await interaction.save();
@@ -21,6 +22,7 @@ export default async function handler(req, res) {
       interaction = await Interaction.create({
         adId,
         userId,
+        doubleLiked,
         liked,
         disliked,
       });

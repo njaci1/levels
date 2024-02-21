@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
+import { set } from 'mongoose';
 
 function AdsPlayer() {
   const [adsQueue, setAdsQueue] = useState(null);
   const [currentAdIndex, setCurrentAdIndex] = useState(0);
   const [showButtons, setShowButtons] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [doubleLiked, setDoubleLiked] = useState(false);
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
   const videoRef = useRef(null);
@@ -22,6 +24,7 @@ function AdsPlayer() {
     // console.log(data);
 
     // Initialize the liked and disliked states based on the interaction data
+    setDoubleLiked(data.doubleLiked);
     setLiked(data.liked);
     setDisliked(data.disliked);
     // console.log(adId, '|', userId, '|', liked, '|', disliked);
@@ -65,6 +68,7 @@ function AdsPlayer() {
   }, [adsQueue, currentAdIndex]);
 
   useEffect(() => {
+    setDoubleLiked(false);
     setLiked(false);
     setDisliked(false);
     setShowButtons(false);
@@ -112,8 +116,27 @@ function AdsPlayer() {
       return newIndex;
     });
   };
+  const handleDoubleLike = async () => {
+    setDoubleLiked(true);
+    setLiked(false);
+    setDisliked(false);
+    const response = await fetch('/api/interactions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        adId: adsQueue[currentAdIndex]._id,
+        userId,
+        doubleLiked: true,
+        liked: false,
+        disliked: false,
+      }),
+    });
+    const data = await response.json();
+    // Handle the response data...
+  };
 
   const handleLike = async () => {
+    setDoubleLiked(false);
     setLiked(true);
     setDisliked(false);
     const response = await fetch('/api/interactions', {
@@ -122,6 +145,7 @@ function AdsPlayer() {
       body: JSON.stringify({
         adId: adsQueue[currentAdIndex]._id,
         userId,
+        doubleLiked: false,
         liked: true,
         disliked: false,
       }),
@@ -131,6 +155,7 @@ function AdsPlayer() {
   };
 
   const handleDislike = async () => {
+    setDoubleLiked(false);
     setLiked(false);
     setDisliked(true);
     const response = await fetch('/api/interactions', {
@@ -139,6 +164,7 @@ function AdsPlayer() {
       body: JSON.stringify({
         adId: adsQueue[currentAdIndex]._id,
         userId,
+        doubleLiked: false,
         liked: false,
         disliked: true,
       }),
@@ -185,6 +211,12 @@ function AdsPlayer() {
               style={{ color: 'blue', padding: '10px' }}
             >
               Next
+            </button>
+            <button
+              onClick={handleDoubleLike}
+              style={{ color: doubleLiked ? 'green' : 'blue', padding: '10px' }}
+            >
+              doubleLike
             </button>
             <button
               onClick={handleLike}
