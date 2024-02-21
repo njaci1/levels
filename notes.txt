@@ -23,3 +23,4 @@ Interaction.aggregate([
   }
   console.log('Most liked ad within the specified time period:', result);
 });
+handle jackpot

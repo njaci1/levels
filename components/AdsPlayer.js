@@ -19,12 +19,12 @@ function AdsPlayer() {
       `/api/getInteraction?adId=${adId}&userId=${userId}`
     );
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
 
     // Initialize the liked and disliked states based on the interaction data
     setLiked(data.liked);
     setDisliked(data.disliked);
-    console.log(adId, '|', userId, '|', liked, '|', disliked);
+    // console.log(adId, '|', userId, '|', liked, '|', disliked);
   };
 
   useEffect(() => {
@@ -45,22 +45,6 @@ function AdsPlayer() {
       }
     };
 
-    // const fetchInteractionData = async (adId) => {
-    //   try {
-    //     const response = await axios.post('/api/interactions', {
-    //       adId,
-    //       userId, // Replace with the actual user ID
-    //     });
-    //     const data = response.data;
-
-    //     // Initialize the liked and disliked states based on the interaction data
-    //     setLike(data.liked);
-    //     setDislike(data.disliked);
-    //   } catch (error) {
-    //     console.error('Error fetching interaction data:', error);
-    //   }
-    // };
-
     fetchAds();
   }, []);
 
@@ -71,9 +55,6 @@ function AdsPlayer() {
     const handleVideoEnd = () => {
       setShowButtons(true);
       setIsPlaying(false);
-      //   setCurrentAdIndex((prevIndex) =>
-      //     prevIndex + 1 < adsQueue.length ? prevIndex + 1 : 0
-      //   );
     };
 
     video.addEventListener('ended', handleVideoEnd);
