@@ -24,8 +24,8 @@ const interactionSchema = new mongoose.Schema({
     default: false,
   },
   viewed: {
-    type: Boolean,
-    default: false,
+    type: Number,
+    default: 0,
   },
 });
 

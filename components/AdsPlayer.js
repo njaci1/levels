@@ -121,6 +121,13 @@ function AdsPlayer() {
       // Fetch the interaction data for the new ad
       fetchInteractionData(adsQueue[newIndex]._id);
 
+      // Update the interaction record for the current ad
+      fetch('/api/updateViews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ adId: adsQueue[prevIndex]._id, userId: userId }),
+      });
+
       return newIndex;
     });
   };
