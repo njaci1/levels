@@ -197,6 +197,14 @@ function AdsPlayer() {
           src={adsQueue[currentAdIndex]?.videoUrl}
           controls
         />
+        <div>
+          <button style={{ margin: '10px' }} onClick={handlePrevious}>
+            <i class="fas fa-step-backward"></i> Previous
+          </button>
+          <button style={{ margin: '10px' }} onClick={handleNext}>
+            <i class="fas fa-step-forward"></i> Next
+          </button>
+        </div>
         {showButtons && (
           <div
             style={{
@@ -223,7 +231,7 @@ function AdsPlayer() {
               <i class="fas fa-redo"></i>
             </button>
 
-            <button
+            {/* <button
               onClick={handlePrevious}
               style={{ color: 'white', padding: '10px' }}
             >
@@ -234,7 +242,7 @@ function AdsPlayer() {
               style={{ color: 'white', padding: '10px' }}
             >
               <i class="fas fa-step-forward"></i>
-            </button>
+            </button> */}
             <button
               onClick={handleDoubleLike}
               style={{
