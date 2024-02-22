@@ -86,6 +86,21 @@ function AdsPlayer() {
     }
   };
 
+  const handleReplay = () => {
+    const video = videoRef.current;
+    if (video) {
+      video.currentTime = 0;
+      video.play();
+    }
+  };
+
+  const handlePrevious = () => {
+    setCurrentAdIndex((prevIndex) => {
+      const newIndex = prevIndex - 1 >= 0 ? prevIndex - 1 : adsQueue.length - 1;
+      return newIndex;
+    });
+  };
+
   const handleSkip = () => {
     setCurrentAdIndex((prevIndex) =>
       prevIndex + 1 < adsQueue.length ? prevIndex + 1 : 0
@@ -194,41 +209,52 @@ function AdsPlayer() {
               gap: '10px',
             }}
           >
-            <button
+            {/* <button
               onClick={handlePlayPause}
               style={{ color: 'blue', padding: '10px' }}
             >
               {isPlaying ? 'Pause' : 'Play'}
-            </button>
+            </button> */}
+
             <button
-              onClick={handleSkip}
-              style={{ color: 'blue', padding: '10px' }}
+              onClick={handleReplay}
+              style={{ color: 'white', padding: '10px' }}
             >
-              Skip
+              <i class="fas fa-redo"></i>
+            </button>
+
+            <button
+              onClick={handlePrevious}
+              style={{ color: 'white', padding: '10px' }}
+            >
+              <i class="fas fa-step-backward"></i>
             </button>
             <button
               onClick={handleNext}
-              style={{ color: 'blue', padding: '10px' }}
+              style={{ color: 'white', padding: '10px' }}
             >
-              Next
+              <i class="fas fa-step-forward"></i>
             </button>
             <button
               onClick={handleDoubleLike}
-              style={{ color: doubleLiked ? 'green' : 'blue', padding: '10px' }}
+              style={{
+                color: doubleLiked ? 'green' : 'white',
+                padding: '10px',
+              }}
             >
-              doubleLike
+              <i class="fas fa-heart"></i>
             </button>
             <button
               onClick={handleLike}
-              style={{ color: liked ? 'green' : 'blue', padding: '10px' }}
+              style={{ color: liked ? 'green' : 'white', padding: '10px' }}
             >
-              Like
+              <i class="fas fa-thumbs-up"></i>
             </button>
             <button
               onClick={handleDislike}
-              style={{ color: disliked ? 'red' : 'blue', padding: '10px' }}
+              style={{ color: disliked ? 'red' : 'white', padding: '10px' }}
             >
-              Dislike
+              <i class="fas fa-thumbs-down"></i>
             </button>
           </div>
         )}
