@@ -15,6 +15,10 @@ const interactionSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  doubleLiked: {
+    type: Boolean,
+    default: false,
+  },
   liked: {
     type: Boolean,
     default: false,
@@ -23,10 +27,14 @@ const interactionSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  viewed: {
+    type: Number,
+    default: 0,
+  },
 });
 
 const Interaction =
-  mongoose.model.Interaction ||
+  mongoose.models.Interaction ||
   mongoose.model('Interaction', interactionSchema);
 
 module.exports = Interaction;

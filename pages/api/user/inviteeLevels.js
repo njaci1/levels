@@ -1,5 +1,5 @@
 // pages/api/user/inviteeLevels.js
-
+import db from '../../../lib/db';
 import { getSession } from 'next-auth/react';
 import User from '../../../models/User';
 
@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   if (!session) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
-
+  db.connect();
   // Fetch invitee levels from the user database
   const user = await User.findById(session.user._id).select(
     '-password -createdAt -updatedAt -inviter'
@@ -41,7 +41,7 @@ export default async function handler(req, res) {
   totalEarnings = Math.floor(
     earningsLevel0 + earningsLevel1 + earningsLevel2 + earningsLevel3
   );
-
+  db.disconnect();
   // console.log(user);
 
   // Send the levels as response

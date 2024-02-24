@@ -7,25 +7,11 @@ const baseAdsDirectory = path.join(process.cwd(), 'utils');
 
 const sampleAds = [
   {
-    title: 'Banner4',
-    description: 'Get up to 50% off on summer essentials!',
-    type: 'banner',
-    priority: 5,
-    imageUrl: '/sampleAds/banner-4.jpg',
-  },
-  {
     title: 'cocacola',
     description: 'Discover our latest collection now!',
     type: 'video',
     priority: 7,
     videoUrl: '/sampleAds/cocacola.mp4',
-  },
-  {
-    title: 'Banner-05',
-    description: 'Hurry! Limited time offer. Shop now!',
-    type: 'banner',
-    priority: 6,
-    imageUrl: '/sampleAds/banner-05.jpg',
   },
   {
     title: 'Coffee Ad',
@@ -35,18 +21,18 @@ const sampleAds = [
     videoUrl: '/sampleAds/coffee.mp4',
   },
   {
-    title: 'Banner-06',
-    description: 'Get an extra 10% off with code SPECIAL10',
-    type: 'banner',
-    priority: 4,
-    imageUrl: '/sampleAds/banner-06.jpg',
-  },
-  {
     title: 'cookie Video Ad',
     description: 'Explore our top products in this exclusive video!',
     type: 'video',
     priority: 7,
     videoUrl: '/sampleAds/cookie.mp4',
+  },
+  {
+    title: 'doritos Video Ad',
+    description: 'Explore our top products in this exclusive video!',
+    type: 'video',
+    priority: 7,
+    videoUrl: '/sampleAds/doritos.mp4',
   },
 ];
 
