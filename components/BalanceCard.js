@@ -146,6 +146,7 @@ export default function BalanceCard({ balance }) {
               variant="contained"
               color="info"
               onClick={registrationComplete ? handleClick : handleWatchAd}
+              disabled={isWatchingAd}
             >
               {registrationComplete
                 ? 'Watch Ads'
