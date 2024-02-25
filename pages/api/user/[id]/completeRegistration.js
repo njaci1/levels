@@ -1,6 +1,7 @@
 import db from '../../../../lib/db';
 import User from '../../../../models/User';
 import bcrypt from 'bcrypt';
+import { WelcomeJackpotEntry } from '../../models/Jackpots';
 
 export default async function handler(req, res) {
   const {
@@ -17,6 +18,8 @@ export default async function handler(req, res) {
     );
 
     await updateInviterNetwork(user);
+    // enter user to welcome jackpot
+    await WelcomeJackpotEntry.create({ userId: user._id });
 
     res.status(200).send({
       message: 'Signup completed!',

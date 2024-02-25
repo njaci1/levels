@@ -161,7 +161,7 @@ function AdsPlayer() {
     setDoubleLiked(true);
     setLiked(false);
     setDisliked(false);
-    const response = await fetch('/api/interactions', {
+    const response = await fetch('/api/updateInteractions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -183,7 +183,7 @@ function AdsPlayer() {
     setDoubleLiked(false);
     setLiked(true);
     setDisliked(false);
-    const response = await fetch('/api/interactions', {
+    const response = await fetch('/api/updateInteractions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -204,7 +204,7 @@ function AdsPlayer() {
     setDoubleLiked(false);
     setLiked(false);
     setDisliked(true);
-    const response = await fetch('/api/interactions', {
+    const response = await fetch('/api/updateInteractions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

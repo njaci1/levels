@@ -21,7 +21,7 @@ export default async function handler(req, res) {
       adId,
       $or: [{ liked: true }, { disliked: true }, { doubleliked: true }],
     });
-    console.log(interaction);
+
     // if interaction exists, the user has interacted with the ad before and we should not increment count in the user engagement.
     if (!interaction) {
       // check if the userId exist in the user engagement collection
