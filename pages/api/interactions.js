@@ -1,5 +1,5 @@
-import db from '../../lib/db'; // Import your database connection utility
-import Interaction from '../../models/AdInteractions'; // Import your Interaction model
+import db from '../../lib/db';
+import Interaction from '../../models/AdInteractions';
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
@@ -16,6 +16,7 @@ export default async function handler(req, res) {
       interaction.doubleLiked = doubleLiked;
       interaction.liked = liked;
       interaction.disliked = disliked;
+      interaction.viewed += 1;
       await interaction.save();
     } else {
       // If no interaction exists, create a new one
@@ -25,6 +26,7 @@ export default async function handler(req, res) {
         doubleLiked,
         liked,
         disliked,
+        viewed: 1,
       });
     }
 

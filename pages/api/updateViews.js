@@ -15,11 +15,15 @@ export default async function handler(req, res) {
       // If an interaction exists, update it
       interaction.viewed += 1; // Increment the viewed field
       await interaction.save();
+      console.log(
+        `incremented views for ad ${adId} by user ${userId} to ${interaction.viewed}`
+      );
     } else {
       // If no interaction exists, create a new one
       interaction = await Interaction.create({
         viewed: 1,
       });
+      console.log(`created new interaction for ad ${adId} by user ${userId}`);
     }
 
     res.status(200).json(interaction);
