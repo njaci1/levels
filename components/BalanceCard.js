@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, Typography, Button, Grid } from '@mui/material';
 import { useSession, getSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
@@ -10,10 +10,23 @@ import { set } from 'mongoose';
 export default function BalanceCard({ balance }) {
   const router = useRouter();
   const { data: session, update } = useSession();
-  console.log(session);
+  const [isWatchingAd, setIsWatchingAd] = useState(false);
+  const [adVideos, setAdVideos] = useState([]);
+  const [currentAdIndex, setCurrentAdIndex] = useState(0);
+  const [registrationComplete, setRegistrationComplete] = useState(false);
+
+  useEffect(() => {
+    axios
+      .get('/api/getJoinersAds')
+      .then((response) => {
+        setAdVideos(response.data);
+      })
+      .catch((error) => {
+        console.error('Failed to fetch videos:', error);
+      });
+  }, []);
 
   const handleCashOut = () => {
-    // Here you can add functionality to handle the cash out process
     console.log('Cash Out button clicked');
   };
   const handleInviteFriend = () => {
@@ -62,34 +75,26 @@ export default function BalanceCard({ balance }) {
     router.push('/ads');
   };
 
-  const [isWatchingAd, setIsWatchingAd] = useState(false);
-
   const handleWatchAd = () => {
     setIsWatchingAd(true);
   };
 
   const handleAdEnded = async () => {
-    setIsWatchingAd(false);
+    if (currentAdIndex + 1 < adVideos.length) {
+      setCurrentAdIndex(currentAdIndex + 1);
+    } else {
+      setIsWatchingAd(false);
 
-    // Send a request to your server to update the user's status and enter them in the draw
-    await axios
-      .put(`/api/user/${session.user._id}/completeRegistration`)
-      .then(() => {
-        // Update the session after the request is resolved
-        update();
-      })
-      .catch((error) => {
-        // Handle any errors here
-        console.error(error);
-      });
-
-    // Show an alert congratulating the user and informing them about the draw
-    alert(
-      'Congratulation! You have been entered into a draw where you stand to win a joiners jackpot. Click OK to watch more ads to enter todays draw.'
-    );
-
-    // Redirect the user to the ads page
-    // router.push('/ads');
+      await axios
+        .put(`/api/user/${session.user._id}/completeRegistration`)
+        .then(() => {
+          // Update the local state
+          setRegistrationComplete(true);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
   };
 
   return (
@@ -140,19 +145,15 @@ export default function BalanceCard({ balance }) {
             <Button
               variant="contained"
               color="info"
-              onClick={
-                session?.user?.registrationStatus === 'pending'
-                  ? handleWatchAd
-                  : handleClick
-              }
+              onClick={registrationComplete ? handleClick : handleWatchAd}
             >
-              {session?.user?.registrationStatus === 'pending'
-                ? 'Watch Ad to Complete Registration'
-                : 'Watch Ads'}
+              {registrationComplete
+                ? 'Watch Ads'
+                : 'Watch Ad to complete registration'}
             </Button>
-            {isWatchingAd && (
+            {isWatchingAd && adVideos.length > 0 && (
               <video
-                src="/testfile1.mp4"
+                src={adVideos[currentAdIndex].videoUrl}
                 onEnded={handleAdEnded}
                 autoPlay
                 controls

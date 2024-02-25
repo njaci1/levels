@@ -1,7 +1,7 @@
 import db from '../../../../lib/db';
 import User from '../../../../models/User';
 import bcrypt from 'bcrypt';
-import { WelcomeJackpotEntry } from '../../models/Jackpots';
+import { WelcomeJackpotEntry } from '../../../../models/Jackpots';
 
 export default async function handler(req, res) {
   const {
