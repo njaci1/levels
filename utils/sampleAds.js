@@ -34,6 +34,13 @@ const sampleAds = [
     priority: 7,
     videoUrl: '/sampleAds/doritos.mp4',
   },
+  {
+    title: 'shoe ad',
+    description: 'Explore our top products in this exclusive video!',
+    type: 'video',
+    priority: 7,
+    videoUrl: '/sampleAds/shoe.mp4',
+  },
 ];
 
 export default async function sampleDatabase(req, res) {
