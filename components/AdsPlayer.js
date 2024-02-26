@@ -22,13 +22,17 @@ function AdsPlayer() {
       `/api/getInteraction?adId=${adId}&userId=${userId}`
     );
     const data = await response.json();
-    // console.log(data);
 
-    // Initialize the liked and disliked states based on the interaction data
-    setDoubleLiked(data.doubleLiked);
-    setLiked(data.liked);
-    setDisliked(data.disliked);
-    // console.log(adId, '|', userId, '|', liked, '|', disliked);
+    if (response.status === 200) {
+      // Initialize the liked and disliked states based on the interaction data
+      setDoubleLiked(data.doubleLiked);
+      setLiked(data.liked);
+      setDisliked(data.disliked);
+    } else {
+      setDoubleLiked(false);
+      setLiked(false);
+      setDisliked(false);
+    }
   };
 
   useEffect(() => {
@@ -104,9 +108,14 @@ function AdsPlayer() {
   };
 
   const handleSkip = () => {
-    setCurrentAdIndex((prevIndex) =>
-      prevIndex + 1 < adsQueue.length ? prevIndex + 1 : 0
-    );
+    setCurrentAdIndex((prevIndex) => {
+      const newIndex = prevIndex + 1 < adsQueue.length ? prevIndex + 1 : 0;
+      const video = videoRef.current;
+      if (video) {
+        video.play();
+      }
+      return newIndex;
+    });
   };
 
   const handleNext = () => {
@@ -124,6 +133,7 @@ function AdsPlayer() {
       fetchInteractionData(adsQueue[newIndex]._id);
 
       // Update the interaction record for the current ad
+
       fetch('/api/updateViews', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -133,11 +143,27 @@ function AdsPlayer() {
       return newIndex;
     });
   };
+  // records the engagement with the ad and keeps count of the number of times the user has rated an ad
+  const handleJackpotEntry = async (userId, adId) => {
+    try {
+      const response = await fetch('/api/enterJackpot', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, adId }),
+      });
+      const data = await response.json();
+      // Handle the response data...
+      console.log(data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
   const handleDoubleLike = async () => {
     setDoubleLiked(true);
     setLiked(false);
     setDisliked(false);
-    const response = await fetch('/api/interactions', {
+    const response = await fetch('/api/updateInteractions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -149,14 +175,17 @@ function AdsPlayer() {
       }),
     });
     const data = await response.json();
+    handleJackpotEntry(userId, adsQueue[currentAdIndex]._id);
     // Handle the response data...
   };
 
   const handleLike = async () => {
+    handleJackpotEntry(userId, adsQueue[currentAdIndex]._id); // records the engagement with the ad and keeps count of the number of times the user has rated an ad
+
     setDoubleLiked(false);
     setLiked(true);
     setDisliked(false);
-    const response = await fetch('/api/interactions', {
+    const response = await fetch('/api/updateInteractions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -168,14 +197,16 @@ function AdsPlayer() {
       }),
     });
     const data = await response.json();
+
     // Handle the response data...
   };
 
   const handleDislike = async () => {
+    handleJackpotEntry(userId, adsQueue[currentAdIndex]._id); // records the engagement with the ad and keeps count of the number of times the user has rated an ad
     setDoubleLiked(false);
     setLiked(false);
     setDisliked(true);
-    const response = await fetch('/api/interactions', {
+    const response = await fetch('/api/updateInteractions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -187,6 +218,7 @@ function AdsPlayer() {
       }),
     });
     const data = await response.json();
+
     // Handle the response data...
   };
 
@@ -203,8 +235,8 @@ function AdsPlayer() {
           <button style={{ margin: '10px' }} onClick={handlePrevious}>
             <i class="fas fa-step-backward"></i> Previous
           </button>
-          <button style={{ margin: '10px' }} onClick={handleNext}>
-            <i class="fas fa-step-forward"></i> Next
+          <button style={{ margin: '10px' }} onClick={handleSkip}>
+            <i class="fas fa-step-forward"></i> Skip
           </button>
         </div>
         {showButtons && (
@@ -245,7 +277,7 @@ function AdsPlayer() {
             >
               <i class="fas fa-step-forward"></i>
             </button> */}
-            <button
+            {/* <button
               onClick={handleDoubleLike}
               style={{
                 color: doubleLiked ? 'green' : 'white',
@@ -253,7 +285,7 @@ function AdsPlayer() {
               }}
             >
               <i class="fas fa-heart"></i>
-            </button>
+            </button> */}
             <button
               onClick={handleLike}
               style={{ color: liked ? 'green' : 'white', padding: '10px' }}
@@ -265,6 +297,13 @@ function AdsPlayer() {
               style={{ color: disliked ? 'red' : 'white', padding: '10px' }}
             >
               <i class="fas fa-thumbs-down"></i>
+            </button>
+            <button
+              onClick={handleNext}
+              style={{ color: 'white', padding: '10px' }}
+            >
+              {/* <i class="fas fa-step-forward">Next</i> */}
+              Next
             </button>
           </div>
         )}
