@@ -28,6 +28,15 @@ const adSchema = new mongoose.Schema({
   audioUrl: {
     type: String,
   },
+  expired: {
+    type: Boolean,
+    default: false,
+  },
+  expiryDate: {
+    type: Date,
+    default: () => Date.now() + 30 * 24 * 60 * 60 * 1000, // Default value is the current date plus 30 days
+  },
+
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User', // Reference to the User collection
