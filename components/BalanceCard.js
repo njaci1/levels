@@ -14,10 +14,15 @@ export default function BalanceCard({ balance }) {
   const [isWatchingAd, setIsWatchingAd] = useState(false);
   const [adVideos, setAdVideos] = useState([]);
   const [currentAdIndex, setCurrentAdIndex] = useState(0);
+<<<<<<< HEAD
   const [registrationComplete, setRegistrationComplete] = useState(
     session.user.registrationStatus
   );
   console.log(session.user.registrationStatus);
+=======
+  const [registrationComplete, setRegistrationComplete] = useState(session.user.registrationStatus);
+
+>>>>>>> f320205f91ea31a78d0f9adcf0bf873ba5b6d665
   useEffect(() => {
     axios
       .get('/api/getJoinersAds')
