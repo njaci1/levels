@@ -17,7 +17,7 @@ const adSchema = new mongoose.Schema({
   },
   priority: {
     type: Number,
-    required: true,
+    default: 3,
   },
   imageUrl: {
     type: String,
@@ -26,6 +26,9 @@ const adSchema = new mongoose.Schema({
     type: String,
   },
   audioUrl: {
+    type: String,
+  },
+  cloudinaryId: {
     type: String,
   },
   expired: {

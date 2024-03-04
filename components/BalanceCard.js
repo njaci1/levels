@@ -17,7 +17,7 @@ export default function BalanceCard({ balance }) {
   const [registrationComplete, setRegistrationComplete] = useState(
     session.user.registrationStatus
   );
-
+  console.log(session.user.registrationStatus);
   useEffect(() => {
     axios
       .get('/api/getJoinersAds')
@@ -148,10 +148,14 @@ export default function BalanceCard({ balance }) {
             <Button
               variant="contained"
               color="info"
-              onClick={registrationComplete ? handleClick : handleWatchAd}
+              onClick={
+                registrationComplete === 'complete'
+                  ? handleClick
+                  : handleWatchAd
+              }
               disabled={isWatchingAd}
             >
-              {registrationComplete
+              {registrationComplete === 'complete'
                 ? 'Watch Ads'
                 : 'Watch Ad to complete registration'}
             </Button>

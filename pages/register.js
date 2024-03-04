@@ -23,7 +23,7 @@ export default function LoginScreen() {
 
   useEffect(() => {
     if (session?.user) {
-      console.log('user found');
+      console.log(session.user);
       router.push(redirect || '/');
     }
     if (inviteCode) {
