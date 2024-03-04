@@ -14,13 +14,7 @@ export default function BalanceCard({ balance }) {
   const [isWatchingAd, setIsWatchingAd] = useState(false);
   const [adVideos, setAdVideos] = useState([]);
   const [currentAdIndex, setCurrentAdIndex] = useState(0);
-<<<<<<< HEAD
   const [registrationComplete, setRegistrationComplete] = useState(session.user.registrationStatus);
-=======
-  const [registrationComplete, setRegistrationComplete] = useState(
-    session.user.registrationStatus
-  );
->>>>>>> 2958f4416d6878ae50e11fd66cd9cad4e2daa4e4
 
   useEffect(() => {
     axios
