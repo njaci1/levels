@@ -92,7 +92,7 @@ export default function BalanceCard({ balance }) {
         .put(`/api/user/${session.user._id}/completeRegistration`)
         .then(() => {
           // Update the local state
-          setRegistrationComplete(true);
+          setRegistrationComplete('complete');
         })
         .catch((error) => {
           console.error(error);
