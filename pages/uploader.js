@@ -24,24 +24,56 @@ const Uploader = () => {
     setDescription(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (selectedFile && title && description) {
-      // call uploadToCloud API
-      fetch('api/uploadToCloud', {
+      // Get signature from server
+      const signatureResponse = await fetch('/api/admin/cloudinary-sign');
+      const { signature, timestamp } = await signatureResponse.json();
+
+      const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`;
+
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+      formData.append('timestamp', timestamp);
+      formData.append('signature', signature);
+      formData.append('api_key', process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY);
+
+      fetch(url, {
         method: 'POST',
-        body: JSON.stringify({
-          file: selectedFile,
-          title: title,
-          description: description,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        body: formData,
       })
-        .then((response) => {
-          if (response.ok) {
-            console.log(response);
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.secure_url) {
+            // File uploaded successfully
+            console.log(data.secure_url);
+            // Send the data to the server to save it in the database
+            fetch('/api/uploadToCloud', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                title,
+                description,
+                secure_url: data.secure_url,
+                public_id: data.public_id,
+              }),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                console.log(data);
+                if (data.message === 'ad uploaded to db successfully') {
+                  console.log('Ad uploaded successfully');
+                } else {
+                  throw new Error('Failed to upload file');
+                }
+              })
+              .catch((error) => {
+                // Handle error
+                console.error(error);
+              });
           } else {
             throw new Error('Failed to upload file');
           }
