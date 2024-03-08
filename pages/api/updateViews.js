@@ -21,6 +21,8 @@ export default async function handler(req, res) {
     } else {
       // If no interaction exists, create a new one
       interaction = await Interaction.create({
+        adId,
+        userId,
         viewed: 1,
       });
       console.log(`created new interaction for ad ${adId} by user ${userId}`);

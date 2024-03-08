@@ -112,7 +112,9 @@ function AdsPlayer() {
       const newIndex = prevIndex + 1 < adsQueue.length ? prevIndex + 1 : 0;
       const video = videoRef.current;
       if (video) {
-        video.play();
+        video.onloadeddata = () => {
+          video.play(); // Autoplay the next video
+        };
       }
       return newIndex;
     });
