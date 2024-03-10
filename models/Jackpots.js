@@ -12,24 +12,28 @@ const userEngagementSchema = new Schema({
   },
   timestamp: { type: Date, default: Date.now },
 });
+userEngagementSchema.index({ userId: 1 });
 
 // Schema for WeeklyJackpotEntry
 const weeklyJackpotEntrySchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   timestamp: { type: Date, default: Date.now },
 });
+weeklyJackpotEntrySchema.index({ userId: 1, timestamp: 1 });
 
 // Schema for MonthlyJackpotEntry
 const monthlyJackpotEntrySchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   timestamp: { type: Date, default: Date.now },
 });
+monthlyJackpotEntrySchema.index({ userId: 1, timestamp: 1 });
 
 // Schema for AnnualJackpotEntry
 const annualJackpotEntrySchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   timestamp: { type: Date, default: Date.now },
 });
+annualJackpotEntrySchema.index({ userId: 1, timestamp: 1 });
 
 // Schema for WelcomeJackpotEntry
 const welcomeJackpotEntrySchema = new Schema({
@@ -46,6 +50,27 @@ const winnersSchema = new Schema({
     required: true,
   },
   timestamp: { type: Date, default: Date.now },
+});
+
+// Schema for JackpotAllocation
+const jackpotAllocationSchema = new mongoose.Schema({
+  adId: { type: mongoose.Schema.Types.ObjectId, ref: 'AdsCollection' },
+  joinersJP: Number,
+  weeklyJP: Number,
+  monthlyJP: Number,
+  annualJP: Number,
+  platformShare: Number,
+  isNewAd: { type: Boolean, default: true }, // Flag for new ad vs. re-advertisement
+  timestamp: { type: Date, default: Date.now },
+});
+
+// Schema for JackpotTotals
+const jackpotTotalsSchema = new mongoose.Schema({
+  joinersTotal: { type: Number, default: 0 },
+  weeklyTotal: { type: Number, default: 0 },
+  monthlyTotal: { type: Number, default: 0 },
+  annualTotal: { type: Number, default: 0 },
+  platformShare: { type: Number, default: 0 },
 });
 
 // Compile models from the schemas
@@ -67,6 +92,14 @@ const WelcomeJackpotEntry =
 const Winner =
   mongoose.models.Winner || mongoose.model('Winner', winnersSchema);
 
+const JackpotAllocation =
+  mongoose.models.JackpotAllocation ||
+  mongoose.model('JackpotAllocation', jackpotAllocationSchema);
+
+const JackpotTotals =
+  mongoose.models.JackpotTotals ||
+  mongoose.model('JackpotTotals', jackpotTotalsSchema);
+
 module.exports = {
   UserEngagement,
   WeeklyJackpotEntry,
@@ -74,4 +107,6 @@ module.exports = {
   AnnualJackpotEntry,
   WelcomeJackpotEntry,
   Winner,
+  JackpotAllocation,
+  JackpotTotals,
 };
