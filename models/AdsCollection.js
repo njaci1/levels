@@ -31,6 +31,17 @@ const adSchema = new mongoose.Schema({
   cloudinaryId: {
     type: String,
   },
+
+  status: {
+    type: String,
+    enum: ['approved', 'pending', 'rejected'],
+    default: 'pending',
+  },
+
+  amountPaid: {
+    type: Number,
+    default: 0,
+  },
   expired: {
     type: Boolean,
     default: false,
