@@ -1,5 +1,5 @@
-import db from '../../lib/db';
-import Ad from '../../models/AdsCollection'; // Import the Ad model
+import db from '../../../lib/db';
+import Ad from '../../../models/AdsCollection'; // Import the Ad model
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {

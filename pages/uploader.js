@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import calculatePrice from '../lib/priceCalculator';
 
 const Uploader = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [duration, setDuration] = useState('1 week');
+  const [priority, setPriority] = useState('high');
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleFileChange = (event) => {
@@ -30,6 +33,12 @@ const Uploader = () => {
       // Get signature from server
       const signatureResponse = await fetch('/api/admin/cloudinary-sign');
       const { signature, timestamp } = await signatureResponse.json();
+      const amountPaid = calculatePrice(priority, duration);
+
+      // Show price confirmation to the advertiser
+      if (!confirm(`Total price: ${amountPaid}. Proceed with upload?`)) {
+        return; // User cancelled
+      }
 
       const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`;
 
@@ -47,7 +56,7 @@ const Uploader = () => {
         .then((data) => {
           if (data.secure_url) {
             // File uploaded successfully
-            console.log(data.secure_url);
+
             // Send the data to the server to save it in the database
             fetch('/api/uploadToCloud', {
               method: 'POST',
@@ -57,6 +66,9 @@ const Uploader = () => {
               body: JSON.stringify({
                 title,
                 description,
+                duration,
+                priority,
+                amountPaid,
                 secure_url: data.secure_url,
                 public_id: data.public_id,
               }),
@@ -117,6 +129,32 @@ const Uploader = () => {
             onChange={handleDescriptionChange}
           />
         </div>
+
+        <div>
+          <label htmlFor="duration">Duration:</label>
+          <select
+            id="duration"
+            value={duration}
+            onChange={(e) => setDuration(e.target.value)}
+          >
+            <option value="1 week">1 week</option>
+            <option value="2 weeks">2 weeks</option>
+            <option value="1 month">1 month</option>
+          </select>
+        </div>
+        <div>
+          <label htmlFor="priority">Priority:</label>
+          <select
+            id="priority"
+            value={priority}
+            onChange={(e) => setPriority(e.target.value)}
+          >
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
+        </div>
+
         {errorMessage && <p>{errorMessage}</p>}
         <button type="submit">Upload</button>
       </form>
