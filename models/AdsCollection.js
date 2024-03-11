@@ -32,10 +32,16 @@ const adSchema = new mongoose.Schema({
     type: String,
   },
 
-  status: {
+  approvalStatus: {
     type: String,
     enum: ['approved', 'pending', 'rejected'],
     default: 'pending',
+  },
+  // add duration field
+  duration: {
+    type: String,
+    enum: ['1 week', '2 weeks', '1 month'],
+    default: '1 week',
   },
 
   amountPaid: {
@@ -49,6 +55,16 @@ const adSchema = new mongoose.Schema({
   expiryDate: {
     type: Date,
     default: () => Date.now() + 30 * 24 * 60 * 60 * 1000, // Default value is the current date plus 30 days
+  },
+  // add filed for whetehr the ad has been extended or not
+  extended: {
+    type: Boolean,
+    default: false,
+  },
+  // add a field for whetther add has been rebooked or not
+  rebooked: {
+    type: Boolean,
+    default: false,
   },
 
   createdBy: {

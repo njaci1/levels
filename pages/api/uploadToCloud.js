@@ -3,13 +3,15 @@ import Ad from '../../models/AdsCollection';
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
+    await db.connect();
     try {
-      // Create an entry in the database
-      await db.connect();
       const newAd = new Ad({
         title: req.body.title,
         description: req.body.description,
         type: 'video',
+        duration: req.body.duration,
+        // priority: req.body.priority,
+        amountPaid: req.body.amountPaid,
         videoUrl: req.body.secure_url,
         cloudinaryId: req.body.public_id,
       });
