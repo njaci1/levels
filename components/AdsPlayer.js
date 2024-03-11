@@ -38,7 +38,7 @@ function AdsPlayer() {
   useEffect(() => {
     const fetchAds = async () => {
       try {
-        const response = await axios.get('/api/ads');
+        const response = await axios.get('/api/ads/ads');
         const ads = response.data;
         console.log(ads);
 
