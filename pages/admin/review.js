@@ -34,14 +34,9 @@ const ReviewPage = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        // Update the ads list with the updated ad
-        console.log(data);
-        const updatedAds = ads.map((ad) => {
-          if (ad._id === adId) {
-            return { ...ad, approvalStatus: 'rejected' };
-          }
-          return ad;
-        });
+        // Update the ads state with the reviewed ad removed
+
+        const updatedAds = ads.filter((ad) => ad._id !== id);
         setAds(updatedAds);
       })
       .catch((error) => console.error(error));

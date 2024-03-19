@@ -11,7 +11,10 @@ export default async function handler(req, res) {
       const adId = req.body.adId;
       const action = req.body.action;
 
-      const targetAd = await Ad.findById(adId);
+      const targetAd = await Ad.findOne({
+        _id: adId,
+        approvalStatus: 'pending',
+      });
 
       if (!targetAd) {
         res.status(404).json({ error: 'Ad not found' });

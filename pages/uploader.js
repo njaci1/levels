@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import calculatePrice from '../lib/priceCalculator';
 
 const Uploader = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -48,6 +49,7 @@ const Uploader = () => {
       formData.append('signature', signature);
       formData.append('api_key', process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY);
 
+      setIsSubmitting(true);
       fetch(url, {
         method: 'POST',
         body: formData,
@@ -75,7 +77,7 @@ const Uploader = () => {
             })
               .then((response) => response.json())
               .then((data) => {
-                console.log(data);
+                setIsSubmitting(false);
                 if (data.message === 'ad uploaded to db successfully') {
                   console.log('Ad uploaded successfully');
                 } else {
@@ -83,7 +85,7 @@ const Uploader = () => {
                 }
               })
               .catch((error) => {
-                // Handle error
+                setIsSubmitting(false);
                 console.error(error);
               });
           } else {
@@ -156,7 +158,9 @@ const Uploader = () => {
         </div>
 
         {errorMessage && <p>{errorMessage}</p>}
-        <button type="submit">Upload</button>
+        <button type="submit" disabled={isSubmitting}>
+          Upload
+        </button>
       </form>
     </div>
   );
