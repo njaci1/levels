@@ -1,3 +1,4 @@
+const { time } = require('console');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -71,6 +72,7 @@ const jackpotTotalsSchema = new mongoose.Schema({
   monthlyTotal: { type: Number, default: 0 },
   annualTotal: { type: Number, default: 0 },
   platformShare: { type: Number, default: 0 },
+  timestamp: { type: Date, default: Date.now },
 });
 
 // Compile models from the schemas
