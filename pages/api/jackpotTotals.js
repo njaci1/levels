@@ -1,15 +1,12 @@
-import cron from 'node-cron';
-import calculateTotals from '../../lib/jackpotTotalsAggregator';
+import { getJackpots } from '../../lib/jackpotSnapshot';
+import calc from '../../lib/jackpotTotalsAggregator';
 
-// Run the function every 2 minutes
-cron.schedule('*/2 * * * *', calculateTotals);
+const jpcalc = calc();
 
 export default async function handler(req, res) {
-  calculateTotals();
+  const totals = getJackpots();
 
-  res.status(200).json({ message: 'Cron job started' });
+  console.log(totals);
+
+  res.status(200).json(totals);
 }
-
-// export default handler(req, res) = {
-//   res.status(200).json({ message: 'Cron job started' });
-// };
