@@ -97,20 +97,20 @@ export default function Mainpage() {
         <Box sx={{ flexGrow: 1, mb: 2 }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
             <JackpotCard
-              name="weekly"
+              name="Weekly"
               amount={jackpots.weekly}
               entries={jackpotEntries.weekly}
               drawDate={'Fri 8 PM'}
             />
 
             <JackpotCard
-              name="monthly"
+              name="Monthly"
               amount={jackpots.monthly}
               entries={jackpotEntries.monthly}
               drawDate={'1st Sat'}
             />
             <JackpotCard
-              name="annual"
+              name="Annual"
               amount={jackpots.annual}
               entries={jackpotEntries.annual}
               drawDate={'1st Jan'}

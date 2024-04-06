@@ -23,6 +23,14 @@ const Item = styled(Card)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
+const StyledCard = styled(Card)({
+  margin: '1em',
+  padding: '1em',
+  backgroundColor: '#f5f5f5',
+  borderRadius: '15px',
+  boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
+});
+
 export default function BalanceCard({ balance, networkSize }) {
   const router = useRouter();
   const { data: session, update } = useSession();
@@ -118,179 +126,176 @@ export default function BalanceCard({ balance, networkSize }) {
   };
 
   return (
-    <Box sx={{ flexGrow: 1, mb: 2 }}>
-      <Typography variant="h3" sx={{ textAlign: 'center' }}>
-        Hey, {session.user.name}!
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: 2,
+      }}
+    >
+      <Typography variant="h3">Hey, {session.user.name}!</Typography>
+      <Typography variant="h8" component="div" gutterBottom>
+        Balance: KES{' '}
+        <span id="total-winnings">{Math.floor(balance * 0.9)}</span>{' '}
+        <Button
+          variant="contained"
+          sx={{ padding: '2px 4px', fontSize: '0.525rem' }}
+        >
+          Cash Out
+        </Button>
       </Typography>
-      <Item sx={{ mb: 2 }}>
-        <Typography variant="h6" component="div" gutterBottom>
-          Balance
-        </Typography>
-        <Typography variant="h5" component="div" gutterBottom>
-          $<span id="total-winnings">{Math.floor(balance * 0.9)}</span>
-        </Typography>
-        <Button variant="contained">Cash Out</Button>
-      </Item>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-        <Item>
+
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          gap: 2,
+          width: '100%',
+          justifyContent: 'space-around',
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
           <Typography variant="h6" component="div" gutterBottom>
             Network Size
           </Typography>
-          <ul sx={{ mb: 2 }}>
-            <li>
-              Level 1: <span id="level-1-commission">{networkSize[0]}</span>
-            </li>
-            <li>
-              Level 2: <span id="level-2-commission">{networkSize[1]}</span>
-            </li>
-            <li>
-              Level 3: <span id="level-3-commission">{networkSize[2]}</span>
-            </li>
-          </ul>
+          <Item>
+            <ul sx={{ mb: 2 }}>
+              <li>
+                Level 1: <span id="level-1-commission">{networkSize[0]}</span>
+              </li>
+              <li>
+                Level 2: <span id="level-2-commission">{networkSize[1]}</span>
+              </li>
+              <li>
+                Level 3: <span id="level-3-commission">{networkSize[2]}</span>
+              </li>
+            </ul>
+          </Item>
+        </Box>
 
-          {/* <Button
-            variant="contained"
-            color="secondary"
-            onClick={handleInviteFriend}
-          >
-            Invite a Friend Now!
-          </Button> */}
-        </Item>
-        <Item>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
           <Typography variant="h6" component="div" gutterBottom>
             Potential Commission
           </Typography>
-          <ul>
-            <li>
-              Level 1: $<span id="level-1-commission">0.00</span>
-            </li>
-            <li>
-              Level 2: $<span id="level-2-commission">0.00</span>
-            </li>
-            <li>
-              Level 3: $<span id="level-3-commission">0.00</span>
-            </li>
-            <li>
-              Referral: $<span id="level-3-commission">0.00</span>
-            </li>
-          </ul>
-          {/* <Button
-            variant="contained"
-            color="secondary"
-            onClick={handleInviteFriend}
-          >
-            Invite a Friend Now!
-          </Button> */}
-        </Item>
-      </Box>
-      {/* <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-        <Item>
-          <JackpotCard
-            name={'Weekly'}
-            amount={100}
-            entries={2}
-            drawDate={'10-03-23'}
-          />
-        </Item>
-        <Item>
-          <JackpotCard
-            name={'Monthly'}
-            amount={500}
-            entries={7}
-            drawDate={'10-03-23'}
-          />
-        </Item>
-        <Item>
-          <JackpotCard
-            name={'Annual'}
-            amount={3000}
-            entries={52}
-            drawDate={'10-03-23'}
-          />
-        </Item>
-      </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-        <Item>
-          <Typography variant="h6" component="div" gutterBottom>
-            Featured Ad
-          </Typography>
-        </Item>
-      </Box> */}
-    </Box>
+          <Item>
+            <ul>
+              <li>
+                Level 1: $<span id="level-1-commission">0.00</span>
+              </li>
+              <li>
+                Level 2: $<span id="level-2-commission">0.00</span>
+              </li>
+              <li>
+                Level 3: $<span id="level-3-commission">0.00</span>
+              </li>
+            </ul>
+          </Item>
+        </Box>
 
-    // <Card
-    //   style={{ marginTop: '20px', marginBottom: '20px', textAlign: 'center' }}
-    // >
-    //   <h1>Hey, {session.user.name}</h1>
-    //   <CardContent>
-    //     <Typography variant="h7" component="div">
-    //       <h3>Balance</h3>
-    //       <p>
-    //         $<span id="total-winnings">0.00</span>
-    //       </p>
-    //       {/* Cash Equivalent KES: {Math.floor(balance * 0.9)} */}
-    //     </Typography>
-    //     <Button
-    //       variant="contained"
-    //       color="primary"
-    //       onClick={handleCashOut}
-    //       style={{ marginTop: 15 }}
-    //       disabled={balance <= 0} // The button will be disabled if the balance is zero or less
-    //     >
-    //       Cash Out
-    //     </Button>
-    //     </CardContent>
-    //   <CardContent>
-    //     <Grid
-    //       container
-    //       spacing={2}
-    //       justifyContent="center"
-    //       style={{ marginTop: '20px' }}
-    //     >
-    //       <Grid item>
-    //         <Button
-    //           variant="contained"
-    //           color="secondary"
-    //           onClick={handleInviteFriend}
-    //         >
-    //           Invite a Friend
-    //         </Button>
-    //       </Grid>
-    //       <Grid item>
-    //         <Button
-    //           variant="contained"
-    //           color="success"
-    //           onClick={handleBuyAirtime}
-    //         >
-    //           Buy Airtime
-    //         </Button>
-    //       </Grid>
-    //       <Grid item>
-    //         <Button
-    //           variant="contained"
-    //           color="info"
-    //           onClick={
-    //             registrationComplete === 'complete'
-    //               ? handleClick
-    //               : handleWatchAd
-    //           }
-    //           disabled={isWatchingAd}
-    //         >
-    //           {registrationComplete === 'complete'
-    //             ? 'Watch Ads'
-    //             : 'Watch Ad to complete registration'}
-    //         </Button>
-    //         {isWatchingAd && adVideos.length > 0 && (
-    //           <video
-    //             src={adVideos[currentAdIndex].videoUrl}
-    //             onEnded={handleAdEnded}
-    //             autoPlay
-    //             controls
-    //           />
-    //         )}
-    //       </Grid>
-    //     </Grid>
-    //   </CardContent>
-    // </Card>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant="h6" component="div" gutterBottom>
+            Referral commission
+          </Typography>
+          <Item>
+            <span id="level-3-commission">0.00</span>
+          </Item>
+        </Box>
+      </Box>
+    </Box>
   );
 }
+
+// <Card
+//   style={{ marginTop: '20px', marginBottom: '20px', textAlign: 'center' }}
+// >
+//   <h1>Hey, {session.user.name}</h1>
+//   <CardContent>
+//     <Typography variant="h7" component="div">
+//       <h3>Balance</h3>
+//       <p>
+//         $<span id="total-winnings">0.00</span>
+//       </p>
+//       {/* Cash Equivalent KES: {Math.floor(balance * 0.9)} */}
+//     </Typography>
+//     <Button
+//       variant="contained"
+//       color="primary"
+//       onClick={handleCashOut}
+//       style={{ marginTop: 15 }}
+//       disabled={balance <= 0} // The button will be disabled if the balance is zero or less
+//     >
+//       Cash Out
+//     </Button>
+//     </CardContent>
+//   <CardContent>
+//     <Grid
+//       container
+//       spacing={2}
+//       justifyContent="center"
+//       style={{ marginTop: '20px' }}
+//     >
+//       <Grid item>
+//         <Button
+//           variant="contained"
+//           color="secondary"
+//           onClick={handleInviteFriend}
+//         >
+//           Invite a Friend
+//         </Button>
+//       </Grid>
+//       <Grid item>
+//         <Button
+//           variant="contained"
+//           color="success"
+//           onClick={handleBuyAirtime}
+//         >
+//           Buy Airtime
+//         </Button>
+//       </Grid>
+//       <Grid item>
+//         <Button
+//           variant="contained"
+//           color="info"
+//           onClick={
+//             registrationComplete === 'complete'
+//               ? handleClick
+//               : handleWatchAd
+//           }
+//           disabled={isWatchingAd}
+//         >
+//           {registrationComplete === 'complete'
+//             ? 'Watch Ads'
+//             : 'Watch Ad to complete registration'}
+//         </Button>
+//         {isWatchingAd && adVideos.length > 0 && (
+//           <video
+//             src={adVideos[currentAdIndex].videoUrl}
+//             onEnded={handleAdEnded}
+//             autoPlay
+//             controls
+//           />
+//         )}
+//       </Grid>
+//     </Grid>
+//   </CardContent>
+// </Card>
+// );
