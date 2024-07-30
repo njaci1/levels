@@ -7,6 +7,12 @@ import {
   Grid,
   styled,
   Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
 } from '@mui/material';
 import { useSession, getSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
@@ -145,7 +151,6 @@ export default function BalanceCard({ balance, networkSize }) {
           Cash Out
         </Button>
       </Typography>
-
       <Box
         sx={{
           display: 'flex',
@@ -163,61 +168,32 @@ export default function BalanceCard({ balance, networkSize }) {
           }}
         >
           <Typography variant="h6" component="div" gutterBottom>
-            Network Size
+            Network Size and Potential Commission
           </Typography>
-          <Item>
-            <ul sx={{ mb: 2 }}>
-              <li>
-                Level 1: <span id="level-1-commission">{networkSize[0]}</span>
-              </li>
-              <li>
-                Level 2: <span id="level-2-commission">{networkSize[1]}</span>
-              </li>
-              <li>
-                Level 3: <span id="level-3-commission">{networkSize[2]}</span>
-              </li>
-            </ul>
-          </Item>
-        </Box>
-
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Typography variant="h6" component="div" gutterBottom>
-            Potential Commission
-          </Typography>
-          <Item>
-            <ul>
-              <li>
-                Level 1: $<span id="level-1-commission">0.00</span>
-              </li>
-              <li>
-                Level 2: $<span id="level-2-commission">0.00</span>
-              </li>
-              <li>
-                Level 3: $<span id="level-3-commission">0.00</span>
-              </li>
-            </ul>
-          </Item>
-        </Box>
-
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Typography variant="h6" component="div" gutterBottom>
-            Referral commission
-          </Typography>
-          <Item>
-            <span id="level-3-commission">0.00</span>
-          </Item>
+          <TableContainer>
+            <Table size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Level</TableCell>
+                  <TableCell align="right">Network Size</TableCell>
+                  <TableCell align="right">Potential Commission</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {[1, 2, 3].map((level) => (
+                  <TableRow key={level}>
+                    <TableCell component="th" scope="row">
+                      {level}
+                    </TableCell>
+                    <TableCell align="right">
+                      {networkSize[level - 1]}
+                    </TableCell>
+                    <TableCell align="right">$0.00</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </Box>
       </Box>
     </Box>

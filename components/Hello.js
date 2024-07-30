@@ -2,6 +2,7 @@ import Layout from './Layout';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import JackpotCard from './JackpotCard';
 
 // components/Hello.js
 export default function Hello() {
