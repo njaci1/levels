@@ -233,82 +233,56 @@ function AdsPlayer() {
           src={adsQueue[currentAdIndex]?.videoUrl}
           controls
         />
-        <div>
-          <button style={{ margin: '10px' }} onClick={handlePrevious}>
-            <i class="fas fa-step-backward"></i> Previous
-          </button>
-          <button style={{ margin: '10px' }} onClick={handleSkip}>
-            <i class="fas fa-step-forward"></i> Skip
-          </button>
-        </div>
-        {showButtons && (
-          <div
-            style={{
-              position: 'absolute',
-              top: '50%',
-              right: '10px',
-              transform: 'translateY(-50%)',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '10px',
-            }}
-          >
-            {/* <button
-              onClick={handlePlayPause}
-              style={{ color: 'blue', padding: '10px' }}
-            >
-              {isPlaying ? 'Pause' : 'Play'}
-            </button> */}
-
-            <button
-              onClick={handleReplay}
-              style={{ color: 'white', padding: '10px' }}
-            >
-              <i class="fas fa-redo"></i>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div>
+            <button style={{ margin: '10px' }} onClick={handlePrevious}>
+              <i class="fas fa-step-backward"></i> Previous
             </button>
-
-            {/* <button
-              onClick={handlePrevious}
-              style={{ color: 'white', padding: '10px' }}
-            >
-              <i class="fas fa-step-backward"></i>
-            </button>
-            <button
-              onClick={handleNext}
-              style={{ color: 'white', padding: '10px' }}
-            >
-              <i class="fas fa-step-forward"></i>
-            </button> */}
-            {/* <button
-              onClick={handleDoubleLike}
-              style={{
-                color: doubleLiked ? 'green' : 'white',
-                padding: '10px',
-              }}
-            >
-              <i class="fas fa-heart"></i>
-            </button> */}
-            <button
-              onClick={handleLike}
-              style={{ color: liked ? 'green' : 'white', padding: '10px' }}
-            >
-              <i class="fas fa-thumbs-up"></i>
-            </button>
-            <button
-              onClick={handleDislike}
-              style={{ color: disliked ? 'red' : 'white', padding: '10px' }}
-            >
-              <i class="fas fa-thumbs-down"></i>
-            </button>
-            <button
-              onClick={handleNext}
-              style={{ color: 'white', padding: '10px' }}
-            >
-              {/* <i class="fas fa-step-forward">Next</i> */}
-              Next
+            <button style={{ margin: '10px' }} onClick={handleSkip}>
+              <i class="fas fa-step-forward"></i> Skip
             </button>
           </div>
-        )}
+          {showButtons && (
+            <div
+              style={{ display: 'flex', gap: '10px' }}
+              // style={{
+              //   position: 'absolute',
+              //   top: '50%',
+              //   right: '10px',
+              //   transform: 'translateY(-50%)',
+              //   display: 'flex',
+              //   flexDirection: 'column',
+              //   gap: '10px',
+              // }}
+            >
+              <button
+                onClick={handleReplay}
+                style={{ color: 'black', padding: '10px' }}
+              >
+                <i class="fas fa-redo"></i>
+              </button>
+              <button
+                onClick={handleLike}
+                style={{ color: liked ? 'green' : 'black', padding: '10px' }}
+              >
+                <i class="fas fa-thumbs-up"></i>
+              </button>
+              <button
+                onClick={handleDislike}
+                style={{ color: disliked ? 'red' : 'black', padding: '10px' }}
+              >
+                <i class="fas fa-thumbs-down"></i>
+              </button>
+              <button
+                onClick={handleNext}
+                style={{ color: 'black', padding: '10px' }}
+              >
+                {/* <i class="fas fa-step-forward">Next</i> */}
+                Next
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     ) : (
       <p>No ads available.</p>
