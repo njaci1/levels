@@ -19,17 +19,18 @@ function Ads() {
         <Container maxWidth="md">
           <Box my={4}>
             <Typography variant="h4" component="h1" gutterBottom>
-              Watch Ads
+              Ad of the day
             </Typography>
             <Typography variant="body1" gutterBottom>
-              Here are some ads for you to watch:
+              What do you think of this ad? watch to the end and show with a
+              thumbs up or down for 5 entries to this week's jackpot.
             </Typography>
             <Box my={2}>
               <Paper elevation={3}>
                 <Box p={2}>
-                  <Typography variant="h6" gutterBottom>
+                  {/* <Typography variant="h6" gutterBottom>
                     Video Ad
-                  </Typography>
+                  </Typography> */}
                   <AdPlayer type="video" />
                 </Box>
               </Paper>
