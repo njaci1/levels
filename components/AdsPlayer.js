@@ -243,18 +243,7 @@ function AdsPlayer() {
             </button>
           </div>
           {showButtons && (
-            <div
-              style={{ display: 'flex', gap: '10px' }}
-              // style={{
-              //   position: 'absolute',
-              //   top: '50%',
-              //   right: '10px',
-              //   transform: 'translateY(-50%)',
-              //   display: 'flex',
-              //   flexDirection: 'column',
-              //   gap: '10px',
-              // }}
-            >
+            <div style={{ display: 'flex', gap: '10px' }}>
               <button
                 onClick={handleReplay}
                 style={{ color: 'black', padding: '10px' }}
@@ -277,7 +266,6 @@ function AdsPlayer() {
                 onClick={handleNext}
                 style={{ color: 'black', padding: '10px' }}
               >
-                {/* <i class="fas fa-step-forward">Next</i> */}
                 Next
               </button>
             </div>
