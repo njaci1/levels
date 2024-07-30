@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Head from 'next/head';
 import Layout from '../components/Layout';
 import { useSession } from 'next-auth/react';
-import Hello from '../components/hello';
+import Hello from '../components/Hello';
 import { Container, Typography, Box, Paper } from '@mui/material';
 import AdPlayer from '../components/AdsPlayer'; // Import the AdPlayer component
 
@@ -24,18 +24,6 @@ function Ads() {
             <Typography variant="body1" gutterBottom>
               Here are some ads for you to watch:
             </Typography>
-            {/* Replace Google text ad with AdPlayer */}
-            {/* <Box my={2}>
-              <Paper elevation={3}>
-                <Box p={2}>
-                  <Typography variant="h6" gutterBottom>
-                    Text Ad
-                  </Typography>
-                  <AdPlayer type="banner" />
-                </Box>
-              </Paper>
-            </Box> */}
-            {/* Replace Google video ad with AdPlayer */}
             <Box my={2}>
               <Paper elevation={3}>
                 <Box p={2}>
