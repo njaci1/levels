@@ -1,5 +1,6 @@
 const { time } = require('console');
 const mongoose = require('mongoose');
+const { type } = require('os');
 const Schema = mongoose.Schema;
 
 // Schema for UserEngagement
@@ -50,6 +51,13 @@ const winnersSchema = new Schema({
     enum: ['weekly', 'monthly', 'annual', 'welcome'],
     required: true,
   },
+  amount: { type: Number, required: true },
+  indirectWinners: [
+    {
+      userId: { type: Schema.Types.ObjectId, ref: 'User' },
+      relation: { type: String, enum: ['level1', 'level2', 'level3'] },
+    },
+  ],
   timestamp: { type: Date, default: Date.now },
 });
 
