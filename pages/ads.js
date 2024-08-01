@@ -23,7 +23,7 @@ function Ads() {
             </Typography>
             <Typography variant="body1" gutterBottom>
               What do you think of this ad? watch to the end and show with a
-              thumbs up or down for 5 entries to this week's jackpot.
+              thumbs up or down for 5 entries to this week&apos;s jackpot.
             </Typography>
             <Box my={2}>
               <Paper elevation={3}>
