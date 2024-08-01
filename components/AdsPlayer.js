@@ -253,12 +253,14 @@ function AdsPlayer() {
               <button
                 onClick={handleLike}
                 style={{ color: liked ? 'green' : 'black', padding: '10px' }}
+                disabled={liked || disliked}
               >
                 <i class="fas fa-thumbs-up"></i>
               </button>
               <button
                 onClick={handleDislike}
                 style={{ color: disliked ? 'red' : 'black', padding: '10px' }}
+                disabled={liked || disliked}
               >
                 <i class="fas fa-thumbs-down"></i>
               </button>
