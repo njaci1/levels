@@ -5,6 +5,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import Notifications from './Notifications';
 
 export default function Layout({ title, children }) {
   const [session, setSession] = useState(null);
@@ -44,7 +45,7 @@ export default function Layout({ title, children }) {
                 </Menu.Button>
                 <Menu.Items className="absolute card bg-white opacity-100 right-5 w-40 origin-top-right">
                   <Menu.Item>
-                    <p>placeholder</p>
+                    <Notifications userId={session.user} />
                   </Menu.Item>
                   <Menu.Item>
                     <a
