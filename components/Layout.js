@@ -45,7 +45,9 @@ export default function Layout({ title, children }) {
                 </Menu.Button>
                 <Menu.Items className="absolute card bg-white opacity-100 right-5 w-40 origin-top-right">
                   <Menu.Item>
-                    <Notifications userId={session.user} />
+                    {session?.user && (
+                      <Notifications userId={session.user.id} />
+                    )}
                   </Menu.Item>
                   <Menu.Item>
                     <a
