@@ -5,7 +5,8 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import Notifications from './Notifications';
+
+import { Bell } from 'react-feather';
 
 export default function Layout({ title, children }) {
   const [session, setSession] = useState(null);
@@ -22,6 +23,7 @@ export default function Layout({ title, children }) {
   const logoutClickHandler = () => {
     signOut({ callbackUrl: '/login' });
   };
+
   return (
     <>
       <Head>
@@ -34,20 +36,23 @@ export default function Layout({ title, children }) {
         <header>
           <nav className="flex h-12 items-center px-4 justify-between shadow-md">
             <Link className="text-lg font-bold" href="/">
-              Levels
+              Home
             </Link>
             {loading ? (
               'Loading..'
             ) : session?.user ? (
               <Menu as="div" className="relative inline-block z-60">
+                <Menu.Button className="text-blue-600 mr-4 align-middle">
+                  <Link href="/notificationsPage">
+                    <Bell className="h-5 w-5" />
+                  </Link>
+                </Menu.Button>
                 <Menu.Button className="text-blue-600 mr-4">
                   {session.user.name}
                 </Menu.Button>
                 <Menu.Items className="absolute card bg-white opacity-100 right-5 w-40 origin-top-right">
                   <Menu.Item>
-                    {session?.user && (
-                      <Notifications userId={session.user.id} />
-                    )}
+                    <p>Placeholder</p>
                   </Menu.Item>
                   <Menu.Item>
                     <a
