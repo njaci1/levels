@@ -4,7 +4,7 @@ const notificationSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   message: String,
   read: { type: Boolean, default: false },
-  win: { type: Boolean, default: false },
+  win: { type: Enumerator, values: ['jackpot', 'commission'] },
   timestamp: { type: Date, default: Date.now },
 });
 
