@@ -17,7 +17,7 @@ function AdsPlayer() {
 
   const fetchInteractionData = async (adId) => {
     // Fetch the interaction data for the current ad and user
-    console.log(userId, '|', adId);
+
     const response = await fetch(
       `/api/getInteraction?adId=${adId}&userId=${userId}`
     );
@@ -40,7 +40,6 @@ function AdsPlayer() {
       try {
         const response = await axios.get('/api/ads/ads');
         const ads = response.data;
-        console.log(ads);
 
         if (ads && ads.length > 0) {
           setAdsQueue(ads);

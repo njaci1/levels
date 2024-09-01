@@ -32,6 +32,7 @@ export default function Layout({ title, children }) {
 
   async function fetchNotifications() {
     try {
+      if (!session?.user?._id) return;
       const res = await fetch(`/api/notifications/${session.user._id}`);
       const result = await res.json();
       const notifications = result.data;
