@@ -12,6 +12,8 @@ export default function Layout({ title, children }) {
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true); // Add a loading state
   const router = useRouter();
+  const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false);
+
   useEffect(() => {
     getSession().then((session) => {
       setSession(session);
@@ -23,6 +25,22 @@ export default function Layout({ title, children }) {
   const logoutClickHandler = () => {
     signOut({ callbackUrl: '/login' });
   };
+
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
+
+  async function fetchNotifications() {
+    try {
+      const res = await fetch(`/api/notifications/${userId.userId}`);
+      const result = await res.json();
+      if (result.data.some((notification) => !notification.read)) {
+        setHasUnreadNotifications(true);
+      }
+    } catch (error) {
+      console.error('Failed to fetch notifications:', error);
+    }
+  }
 
   return (
     <>
@@ -45,6 +63,7 @@ export default function Layout({ title, children }) {
                 <Menu.Button className="text-blue-600 mr-4 align-middle">
                   <Link href="/notificationsPage">
                     <Bell className="h-5 w-5" />
+                    {hasUnreadNotifications && <span className="dot"></span>}
                   </Link>
                 </Menu.Button>
                 <Menu.Button className="text-blue-600 mr-4">
