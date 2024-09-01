@@ -12,7 +12,7 @@ export default function Layout({ title, children }) {
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true); // Add a loading state
   const router = useRouter();
-  const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false);
+  const [unReadNotifications, setUnReadNotifications] = useState(0);
 
   useEffect(() => {
     getSession().then((session) => {
@@ -32,10 +32,13 @@ export default function Layout({ title, children }) {
 
   async function fetchNotifications() {
     try {
-      const res = await fetch(`/api/notifications/${userId.userId}`);
+      const res = await fetch(`/api/notifications/${session.user._id}`);
       const result = await res.json();
-      if (result.data.some((notification) => !notification.read)) {
-        setHasUnreadNotifications(true);
+      const notifications = result.data;
+      const unreadNotifications = notifications.length;
+
+      if (notifications.length > 0) {
+        setUnReadNotifications(unreadNotifications);
       }
     } catch (error) {
       console.error('Failed to fetch notifications:', error);
@@ -61,9 +64,13 @@ export default function Layout({ title, children }) {
             ) : session?.user ? (
               <Menu as="div" className="relative inline-block z-60">
                 <Menu.Button className="text-blue-600 mr-4 align-middle">
-                  <Link href="/notificationsPage">
+                  <Link href="/notificationsPage" className="relative">
                     <Bell className="h-5 w-5" />
-                    {hasUnreadNotifications && <span className="dot"></span>}
+                    {unReadNotifications > 0 && (
+                      <span className="absolute top-0 right-0 inline-flex items-center justify-center h-3 w-3 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+                        {unReadNotifications}
+                      </span>
+                    )}
                   </Link>
                 </Menu.Button>
                 <Menu.Button className="text-blue-600 mr-4">
