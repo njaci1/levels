@@ -1,7 +1,7 @@
-import { getJackpots } from '../../lib/jackpotSnapshot';
+import { jackpots } from '../../lib/jackpotSnapshot';
 
 export default async function handler(req, res) {
-  const totals = getJackpots();
+  const totals = jackpots;
 
   console.log('totals', totals);
 
