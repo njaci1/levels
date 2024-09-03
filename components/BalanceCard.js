@@ -167,16 +167,16 @@ export default function BalanceCard({ balance, networkSize }) {
             alignItems: 'center',
           }}
         >
-          <Typography variant="h6" component="div" gutterBottom>
-            Network Size and Potential Commission
-          </Typography>
+          {/* <Typography variant="h6" component="div" gutterBottom>
+            Network Size
+          </Typography> */}
           <TableContainer>
             <Table size="small">
               <TableHead>
                 <TableRow>
                   <TableCell>Level</TableCell>
-                  <TableCell align="right">Network Size</TableCell>
-                  <TableCell align="right">Potential Commission</TableCell>
+                  <TableCell align="right">Count</TableCell>
+                  {/* <TableCell align="right">Potential Commission</TableCell> */}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -188,7 +188,7 @@ export default function BalanceCard({ balance, networkSize }) {
                     <TableCell align="right">
                       {networkSize[level - 1]}
                     </TableCell>
-                    <TableCell align="right">$0.00</TableCell>
+                    {/* <TableCell align="right">$0.00</TableCell> */}
                   </TableRow>
                 ))}
               </TableBody>
