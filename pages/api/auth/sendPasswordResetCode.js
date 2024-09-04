@@ -1,60 +1,50 @@
 import sgMail from '@sendgrid/mail';
-// import crypto from 'crypto';
+import db from '../../../lib/db';
+import User from '../../../models/User';
 
-import db from '../../../utils/db';
-import user from '../../../models/User';
-
-// Function to generate a random verification code
-function generateVerificationCode() {
-  //   return crypto.randomBytes(3).toString('hex'); // generates a 6 characters long code
-  return Math.floor(10000 + Math.random() * 90000); // generates a 5 digit number
-}
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(400).send({ message: `${req.method} not supported` });
-  }
-  const { email } = req.body;
+  try {
+    // Fetch user from the database
+    const email = req.body.email;
+    await db.connect();
+    const user = await User.findOne({ username: email });
 
-  await db.connect();
-  const userToReset = await user.findOne({ email: email });
-  if (userToReset) {
-    const verificationCode = generateVerificationCode();
+    if (!user) {
+      await db.disconnect();
+      return res.status(404).send({ message: 'User not found' });
+    }
 
-    userToReset.passwordResetCode = verificationCode;
-    await userToReset.save();
-    await db.disconnect();
+    // Generate a verification code
+    const verificationCode = Math.floor(
+      100000 + Math.random() * 900000
+    ).toString(); // 6-digit code
 
-    // Send the email
-    const resetLink = process.env.RESET_PASSWORD_URL;
+    // Update the user with the verification code
+    user.resetCode = verificationCode;
+    await user.save();
 
-    let message = `Please use this ${verificationCode} to reset your password. Use this link ${resetLink}`;
-
+    // Send the verification code via email
+    const message = `Your password reset code is ${verificationCode}`;
     const msg = {
       to: email,
-
-      from: 'kevlaude@gmail.com', // Use the email address or domain you verified above
+      from: 'kevlaude@gmail.com',
       subject: 'Password reset code',
       text: message,
       html: `<p>${message}</p>`,
     };
 
-    sgMail
-      .send(msg)
-      .then(() => {
-        console.log('Email sent');
-        res.send({
-          message: 'Password reset code sent successfully!',
-        });
-      })
-      .catch((error) => {
-        console.error(error);
+    await sgMail.send(msg).then(() => {
+      res.send({
+        message: 'Password reset code sent successfully!',
       });
-  } else {
-    res.status(422).json({ message: 'User not exist. Check email' });
+    });
+
     await db.disconnect();
-    return;
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: 'Internal Server Error' });
   }
 }
 
