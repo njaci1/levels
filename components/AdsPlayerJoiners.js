@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
+import { set } from 'mongoose';
 
 function AdsPlayer() {
   const [adsQueue, setAdsQueue] = useState(null);
@@ -12,22 +13,16 @@ function AdsPlayer() {
   const [disliked, setDisliked] = useState(false);
   const videoRef = useRef(null);
   const { data: session } = useSession();
-  const [adsWatched, setAdsWatched] = useState(0);
   const userId = session.user._id;
-  const [registrationStatus, setRegistrationStatus] = useState(
-    session.user.registrationStatus
-  );
 
   useEffect(() => {
     const fetchAds = async () => {
       try {
-        const response = await axios.get('/api/ads/ads');
+        const response = await axios.get('/api/ad/getJoinersAds');
         const ads = response.data;
 
         if (ads && ads.length > 0) {
           setAdsQueue(ads);
-          // Fetch the interaction data for the first ad
-          fetchInteractionData(ads[0]._id);
         } else {
           setAdsQueue([]);
         }
@@ -38,44 +33,6 @@ function AdsPlayer() {
 
     fetchAds();
   }, []);
-
-  const fetchInteractionData = async (adId) => {
-    // Fetch the interaction data for the current ad and user
-
-    const response = await fetch(
-      `/api/getInteraction?adId=${adId}&userId=${userId}`
-    );
-    const data = await response.json();
-
-    if (response.status === 200) {
-      // Initialize the liked and disliked states based on the interaction data
-      setDoubleLiked(data.doubleLiked);
-      setLiked(data.liked);
-      setDisliked(data.disliked);
-    } else {
-      setDoubleLiked(false);
-      setLiked(false);
-      setDisliked(false);
-    }
-  };
-
-  useEffect(() => {
-    if (registrationStatus === 'pending' && adsWatched >= 3) {
-      const completeRegistration = async () => {
-        try {
-          await axios.put(`/api/user/${session.user._id}/completeRegistration`);
-          setRegistrationStatus('complete');
-          alert(
-            "Your registration is now complete! You have been entered into this month's the joiners draw. Keep watching ads for a chance to win this weeks draw!"
-          );
-        } catch (error) {
-          console.error(error);
-        }
-      };
-
-      completeRegistration();
-    }
-  }, [registrationStatus, session.user._id, adsWatched]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -185,7 +142,6 @@ function AdsPlayer() {
     setDoubleLiked(true);
     setLiked(false);
     setDisliked(false);
-    setAdsWatched(adsWatched + 1);
     const response = await fetch('/api/updateInteractions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -195,8 +151,6 @@ function AdsPlayer() {
         doubleLiked: true,
         liked: false,
         disliked: false,
-        // increment the number of ads played by the user
-        adsWatched: adsWatched + 1,
       }),
     });
     const data = await response.json();
@@ -210,8 +164,6 @@ function AdsPlayer() {
     setDoubleLiked(false);
     setLiked(true);
     setDisliked(false);
-    setAdsWatched(adsWatched + 1);
-
     const response = await fetch('/api/updateInteractions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -221,8 +173,6 @@ function AdsPlayer() {
         doubleLiked: false,
         liked: true,
         disliked: false,
-        // increment the number of ads played by the user
-        adsWatched: adsWatched + 1,
       }),
     });
     const data = await response.json();
@@ -235,7 +185,6 @@ function AdsPlayer() {
     setDoubleLiked(false);
     setLiked(false);
     setDisliked(true);
-    setAdsWatched(adsWatched + 1);
     const response = await fetch('/api/updateInteractions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -245,8 +194,6 @@ function AdsPlayer() {
         doubleLiked: false,
         liked: false,
         disliked: true,
-        // increment the number of ads played by the user
-        adsWatched: adsWatched + 1,
       }),
     });
     const data = await response.json();
