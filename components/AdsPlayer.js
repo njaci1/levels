@@ -66,7 +66,7 @@ function AdsPlayer() {
           await axios.put(`/api/user/${session.user._id}/completeRegistration`);
           setRegistrationStatus('complete');
           alert(
-            "Your registration is now complete! You have been entered into this month's the joiners draw. Keep watching ads for a chance to win this weeks draw!"
+            "Your registration is now complete! You have been entered into this month's joiners jackpot. Keep watching and rating ads for a chance to win this weeks jackpot!"
           );
         } catch (error) {
           console.error(error);

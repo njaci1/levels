@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 import Hello from '../components/Hello';
 import { Container, Typography, Box, Paper } from '@mui/material';
 import AdPlayer from '../components/AdsPlayer'; // Import the AdPlayer component
+import { ThumbsDown, ThumbsUp } from 'react-feather';
 
 function Ads() {
   const { data: session } = useSession();
@@ -19,11 +20,20 @@ function Ads() {
         <Container maxWidth="md">
           <Box my={4}>
             <Typography variant="h4" component="h1" gutterBottom>
-              Ad of the day
+              Ads of the day
             </Typography>
             <Typography variant="body1" gutterBottom>
-              What do you think of this ad? watch to the end and show with a
-              thumbs up or down for 5 entries to this week&apos;s jackpot.
+              Rate this ad with a{' '}
+              <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+                <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+                  <ThumbsUp />
+                </span>{' '}
+                or a{' '}
+                <span style={{ display: 'inline-flex' }}>
+                  <ThumbsDown />
+                </span>
+              </span>
+              for a chance to win this week&apos;s jackpot.
             </Typography>
             <Box my={2}>
               <Paper elevation={3}>
