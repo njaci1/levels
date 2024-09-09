@@ -10,32 +10,58 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/system';
 
-const StyledCard = styled(Card)({
+// Styled card with responsive padding and box-shadow
+const StyledCard = styled(Card)(({ theme }) => ({
   margin: '1em',
-  padding: '1em',
+  padding: '1.5em',
   backgroundColor: '#f5f5f5',
   borderRadius: '15px',
   boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
-});
+  transition: 'all 0.3s ease', // Smooth hover transition
+  '&:hover': {
+    transform: 'translateY(-5px)', // Slight hover effect for better interaction
+    boxShadow: '0 8px 12px rgba(0,0,0,0.2)', // Enhanced shadow on hover
+  },
+  [theme.breakpoints.down('sm')]: {
+    padding: '1em', // Reduced padding for smaller screens
+  },
+}));
 
-const Title = styled(Typography)({
+// Title styling with responsive typography
+const Title = styled(Typography)(({ theme }) => ({
   textAlign: 'center',
-  marginBottom: '1em',
-});
+  marginBottom: '0.5em',
+  fontSize: '1.5rem',
+  [theme.breakpoints.up('sm')]: {
+    fontSize: '2rem',
+  },
+}));
 
-const JoinButton = styled(Button)({
+// Button with enhanced hover styles and larger touch area
+const JoinButton = styled(Button)(({ theme }) => ({
   marginTop: '1em',
   backgroundColor: '#3f51b5',
   color: 'white',
+  padding: '0.75em 2em', // Larger button for better mobile interaction
   '&:hover': {
     backgroundColor: '#303f9f',
   },
-});
+  [theme.breakpoints.down('sm')]: {
+    width: '100%', // Full-width button on mobile
+    padding: '0.5em 0', // Compact padding on smaller screens
+  },
+}));
 
-const Amount = styled(Typography)({
-  fontSize: '1.5em',
+// Amount styling with bold and responsive font size
+const Amount = styled(Typography)(({ theme }) => ({
+  fontSize: '1.5rem',
   fontWeight: 'bold',
-});
+  textAlign: 'center',
+  marginBottom: '0.5em',
+  [theme.breakpoints.up('sm')]: {
+    fontSize: '2rem',
+  },
+}));
 
 const getNextDrawDate = (name) => {
   const now = new Date();
@@ -80,17 +106,12 @@ const getNextDrawDate = (name) => {
     );
   }
 
-  // Calculate the difference between now and the draw date
   const diff = drawDate - now;
-  // Convert the difference into days, hours, and minutes
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
   const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  if (days === 0) {
-    return `${hours} hrs ${minutes} min`;
-  } else {
-    return `${days} Days`;
-  }
+
+  return days === 0 ? `${hours} hrs ${minutes} min` : `${days} Days`;
 };
 
 const JackpotCard = ({ name, amount, entries }) => {
@@ -101,15 +122,24 @@ const JackpotCard = ({ name, amount, entries }) => {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(amount);
+
   return (
     <StyledCard>
       <CardContent>
         <Title variant="h4">{name}</Title>
-        <Amount>{amount}</Amount>
-        <Typography variant="body1">Your Entries: {entries}</Typography>
-        <Typography variant="body1">Next Draw in:</Typography>
-        <Typography variant="body1">{drawDate}</Typography>
-        <JackpotButton name={name} />
+        <Amount>{formattedAmount}</Amount>
+        <Typography variant="body1" align="center">
+          Your Entries: {entries}
+        </Typography>
+        <Typography variant="body2" align="center" color="textSecondary">
+          Next Draw in:
+        </Typography>
+        <Typography variant="body1" align="center">
+          {drawDate}
+        </Typography>
+        {/* <JoinButton variant="contained">Join</JoinButton> */}
+
+        <JackpotButton variant="contained" name={name} />
       </CardContent>
     </StyledCard>
   );

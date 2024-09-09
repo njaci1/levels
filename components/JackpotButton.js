@@ -1,44 +1,53 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useSession, getSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import axios from 'axios';
-import {
-  Card,
-  CardContent,
-  Typography,
-  Button,
-  Grid,
-  Box,
-} from '@mui/material';
+import { Button } from '@mui/material';
 import { styled } from '@mui/system';
 
-export default function JackpotButton(name) {
+// Styled button to maintain consistency with other button styles
+const StyledButton = styled(Button)(({ theme }) => ({
+  marginTop: '1em',
+  backgroundColor: '#3f51b5',
+  color: 'white',
+  padding: '0.75em 2em', // Larger button for better interaction
+  '&:hover': {
+    backgroundColor: '#303f9f',
+  },
+  [theme.breakpoints.down('sm')]: {
+    width: '100%', // Full-width button on mobile
+    padding: '0.5em 0', // Compact padding on smaller screens
+  },
+}));
+
+export default function JackpotButton({ name }) {
   const router = useRouter();
-  const { data: session, update } = useSession();
+  const { data: session } = useSession();
 
   const [isWatchingAd, setIsWatchingAd] = useState(false);
   const [adVideos, setAdVideos] = useState([]);
   const [currentAdIndex, setCurrentAdIndex] = useState(0);
   const [registrationComplete, setRegistrationComplete] = useState(
-    session.user.registrationStatus
+    session?.user?.registrationStatus || 'pending'
   );
 
   useEffect(() => {
-    axios
-      .get('/api/getJoinersAds')
-      .then((response) => {
-        setAdVideos(response.data);
-      })
-      .catch((error) => {
-        console.error('Failed to fetch videos:', error);
-      });
-  }, []);
+    if (name === 'Joiners') {
+      axios
+        .get('/api/getJoinersAds')
+        .then((response) => {
+          setAdVideos(response.data);
+        })
+        .catch((error) => {
+          console.error('Failed to fetch videos:', error);
+        });
+    }
+  }, [name]);
 
   const handleInviteFriend = () => {
-    const inviteLink = `http://localhost:3000/register?inviteCode=${session.user.inviteCode}&redirect=/`;
-    let whatsappMessage = `Hey, I would like to invite you to join this cool platform. Please use the following link to register:${inviteLink}`;
-    let whatsappUrl = `https://wa.me/?text=${encodeURIComponent(
+    const inviteLink = `http://localhost:3000/register?inviteCode=${session?.user?.inviteCode}&redirect=/`;
+    const whatsappMessage = `Hey, I would like to invite you to join this cool platform. Please use the following link to register: ${inviteLink}`;
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(
       whatsappMessage
     )}`;
     window.open(whatsappUrl);
@@ -58,11 +67,9 @@ export default function JackpotButton(name) {
       setCurrentAdIndex(currentAdIndex + 1);
     } else {
       setIsWatchingAd(false);
-
       await axios
-        .put(`/api/user/${session.user._id}/completeRegistration`)
+        .put(`/api/user/${session?.user?._id}/completeRegistration`)
         .then(() => {
-          // Update the local state
           setRegistrationComplete('complete');
         })
         .catch((error) => {
@@ -72,12 +79,12 @@ export default function JackpotButton(name) {
   };
 
   return (
-    <Button
+    <StyledButton
       variant="contained"
       color="primary"
       onClick={name === 'Joiners' ? handleInviteFriend : handleGoToAds}
     >
-      {name === 'inviteFriend' ? 'Invite Friend' : 'Join Now!'}
-    </Button>
+      {name === 'Joiners' ? 'Invite Friend' : 'Join Now!'}
+    </StyledButton>
   );
 }

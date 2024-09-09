@@ -1,19 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useSession, getSession } from 'next-auth/react';
-import NetworkTable from './NetworkTable';
+import { useSession } from 'next-auth/react';
 import BalanceCard from './BalanceCard';
 import Layout from './Layout';
 import JackpotCard from './JackpotCard';
-import {
-  Card,
-  CardContent,
-  Typography,
-  Button,
-  Grid,
-  styled,
-  Box,
-} from '@mui/material';
-import { join } from 'path';
+import { Grid, Box, Typography } from '@mui/material';
 
 export default function Mainpage() {
   // State for storing network data
@@ -21,28 +11,22 @@ export default function Mainpage() {
     inviteesLevel1Count: 0,
     inviteesLevel2Count: 0,
     inviteesLevel3Count: 0,
-    earningsLevel0: 0,
-    earningsLevel1: 0,
-    earningsLevel2: 0,
-    earningsLevel3: 0,
-    totalEarnings: 0,
     balance: 0,
-    withdrawals: 0,
     status: 'pending',
   });
-  const { data: session, update } = useSession();
+
+  const { data: session } = useSession();
 
   // Fetch user network on component mount
   useEffect(() => {
     const fetchUserNetwork = async () => {
       const res = await fetch('/api/user/inviteeLevels');
       const data = await res.json();
-      setNetworkData(data); // Save the network data in state
-      // console.log(data);
+      setNetworkData(data);
     };
 
     fetchUserNetwork();
-  }, []); // Empty array means this effect runs once on component mount
+  }, []);
 
   const [jackpots, setJackpots] = useState({
     weekly: 1000,
@@ -50,6 +34,7 @@ export default function Mainpage() {
     annual: 9000,
     joiners: 10000,
   });
+
   const [jackpotEntries, setJackpotEntries] = useState({
     weekly: 1,
     monthly: 3,
@@ -66,7 +51,7 @@ export default function Mainpage() {
           annual: data.annualTotal,
           joiners: data.joinersTotal,
         });
-      }); // Fetch jackpot totals from the API
+      });
   }, []);
 
   useEffect(() => {
@@ -78,12 +63,13 @@ export default function Mainpage() {
           monthly: data.monthlyEntries,
           annual: data.annualEntries,
         });
-      }); // Fetch jackpot entries from the API
+      });
   }, []);
 
   return (
-    <div>
-      <Layout>
+    <Layout>
+      {/* Mobile-First Design for Balance */}
+      <Box sx={{ mb: 2 }}>
         <BalanceCard
           balance={networkData.balance}
           status={networkData.status}
@@ -93,31 +79,46 @@ export default function Mainpage() {
             networkData.inviteesLevel3Count,
           ]}
         />
-        {/* <NetworkTable networkData={networkData} /> */}
-        <Box sx={{ flexGrow: 1, mb: 2 }}>
-          <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
-            <JackpotCard
-              name="Weekly"
-              amount={jackpots.weekly}
-              entries={jackpotEntries.weekly}
-              drawDate={'Fri 8 PM'}
-            />
+      </Box>
 
-            <JackpotCard
-              name="Monthly"
-              amount={jackpots.monthly}
-              entries={jackpotEntries.monthly}
-              drawDate={'1st Sat'}
-            />
-            <JackpotCard
-              name="Annual"
-              amount={jackpots.annual}
-              entries={jackpotEntries.annual}
-              drawDate={'1st Jan'}
-            />
-          </Box>
-        </Box>
-      </Layout>
-    </div>
+      {/* Jackpot Cards */}
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Typography variant="h5" align="center" gutterBottom>
+            Active Jackpots
+          </Typography>
+        </Grid>
+
+        {/* Weekly Jackpot */}
+        <Grid item xs={12} sm={6} md={4}>
+          <JackpotCard
+            name="Weekly"
+            amount={jackpots.weekly}
+            entries={jackpotEntries.weekly}
+            drawDate={'Fri 8 PM'}
+          />
+        </Grid>
+
+        {/* Monthly Jackpot */}
+        <Grid item xs={12} sm={6} md={4}>
+          <JackpotCard
+            name="Monthly"
+            amount={jackpots.monthly}
+            entries={jackpotEntries.monthly}
+            drawDate={'1st Sat'}
+          />
+        </Grid>
+
+        {/* Annual Jackpot */}
+        <Grid item xs={12} sm={6} md={4}>
+          <JackpotCard
+            name="Annual"
+            amount={jackpots.annual}
+            entries={jackpotEntries.annual}
+            drawDate={'1st Jan'}
+          />
+        </Grid>
+      </Grid>
+    </Layout>
   );
 }

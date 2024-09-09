@@ -2,9 +2,8 @@ import Layout from './Layout';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import JackpotCard from './JackpotCard';
+import { Typography, Button, Box, Grid, Paper } from '@mui/material';
 
-// components/Hello.js
 export default function Hello() {
   const router = useRouter();
   const { redirect } = router.query;
@@ -28,50 +27,79 @@ export default function Hello() {
         });
       });
   }, []);
+
   return (
     <Layout title="Hello Page">
-      <div className="font-sans min-h-screen py-2">
-        <header className="bg-gray-200 p-5 text-center">
-          <h1 className="text-2xl font-bold mb-2">
-            Watch Ads, stand a chance to Win Jackpots!
-          </h1>
-          <p className="text-lg">
-            Watch ads for a chance to win this week&apos;s jackpot of {'KSH '}
-            {jackpots.weeklyTotal}.
-          </p>
-          <Link
+      {/* Main Container */}
+      <Box sx={{ minHeight: '100vh', py: 4, textAlign: 'center' }}>
+        <Box
+          sx={{ backgroundColor: '#f5f5f5', p: 3, borderRadius: '8px', mb: 4 }}
+        >
+          <Typography variant="h4" gutterBottom fontWeight="bold">
+            Watch Ads, Stand a Chance to Win Jackpots!
+          </Typography>
+          <Typography variant="h6">
+            Watch ads for a chance to win this week&apos;s jackpot of{' '}
+            <strong>KSH {jackpots.weeklyTotal}</strong>.
+          </Typography>
+          <Button
             href={`/register?inviteCode=&redirect=${redirect || '/'}`}
-            className="mt-2 inline-block px-5 py-2 font-bold text-white bg-green-500 rounded hover:bg-green-600"
+            sx={{
+              mt: 2,
+              px: 4,
+              py: 1.5,
+              backgroundColor: '#22c55e', // Custom green color
+              color: 'white',
+              '&:hover': {
+                backgroundColor: '#16a34a', // Darker green on hover
+              },
+            }}
           >
             Join Now!
-          </Link>
-        </header>
-        <main className="p-5">
-          <section className="jackpots flex justify-between mb-5">
-            {['Joiners', 'Weekly', 'Monthly', 'Annual'].map((jackpot) => (
-              <div
-                key={jackpot}
-                className="jackpot text-center p-2 border border-gray-300 rounded"
-              >
-                <h3 className="text-lg font-bold mb-1">{jackpot} Jackpot</h3>
-                <p className="text-base">
-                  KSH
-                  <span id={`${jackpot.toLowerCase()}-jackpot`}>
-                    {jackpots[`${jackpot.toLowerCase()}Total`]}
-                  </span>
-                </p>
+          </Button>
+        </Box>
 
-                <Link
-                  href={`/register?inviteCode=&redirect=${redirect || '/'}`}
-                  className="mt-2 inline-block px-5 py-2 font-bold text-white bg-green-500 rounded hover:bg-green-600"
+        {/* Jackpot Cards Section */}
+        <Box sx={{ px: 3 }}>
+          <Grid container spacing={3} justifyContent="center">
+            {['Joiners', 'Weekly', 'Monthly', 'Annual'].map((jackpot) => (
+              <Grid item xs={12} sm={6} md={3} key={jackpot}>
+                <Paper
+                  elevation={3}
+                  sx={{
+                    p: 3,
+                    textAlign: 'center',
+                    borderRadius: '8px',
+                    backgroundColor: '#ffffff',
+                  }}
                 >
-                  Join Now!
-                </Link>
-              </div>
+                  <Typography variant="h6" fontWeight="bold">
+                    {jackpot} Jackpot
+                  </Typography>
+                  <Typography variant="h5" fontWeight="bold" color="primary">
+                    KSH {jackpots[`${jackpot.toLowerCase()}Total`]}
+                  </Typography>
+                  <Button
+                    href={`/register?inviteCode=&redirect=${redirect || '/'}`}
+                    sx={{
+                      mt: 2,
+                      px: 3,
+                      py: 1,
+                      backgroundColor: '#22c55e', // Custom green color
+                      color: 'white',
+                      '&:hover': {
+                        backgroundColor: '#16a34a', // Darker green on hover
+                      },
+                    }}
+                  >
+                    Join Now!
+                  </Button>
+                </Paper>
+              </Grid>
             ))}
-          </section>
-        </main>
-      </div>
+          </Grid>
+        </Box>
+      </Box>
     </Layout>
   );
 }
