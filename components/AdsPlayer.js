@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function AdsPlayer() {
   const [adsQueue, setAdsQueue] = useState(null);
@@ -65,17 +67,18 @@ function AdsPlayer() {
         try {
           await axios.put(`/api/user/${session.user._id}/completeRegistration`);
           setRegistrationStatus('complete');
-          alert(
-            "Your registration is now complete! You have been entered into this month's joiners jackpot. Keep watching and rating ads for a chance to win this weeks jackpot!"
+          toast.success(
+            "Your registration is now complete! You have been entered into this month's joiners jackpot. Keep watching and rating ads for a chance to win this week's jackpot!"
           );
         } catch (error) {
-          console.error(error);
+          console.error('Error completing registration:', error);
+          toast.error('Failed to complete registration. Please try again.');
         }
       };
 
       completeRegistration();
     }
-  }, [registrationStatus, session.user._id, adsWatched]);
+  }, [adsWatched, registrationStatus, session.user._id]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -254,61 +257,72 @@ function AdsPlayer() {
     // Handle the response data...
   };
 
-  return adsQueue ? (
-    adsQueue.length > 0 ? (
-      <div style={{ position: 'relative' }}>
-        <video
-          ref={videoRef}
-          id="ad-video"
-          src={adsQueue[currentAdIndex]?.videoUrl}
-          controls
-        />
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <div>
-            <button style={{ margin: '10px' }} onClick={handlePrevious}>
-              <i class="fas fa-step-backward"></i> Previous
-            </button>
-            <button style={{ margin: '10px' }} onClick={handleSkip}>
-              <i class="fas fa-step-forward"></i> Skip
-            </button>
-          </div>
-          {showButtons && (
-            <div style={{ display: 'flex', gap: '10px' }}>
-              <button
-                onClick={handleReplay}
-                style={{ color: 'black', padding: '10px' }}
-              >
-                <i class="fas fa-redo"></i>
-              </button>
-              <button
-                onClick={handleLike}
-                style={{ color: liked ? 'green' : 'black', padding: '10px' }}
-                disabled={liked || disliked}
-              >
-                <i class="fas fa-thumbs-up"></i>
-              </button>
-              <button
-                onClick={handleDislike}
-                style={{ color: disliked ? 'red' : 'black', padding: '10px' }}
-                disabled={liked || disliked}
-              >
-                <i class="fas fa-thumbs-down"></i>
-              </button>
-              <button
-                onClick={handleNext}
-                style={{ color: 'black', padding: '10px' }}
-              >
-                Next
-              </button>
+  return (
+    <div>
+      <ToastContainer position="top-right" autoClose={5000} />
+      {adsQueue ? (
+        adsQueue.length > 0 ? (
+          <div style={{ position: 'relative' }}>
+            <video
+              ref={videoRef}
+              id="ad-video"
+              src={adsQueue[currentAdIndex]?.videoUrl}
+              controls
+            />
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div>
+                <button style={{ margin: '10px' }} onClick={handlePrevious}>
+                  <i class="fas fa-step-backward"></i> Previous
+                </button>
+                <button style={{ margin: '10px' }} onClick={handleSkip}>
+                  <i class="fas fa-step-forward"></i> Skip
+                </button>
+              </div>
+              {showButtons && (
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <button
+                    onClick={handleReplay}
+                    style={{ color: 'black', padding: '10px' }}
+                  >
+                    <i class="fas fa-redo"></i>
+                  </button>
+                  <button
+                    onClick={handleLike}
+                    style={{
+                      color: liked ? 'green' : 'black',
+                      padding: '10px',
+                    }}
+                    disabled={liked || disliked}
+                  >
+                    <i class="fas fa-thumbs-up"></i>
+                  </button>
+                  <button
+                    onClick={handleDislike}
+                    style={{
+                      color: disliked ? 'red' : 'black',
+                      padding: '10px',
+                    }}
+                    disabled={liked || disliked}
+                  >
+                    <i class="fas fa-thumbs-down"></i>
+                  </button>
+                  <button
+                    onClick={handleNext}
+                    style={{ color: 'black', padding: '10px' }}
+                  >
+                    Next
+                  </button>
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      </div>
-    ) : (
-      <p>No ads available.</p>
-    )
-  ) : (
-    <p>Loading...</p>
+          </div>
+        ) : (
+          <p>No ads available.</p>
+        )
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
   );
 }
 

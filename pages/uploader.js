@@ -1,4 +1,20 @@
 import React, { useState } from 'react';
+import {
+  TextField,
+  Button,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+  CircularProgress,
+  Box,
+  Typography,
+} from '@mui/material';
+import {
+  getCloudinarySignature,
+  uploadFileToCloudinary,
+  saveAdToDatabase,
+} from '../lib/uploaderService';
 import calculatePrice from '../lib/priceCalculator';
 
 const Uploader = () => {
@@ -20,149 +36,142 @@ const Uploader = () => {
     }
   };
 
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value);
-  };
-
-  const handleDescriptionChange = (event) => {
-    setDescription(event.target.value);
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (selectedFile && title && description) {
-      // Get signature from server
-      const signatureResponse = await fetch('/api/admin/cloudinary-sign');
-      const { signature, timestamp } = await signatureResponse.json();
+    if (!selectedFile || !title || !description) {
+      setErrorMessage('Please fill in all the required fields');
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      setErrorMessage('');
+
+      // Get signature from the service
+      const { signature, timestamp } = await getCloudinarySignature();
+
       const amountPaid = calculatePrice(priority, duration);
 
-      // Show price confirmation to the advertiser
+      // Confirm with the user
       if (!confirm(`Total price: ${amountPaid}. Proceed with upload?`)) {
-        return; // User cancelled
+        setIsSubmitting(false);
+        return;
       }
 
-      const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`;
+      // Upload file to Cloudinary
+      const cloudinaryData = await uploadFileToCloudinary(
+        selectedFile,
+        signature,
+        timestamp
+      );
 
-      const formData = new FormData();
-      formData.append('file', selectedFile);
-      formData.append('timestamp', timestamp);
-      formData.append('signature', signature);
-      formData.append('api_key', process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY);
+      // Save the ad data to the database
+      await saveAdToDatabase({
+        title,
+        description,
+        duration,
+        priority,
+        amountPaid,
+        secure_url: cloudinaryData.secure_url,
+        public_id: cloudinaryData.public_id,
+      });
 
-      setIsSubmitting(true);
-      fetch(url, {
-        method: 'POST',
-        body: formData,
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.secure_url) {
-            // File uploaded successfully
-
-            // Send the data to the server to save it in the database
-            fetch('/api/uploadToCloud', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                title,
-                description,
-                duration,
-                priority,
-                amountPaid,
-                secure_url: data.secure_url,
-                public_id: data.public_id,
-              }),
-            })
-              .then((response) => response.json())
-              .then((data) => {
-                setIsSubmitting(false);
-                if (data.message === 'ad uploaded to db successfully') {
-                  console.log('Ad uploaded successfully');
-                } else {
-                  throw new Error('Failed to upload file');
-                }
-              })
-              .catch((error) => {
-                setIsSubmitting(false);
-                console.error(error);
-              });
-          } else {
-            throw new Error('Failed to upload file');
-          }
-        })
-        .catch((error) => {
-          // Handle error
-          console.error(error);
-        });
-    } else {
-      setErrorMessage('Please fill in all the required fields');
+      alert('Ad uploaded successfully!');
+      setIsSubmitting(false);
+    } catch (error) {
+      setIsSubmitting(false);
+      setErrorMessage(error.message);
+      console.error(error);
     }
   };
 
   return (
-    <div>
-      <h1>Ad Uploader</h1>
+    <Box sx={{ maxWidth: '600px', margin: '0 auto', mt: 4 }}>
+      <Typography variant="h4" align="center" gutterBottom>
+        Ad Uploader
+      </Typography>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="file">Video File:</label>
+        <FormControl fullWidth margin="normal">
+          <Typography variant="subtitle1">Video File:</Typography>
           <input
             type="file"
-            id="file"
             accept="video/*"
             onChange={handleFileChange}
+            disabled={isSubmitting}
           />
-        </div>
-        <div>
-          <label htmlFor="title">Title:</label>
-          <input
-            type="text"
-            id="title"
-            value={title}
-            onChange={handleTitleChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="description">Description:</label>
-          <textarea
-            id="description"
-            value={description}
-            onChange={handleDescriptionChange}
-          />
-        </div>
+          {selectedFile && (
+            <Typography variant="body2">
+              Selected File: {selectedFile.name}
+            </Typography>
+          )}
+        </FormControl>
 
-        <div>
-          <label htmlFor="duration">Duration:</label>
-          <select
-            id="duration"
+        <TextField
+          label="Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          fullWidth
+          margin="normal"
+          disabled={isSubmitting}
+          required
+        />
+
+        <TextField
+          label="Description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          fullWidth
+          margin="normal"
+          multiline
+          rows={3}
+          disabled={isSubmitting}
+          required
+        />
+
+        <FormControl fullWidth margin="normal">
+          <InputLabel>Duration</InputLabel>
+          <Select
             value={duration}
             onChange={(e) => setDuration(e.target.value)}
+            disabled={isSubmitting}
           >
-            <option value="1 week">1 week</option>
-            <option value="2 weeks">2 weeks</option>
-            <option value="1 month">1 month</option>
-          </select>
-        </div>
-        <div>
-          <label htmlFor="priority">Priority:</label>
-          <select
-            id="priority"
+            <MenuItem value="1 week">1 week</MenuItem>
+            <MenuItem value="2 weeks">2 weeks</MenuItem>
+            <MenuItem value="1 month">1 month</MenuItem>
+          </Select>
+        </FormControl>
+
+        <FormControl fullWidth margin="normal">
+          <InputLabel>Priority</InputLabel>
+          <Select
             value={priority}
             onChange={(e) => setPriority(e.target.value)}
+            disabled={isSubmitting}
           >
-            <option value="high">High</option>
-            <option value="medium">Medium</option>
-            <option value="low">Low</option>
-          </select>
-        </div>
+            <MenuItem value="high">High</MenuItem>
+            <MenuItem value="medium">Medium</MenuItem>
+            <MenuItem value="low">Low</MenuItem>
+          </Select>
+        </FormControl>
 
-        {errorMessage && <p>{errorMessage}</p>}
-        <button type="submit" disabled={isSubmitting}>
-          Upload
-        </button>
+        {errorMessage && (
+          <Typography variant="body2" color="error" align="center">
+            {errorMessage}
+          </Typography>
+        )}
+
+        <Box sx={{ mt: 3, textAlign: 'center' }}>
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            disabled={isSubmitting || !selectedFile || !title || !description}
+          >
+            {isSubmitting ? <CircularProgress size={24} /> : 'Upload'}
+          </Button>
+        </Box>
       </form>
-    </div>
+    </Box>
   );
 };
 

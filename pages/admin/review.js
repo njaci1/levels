@@ -1,69 +1,90 @@
-import { data } from 'autoprefixer';
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { fetchAdsForReview, reviewAd } from '../../lib/reviewAds';
+import { Button, Typography, CircularProgress, Box } from '@mui/material';
 
 const ReviewPage = () => {
   const [ads, setAds] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchAds = async () => {
       try {
-        const response = await axios.post('/api/ads/ads');
-        const ads = response.data;
-
-        if (ads) {
-          setAds(ads);
-        }
+        const ads = await fetchAdsForReview();
+        setAds(ads);
       } catch (error) {
-        console.error('Error fetching ads:', error);
+        setError('Failed to load ads for review.');
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchAds();
   }, []);
 
-  const handleAction = (action, id) => {
-    fetch('/api/ads/[adId]/review', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        adId: id,
-        action: action,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Update the ads state with the reviewed ad removed
-
-        const updatedAds = ads.filter((ad) => ad._id !== id);
-        setAds(updatedAds);
-      })
-      .catch((error) => console.error(error));
+  const handleAction = async (action, id) => {
+    try {
+      await reviewAd(id, action);
+      // Optimistically update UI by removing reviewed ad
+      const updatedAds = ads.filter((ad) => ad._id !== id);
+      setAds(updatedAds);
+    } catch (error) {
+      setError(`Failed to ${action} ad. Please try again.`);
+    }
   };
 
+  if (isLoading) {
+    return <CircularProgress />;
+  }
+
+  if (error) {
+    return <Typography color="error">{error}</Typography>;
+  }
+
   return (
-    <div>
+    <Box>
       {ads.length === 0 ? (
-        <div>
-          <p>No pending items</p>
-          <button onClick={() => window.location.reload()}>Refresh</button>
-        </div>
+        <Box textAlign="center">
+          <Typography variant="h6">No pending items</Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => window.location.reload()}
+          >
+            Refresh
+          </Button>
+        </Box>
       ) : (
         ads.map((ad) => (
-          <div key={ad._id}>
-            <h3>{ad.title}</h3>
-            <p>ID: {ad._id}</p>
-            <button onClick={() => handleAction('approve', ad._id)}>
-              Approve
-            </button>
-            <button onClick={() => handleAction('reject', ad._id)}>
-              Reject
-            </button>
-          </div>
+          <Box
+            key={ad._id}
+            mb={3}
+            p={2}
+            border="1px solid #ccc"
+            borderRadius={2}
+          >
+            <Typography variant="h6">{ad.title}</Typography>
+            <Typography>ID: {ad._id}</Typography>
+            <Box mt={2}>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={() => handleAction('approve', ad._id)}
+                sx={{ mr: 2 }}
+              >
+                Approve
+              </Button>
+              <Button
+                variant="contained"
+                color="error"
+                onClick={() => handleAction('reject', ad._id)}
+              >
+                Reject
+              </Button>
+            </Box>
+          </Box>
         ))
       )}
-    </div>
+    </Box>
   );
 };
 
