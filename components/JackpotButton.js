@@ -45,7 +45,7 @@ export default function JackpotButton({ name }) {
   }, [name]);
 
   const handleInviteFriend = () => {
-    const inviteLink = `http://localhost:3000/register?inviteCode=${session?.user?.inviteCode}&redirect=/`;
+    const inviteLink = `${process.env.NEXT_PUBLIC_BASE_URL}/register?inviteCode=${session?.user?.inviteCode}&redirect=/`;
     const whatsappMessage = `Hey, I would like to invite you to join this cool platform. Please use the following link to register: ${inviteLink}`;
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(
       whatsappMessage

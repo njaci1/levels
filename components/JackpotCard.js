@@ -134,12 +134,18 @@ const JackpotCard = ({ name, amount, entries }) => {
         <Typography variant="body2" align="center" color="textSecondary">
           Next Draw in:
         </Typography>
-        <Typography variant="body1" align="center">
+        <Typography
+          variant="body1"
+          align="center"
+          sx={{ color: 'primary.main' }}
+        >
           {drawDate}
         </Typography>
         {/* <JoinButton variant="contained">Join</JoinButton> */}
 
-        <JackpotButton variant="contained" name={name} />
+        <Box sx={{ textAlign: 'center', marginTop: '1.5em' }}>
+          <JackpotButton variant="contained" name={name} />
+        </Box>
       </CardContent>
     </StyledCard>
   );
