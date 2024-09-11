@@ -12,6 +12,7 @@ function AdsPlayer() {
   const [doubleLiked, setDoubleLiked] = useState(false);
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
+  // const [canProceed, setCanProceed] = useState(false); // Disable next ad until rated
   const videoRef = useRef(null);
   const { data: session } = useSession();
   const [adsWatched, setAdsWatched] = useState(0);
@@ -28,7 +29,6 @@ function AdsPlayer() {
 
         if (ads && ads.length > 0) {
           setAdsQueue(ads);
-          // Fetch the interaction data for the first ad
           fetchInteractionData(ads[0]._id);
         } else {
           setAdsQueue([]);
@@ -42,22 +42,22 @@ function AdsPlayer() {
   }, []);
 
   const fetchInteractionData = async (adId) => {
-    // Fetch the interaction data for the current ad and user
-
-    const response = await fetch(
-      `/api/getInteraction?adId=${adId}&userId=${userId}`
-    );
-    const data = await response.json();
-
-    if (response.status === 200) {
-      // Initialize the liked and disliked states based on the interaction data
-      setDoubleLiked(data.doubleLiked);
-      setLiked(data.liked);
-      setDisliked(data.disliked);
-    } else {
-      setDoubleLiked(false);
-      setLiked(false);
-      setDisliked(false);
+    try {
+      const response = await fetch(
+        `/api/getInteraction?adId=${adId}&userId=${userId}`
+      );
+      const data = await response.json();
+      if (response.status === 200) {
+        setDoubleLiked(data.doubleLiked);
+        setLiked(data.liked);
+        setDisliked(data.disliked);
+      } else {
+        setDoubleLiked(false);
+        setLiked(false);
+        setDisliked(false);
+      }
+    } catch (error) {
+      console.error('Error fetching interaction data:', error);
     }
   };
 
@@ -67,12 +67,16 @@ function AdsPlayer() {
         try {
           await axios.put(`/api/user/${session.user._id}/completeRegistration`);
           setRegistrationStatus('complete');
-          toast.success(
-            "Your registration is now complete! You have been entered into this month's joiners jackpot. Keep watching and rating ads for a chance to win this week's jackpot!"
+          showToast(
+            'success',
+            "Your registration is complete! You've been entered into this month's joiners jackpot!"
           );
         } catch (error) {
           console.error('Error completing registration:', error);
-          toast.error('Failed to complete registration. Please try again.');
+          showToast(
+            'error',
+            'Failed to complete registration. Please try again.'
+          );
         }
       };
 
@@ -80,17 +84,17 @@ function AdsPlayer() {
     }
   }, [adsWatched, registrationStatus, session.user._id]);
 
+  const handleVideoEnd = () => {
+    setShowButtons(true);
+    setIsPlaying(false);
+    // setCanProceed(false); // Require rating before allowing to proceed
+  };
+
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    const handleVideoEnd = () => {
-      setShowButtons(true);
-      setIsPlaying(false);
-    };
-
     video.addEventListener('ended', handleVideoEnd);
-
     return () => {
       video.removeEventListener('ended', handleVideoEnd);
     };
@@ -101,16 +105,13 @@ function AdsPlayer() {
     setLiked(false);
     setDisliked(false);
     setShowButtons(false);
+    // setCanProceed(false); // Reset the ability to proceed to next ad
   }, [currentAdIndex]);
 
   const handlePlayPause = () => {
     const video = videoRef.current;
     if (video) {
-      if (isPlaying) {
-        video.pause();
-      } else {
-        video.play();
-      }
+      isPlaying ? video.pause() : video.play();
       setIsPlaying(!isPlaying);
     }
   };
@@ -129,7 +130,6 @@ function AdsPlayer() {
       return newIndex;
     });
   };
-
   const handleSkip = () => {
     setCurrentAdIndex((prevIndex) => {
       const newIndex = prevIndex + 1 < adsQueue.length ? prevIndex + 1 : 0;
@@ -142,33 +142,73 @@ function AdsPlayer() {
       return newIndex;
     });
   };
-
   const handleNext = () => {
+    // if (!canProceed) return; // Prevent skipping if no interaction
     setShowButtons(false);
     setCurrentAdIndex((prevIndex) => {
       const newIndex = prevIndex + 1 < adsQueue.length ? prevIndex + 1 : 0;
       const video = videoRef.current;
       if (video) {
-        video.onloadeddata = () => {
-          video.play(); // Autoplay the next video
-        };
+        video.onloadeddata = () => video.play();
       }
-
-      // Fetch the interaction data for the new ad
       fetchInteractionData(adsQueue[newIndex]._id);
-
-      // Update the interaction record for the current ad
-
-      fetch('/api/updateViews', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ adId: adsQueue[prevIndex]._id, userId: userId }),
-      });
-
+      updateViews(prevIndex);
       return newIndex;
     });
   };
-  // records the engagement with the ad and keeps count of the number of times the user has rated an ad
+
+  const updateViews = async (prevIndex) => {
+    try {
+      await fetch('/api/updateViews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ adId: adsQueue[prevIndex]._id, userId }),
+      });
+    } catch (error) {
+      console.error('Error updating views:', error);
+    }
+  };
+
+  const handleInteraction = async (interactionType) => {
+    const body = {
+      adId: adsQueue[currentAdIndex]._id,
+      userId,
+      doubleLiked: interactionType === 'doubleLike',
+      liked: interactionType === 'like',
+      disliked: interactionType === 'dislike',
+      adsWatched: adsWatched + 1,
+    };
+
+    try {
+      await fetch('/api/updateInteractions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+
+      setAdsWatched((prev) => prev + 1);
+      handleJackpotEntry(userId, adsQueue[currentAdIndex]._id);
+
+      if (interactionType === 'doubleLike') {
+        setDoubleLiked(true);
+        setLiked(false);
+        setDisliked(false);
+      } else if (interactionType === 'like') {
+        setLiked(true);
+        setDoubleLiked(false);
+        setDisliked(false);
+      } else {
+        setDisliked(true);
+        setLiked(false);
+        setDoubleLiked(false);
+      }
+
+      // setCanProceed(true); // Enable next ad after rating
+    } catch (error) {
+      console.error('Error handling interaction:', error);
+    }
+  };
+
   const handleJackpotEntry = async (userId, adId) => {
     try {
       const response = await fetch('/api/enterJackpot', {
@@ -177,84 +217,18 @@ function AdsPlayer() {
         body: JSON.stringify({ userId, adId }),
       });
       const data = await response.json();
-      // Handle the response data...
       console.log(data);
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error entering jackpot:', error);
     }
   };
 
-  const handleDoubleLike = async () => {
-    setDoubleLiked(true);
-    setLiked(false);
-    setDisliked(false);
-    setAdsWatched(adsWatched + 1);
-    const response = await fetch('/api/updateInteractions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        adId: adsQueue[currentAdIndex]._id,
-        userId,
-        doubleLiked: true,
-        liked: false,
-        disliked: false,
-        // increment the number of ads played by the user
-        adsWatched: adsWatched + 1,
-      }),
-    });
-    const data = await response.json();
-    handleJackpotEntry(userId, adsQueue[currentAdIndex]._id);
-    // Handle the response data...
-  };
-
-  const handleLike = async () => {
-    handleJackpotEntry(userId, adsQueue[currentAdIndex]._id); // records the engagement with the ad and keeps count of the number of times the user has rated an ad
-
-    setDoubleLiked(false);
-    setLiked(true);
-    setDisliked(false);
-    setAdsWatched(adsWatched + 1);
-
-    const response = await fetch('/api/updateInteractions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        adId: adsQueue[currentAdIndex]._id,
-        userId,
-        doubleLiked: false,
-        liked: true,
-        disliked: false,
-        // increment the number of ads played by the user
-        adsWatched: adsWatched + 1,
-      }),
-    });
-    const data = await response.json();
-
-    // Handle the response data...
-  };
-
-  const handleDislike = async () => {
-    handleJackpotEntry(userId, adsQueue[currentAdIndex]._id); // records the engagement with the ad and keeps count of the number of times the user has rated an ad
-    setDoubleLiked(false);
-    setLiked(false);
-    setDisliked(true);
-    setAdsWatched(adsWatched + 1);
-    const response = await fetch('/api/updateInteractions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        adId: adsQueue[currentAdIndex]._id,
-        userId,
-        doubleLiked: false,
-        liked: false,
-        disliked: true,
-        // increment the number of ads played by the user
-        adsWatched: adsWatched + 1,
-      }),
-    });
-    const data = await response.json();
-
-    // Handle the response data...
+  const showToast = (type, message) => {
+    if (type === 'success') {
+      toast.success(message);
+    } else {
+      toast.error(message);
+    }
   };
 
   return (
@@ -268,11 +242,13 @@ function AdsPlayer() {
               id="ad-video"
               src={adsQueue[currentAdIndex]?.videoUrl}
               controls
+              onClick={handlePlayPause} // Add click to toggle play/pause
+              style={{ cursor: 'pointer' }} // Show pointer to indicate interaction
             />
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <div>
                 <button style={{ margin: '10px' }} onClick={handlePrevious}>
-                  <i class="fas fa-step-backward"></i> Previous
+                  <i className="fas fa-step-backward"></i> Previous
                 </button>
                 <button style={{ margin: '10px' }} onClick={handleSkip}>
                   <i class="fas fa-step-forward"></i> Skip
@@ -284,33 +260,37 @@ function AdsPlayer() {
                     onClick={handleReplay}
                     style={{ color: 'black', padding: '10px' }}
                   >
-                    <i class="fas fa-redo"></i>
+                    <i className="fas fa-redo"></i>
                   </button>
+                  {/* <button
+                    onClick={() => handleInteraction('doubleLike')}
+                    style={{ color: doubleLiked ? 'green' : 'black' }}
+                    disabled={liked || disliked}
+                  >
+                    <i className="fas fa-thumbs-up"></i> Double Like
+                  </button> */}
                   <button
-                    onClick={handleLike}
+                    onClick={() => handleInteraction('like')}
                     style={{
                       color: liked ? 'green' : 'black',
                       padding: '10px',
                     }}
                     disabled={liked || disliked}
                   >
-                    <i class="fas fa-thumbs-up"></i>
+                    <i className="fas fa-thumbs-up"></i>
                   </button>
                   <button
-                    onClick={handleDislike}
+                    onClick={() => handleInteraction('dislike')}
                     style={{
                       color: disliked ? 'red' : 'black',
                       padding: '10px',
                     }}
                     disabled={liked || disliked}
                   >
-                    <i class="fas fa-thumbs-down"></i>
+                    <i className="fas fa-thumbs-down"></i>
                   </button>
-                  <button
-                    onClick={handleNext}
-                    style={{ color: 'black', padding: '10px' }}
-                  >
-                    Next
+                  <button onClick={handleNext} style={{ padding: '10px' }}>
+                    Next <i className="fas fa-step-forward"></i>
                   </button>
                 </div>
               )}
