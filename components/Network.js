@@ -59,18 +59,20 @@ export default function NetworkCard({ networkSize }) {
       <Box
         sx={{
           display: 'flex',
-          justifyContent: 'space-between',
+          justifyContent: 'center',
           alignItems: 'center',
           width: '100%',
         }}
       >
-        <Typography variant="h6">Expand your network</Typography>
+        <Typography variant="h7" component="span">
+          Grow your network:&nbsp;
+        </Typography>
         <Button
           variant="contained"
           onClick={handleInviteFriend}
-          sx={{ padding: '3px 8px', fontSize: '0.525rem' }}
+          sx={{ padding: '3px 6px', fontSize: '0.675rem' }}
         >
-          Invite Friend
+          Invite a Friend
         </Button>
       </Box>
 
