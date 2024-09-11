@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import BalanceCard from './BalanceCard';
+import NetworkCard from './Network';
 import Layout from './Layout';
 import JackpotCard from './JackpotCard';
 import { Grid, Box, Typography } from '@mui/material';
@@ -79,6 +80,15 @@ export default function Mainpage() {
             networkData.inviteesLevel3Count,
           ]}
         />
+      </Box>
+      <Box sx={{ mb: 2 }}>
+        <NetworkCard
+          networkSize={[
+            networkData.inviteesLevel1Count,
+            networkData.inviteesLevel2Count,
+            networkData.inviteesLevel3Count,
+          ]}
+        />{' '}
       </Box>
 
       {/* Jackpot Cards */}
