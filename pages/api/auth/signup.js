@@ -4,8 +4,9 @@ import bcrypt from 'bcrypt';
 
 async function handler(req, res) {
   if (req.method !== 'POST') {
-    return;
+    return res.status(405).json({ message: `${req.method} not supported` });
   }
+
   const {
     f_name: firstName,
     l_name: lastName,
@@ -14,7 +15,7 @@ async function handler(req, res) {
     password,
     phoneNumber,
   } = req.body;
-  console.log(req.body);
+
   if (
     !firstName ||
     firstName.trim() === '' ||
@@ -23,73 +24,39 @@ async function handler(req, res) {
     !password ||
     password.trim().length < 5
   ) {
-    res.status(422).json({ message: 'Validation error.' });
-    return;
+    return res.status(422).json({ message: 'Validation error' });
   }
 
   await db.connect();
 
-  const existingUser = await User.findOne({ username: username });
-
-  if (existingUser) {
-    res.status(422).json({ message: 'User already exists.' });
-    await db.disconnect();
-    return;
-  }
   try {
-    // Find the inviter by invite code, or default to the seed user if not found
-    let inviter;
-
-    if (inviteCode) {
-      console.log(inviteCode);
-      inviter = await User.findOne({ inviteCode: inviteCode });
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(422).json({ message: 'User already exists' });
     }
 
+    // Find the inviter by invite code
+    let inviter = inviteCode ? await User.findOne({ inviteCode }) : null;
     if (!inviter) {
-      console.log('inviter not found');
-      // The invite code could be invalid or missing, so we default to the seed user
-      // Replace 'seedUserInviteCode' with the actual invite code of your seed user
-      inviter = await User.findOne({ inviteCode: 'TD5tkLcdE' });
+      inviter = await User.findOne({ inviteCode: 'TD5tkLcdE' }); // Seed user fallback
     }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 12);
 
     const newUser = new User({
-      username: username,
-      firstName: firstName,
-      lastName: lastName,
-      phoneNumber: phoneNumber,
-      password,
+      username,
+      firstName,
+      lastName,
+      phoneNumber,
+      password: hashedPassword,
       inviter: inviter._id,
     });
 
     const user = await newUser.save();
 
-    console.log('user created successfully');
-
-    // // Update the invitees arrays of the inviter and its ancestors
-    // inviter.inviteesLevel1.push(user._id);
-    // await inviter.save();
-
-    // // Check if the inviter is not the seed user before updating ancestors
-    // if (inviter.inviteCode !== 'TD5tkLcdE') {
-    //   console.log('inviter is not seed user');
-    //   console.log(inviter.inviter);
-    //   if (inviter.inviter) {
-    //     const inviterL2 = await User.findById(inviter.inviter);
-    //     inviterL2.inviteesLevel2.push(user._id);
-    //     await inviterL2.save();
-
-    //     if (inviterL2.inviter) {
-    //       console.log('going to level 3');
-    //       let inviterL3 = await User.findById(inviterL2.inviter);
-    //       inviterL3.inviteesLevel3.push(user._id);
-    //       await inviterL3.save();
-    //     }
-    //   }
-    // }
-
-    await db.disconnect();
-    res.status(201).send({
-      message: 'user created successfully!',
+    res.status(201).json({
+      message: 'User created successfully!',
       _id: user._id,
       f_name: user.firstName,
       inviteCode: user.inviteCode,
@@ -99,8 +66,10 @@ async function handler(req, res) {
       status: user.registrationStatus,
     });
   } catch (error) {
-    console.log(error);
+    console.error('Error creating user:', error);
     res.status(500).json({ error: error.message });
+  } finally {
+    await db.disconnect();
   }
 }
 

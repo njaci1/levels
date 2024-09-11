@@ -5,43 +5,42 @@ import { getToken } from 'next-auth/jwt';
 
 async function handler(req, res) {
   if (req.method !== 'PUT') {
-    return res.status(400).send({ message: `${req.method} not supported` });
+    return res.status(405).json({ message: `${req.method} not supported` });
   }
 
   const user = await getToken({ req });
-  // console.log(user);
   if (!user) {
-    return res.status(401).send({ message: 'signin required' });
+    return res.status(401).json({ message: 'Signin required' });
   }
 
   const { name, email, password } = req.body;
-
   if (
     !name ||
     !email ||
     !email.includes('@') ||
     (password && password.trim().length < 5)
   ) {
-    res.status(422).json({
-      message: 'Input validation error',
-    });
-    return;
+    return res.status(422).json({ message: 'Input validation error' });
   }
 
   await db.connect();
-  const toUpdateUser = await User.findById(user._id);
-  toUpdateUser.name = name;
-  toUpdateUser.email = email;
+  try {
+    const toUpdateUser = await User.findById(user._id);
+    toUpdateUser.name = name;
+    toUpdateUser.email = email;
 
-  if (password) {
-    toUpdateUser.password = bcryptjs.hashSync(password);
+    if (password) {
+      toUpdateUser.password = bcryptjs.hashSync(password);
+    }
+
+    await toUpdateUser.save();
+    res.status(200).json({ message: 'User updated' });
+  } catch (error) {
+    console.error('Error updating user:', error);
+    res.status(500).json({ message: 'Server error' });
+  } finally {
+    await db.disconnect();
   }
-
-  await toUpdateUser.save();
-  await db.disconnect();
-  res.send({
-    message: 'User updated',
-  });
 }
 
 export default handler;

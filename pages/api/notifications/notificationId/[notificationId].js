@@ -9,25 +9,22 @@ export default async function handler(req, res) {
 
   await db.connect();
 
-  switch (method) {
-    case 'GET':
-      try {
-        // find notification using notificationId and update read to true
-
+  try {
+    switch (method) {
+      case 'GET':
         await Notification.findOneAndUpdate(
-          { _id: notificationId }, // find a document with this filter
-          { read: true } // update read to true
+          { _id: notificationId },
+          { read: true }
         );
         res.status(200).json({ success: true });
-        await db.disconnect();
-      } catch (error) {
-        res.status(400).json({ success: false });
-        await db.disconnect();
-      }
-      break;
-    default:
-      res.status(400).json({ success: false });
-      await db.disconnect();
-      break;
+        break;
+      default:
+        res.status(405).json({ success: false, message: 'Method not allowed' });
+        break;
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Server Error' });
+  } finally {
+    await db.disconnect();
   }
 }

@@ -1,18 +1,17 @@
 import createTransaction from '../../../lib/createTransaction';
 
 export default async function handler(req, res) {
-  // // Get session from request
-  // const session = await getToken({ req });
+  const {
+    amount: transactionAmount,
+    userId,
+    transType,
+    phoneNumber,
+  } = req.body;
 
-  // // If no session found, user is not authenticated
-  // if (!session) {
-  //   return res.status(401).json({ error: 'Unauthorized' });
-  // }
-
-  const transactionAmount = req.body.amount;
-  const userId = req.body.userId;
-  const transType = req.body.transType;
-  const phoneNumber = req.body.phoneNumber;
+  // Validate input
+  if (!transactionAmount || !userId || !transType || !phoneNumber) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
 
   try {
     const result = await createTransaction(
@@ -23,10 +22,11 @@ export default async function handler(req, res) {
     );
     if (result) {
       console.log(result);
-      res.status(200).json(result);
+      return res.status(200).json(result);
     }
+    res.status(400).json({ error: 'Transaction creation failed' });
   } catch (error) {
-    console.error(error);
-    res.status(400).json({ error: 'Error creating transaction' });
+    console.error('Error creating transaction:', error);
+    res.status(500).json({ error: 'Server Error' });
   }
 }

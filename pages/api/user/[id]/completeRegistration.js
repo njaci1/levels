@@ -1,6 +1,5 @@
 import db from '../../../../lib/db';
 import User from '../../../../models/User';
-import bcrypt from 'bcrypt';
 import { WelcomeJackpotEntry } from '../../../../models/Jackpots';
 
 export default async function handler(req, res) {
@@ -8,6 +7,10 @@ export default async function handler(req, res) {
     method,
     query: { id },
   } = req;
+
+  if (method !== 'PUT') {
+    return res.status(405).json({ message: 'Method not allowed' });
+  }
 
   await db.connect();
   try {
@@ -17,15 +20,18 @@ export default async function handler(req, res) {
       { new: true }
     );
 
+    if (!user) {
+      throw new Error('User not found');
+    }
+
     await updateInviterNetwork(user);
-    // enter user to welcome jackpot
+
+    // Enter user to the welcome jackpot
     await WelcomeJackpotEntry.create({ userId: user._id });
 
-    res.status(200).send({
-      message: 'Signup completed!',
-    });
+    res.status(200).json({ message: 'Signup completed!' });
   } catch (error) {
-    console.error(error);
+    console.error('Error completing signup:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   } finally {
     await db.disconnect();
@@ -33,76 +39,28 @@ export default async function handler(req, res) {
 }
 
 async function updateInviterNetwork(user) {
-  let inviter = await User.findById(user.inviter);
+  try {
+    const inviter = await User.findById(user.inviter);
+    if (!inviter) return;
 
-  // Check if the inviter is not the seed user before updating ancestors
+    inviter.inviteesLevel1.push(user._id);
+    await inviter.save();
 
-  inviter.inviteesLevel1.push(user._id);
-  await inviter.save();
-  if (inviter.inviteCode !== 'TD5tkLcdE') {
-    console.log('inviter is not seed user');
-    console.log(inviter.inviter);
-    if (inviter.inviter) {
+    if (inviter.inviteCode !== 'TD5tkLcdE') {
       const inviterL2 = await User.findById(inviter.inviter);
-      inviterL2.inviteesLevel2.push(user._id);
-      await inviterL2.save();
+      if (inviterL2) {
+        inviterL2.inviteesLevel2.push(user._id);
+        await inviterL2.save();
 
-      if (inviterL2.inviter) {
-        console.log('going to level 3');
-        let inviterL3 = await User.findById(inviterL2.inviter);
-        inviterL3.inviteesLevel3.push(user._id);
-        await inviterL3.save();
+        const inviterL3 = await User.findById(inviterL2.inviter);
+        if (inviterL3) {
+          inviterL3.inviteesLevel3.push(user._id);
+          await inviterL3.save();
+        }
       }
     }
-    console.log('network updated');
+  } catch (error) {
+    console.error('Error updating inviter network:', error);
+    throw new Error('Network update failed');
   }
 }
-
-// export default async function handler(req, res) {
-//   const {
-//     method,
-//     query: { id },
-//   } = req;
-
-//   await db.connect();
-//   try {
-//     // Find the user and update their registrationStatus
-//     console.log(id);
-//     const user = await User.findByIdAndUpdate(
-//       id,
-//       { registrationStatus: 'complete' },
-//       { new: true }
-//     );
-
-//     let inviter = await User.findById(user.inviter);
-
-//     // Check if the inviter is not the seed user before updating ancestors
-
-//     inviter.inviteesLevel1.push(user._id);
-//     await inviter.save();
-//     if (inviter.inviteCode !== 'TD5tkLcdE') {
-//       console.log('inviter is not seed user');
-//       console.log(inviter.inviter);
-//       if (inviter.inviter) {
-//         const inviterL2 = await User.findById(inviter.inviter);
-//         inviterL2.inviteesLevel2.push(user._id);
-//         await inviterL2.save();
-
-//         if (inviterL2.inviter) {
-//           console.log('going to level 3');
-//           let inviterL3 = await User.findById(inviterL2.inviter);
-//           inviterL3.inviteesLevel3.push(user._id);
-//           await inviterL3.save();
-//         }
-//       }
-//       console.log('network updated');
-//     }
-//     res.status(200).send({
-//       message: 'Signup completed!',
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ error: error.message });
-//   }
-//   await db.disconnect();
-// }

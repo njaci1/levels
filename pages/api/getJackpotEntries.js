@@ -8,46 +8,46 @@ import {
 } from '../../models/Jackpots';
 
 export default async function handler(req, res) {
-  // Get session from request
   const session = await getSession({ req });
+
   if (!session) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
+
   await db.connect();
 
-  // Set Thursday as the start of the week
-  moment.updateLocale('en', {
-    week: {
-      dow: 4,
-    },
-  });
+  try {
+    moment.updateLocale('en', { week: { dow: 4 } });
 
-  // Get the start and end of the current week
-  const startOfWeek = moment().startOf('week').toDate();
-  const endOfWeek = moment().endOf('week').toDate();
+    const startOfWeek = moment().startOf('week').toDate();
+    const endOfWeek = moment().endOf('week').toDate();
 
-  // Get the start and end of the current month
-  const startOfMonth = moment().startOf('month').toDate();
-  const endOfMonth = moment().endOf('month').toDate();
+    const startOfMonth = moment().startOf('month').toDate();
+    const endOfMonth = moment().endOf('month').toDate();
 
-  // Get the start and end of the current year
-  const startOfYear = moment().startOf('year').toDate();
-  const endOfYear = moment().endOf('year').toDate();
+    const startOfYear = moment().startOf('year').toDate();
+    const endOfYear = moment().endOf('year').toDate();
 
-  // fetch and count jackpot entries per jackpot
+    const weeklyEntries = await WeeklyJackpotEntry.countDocuments({
+      userId: session.user._id,
+      timestamp: { $gte: startOfWeek, $lte: endOfWeek },
+    });
 
-  const weeklyEntries = await WeeklyJackpotEntry.countDocuments({
-    userId: session.user._id,
-    timestamp: { $gte: startOfWeek, $lte: endOfWeek },
-  });
-  const monthlyEntries = await MonthlyJackpotEntry.countDocuments({
-    userId: session.user._id,
-    timestamp: { $gte: startOfMonth, $lte: endOfMonth },
-  });
-  const annualEntries = await AnnualJackpotEntry.countDocuments({
-    userId: session.user._id,
-    timestamp: { $gte: startOfYear, $lte: endOfYear },
-  });
+    const monthlyEntries = await MonthlyJackpotEntry.countDocuments({
+      userId: session.user._id,
+      timestamp: { $gte: startOfMonth, $lte: endOfMonth },
+    });
 
-  res.status(200).json({ weeklyEntries, monthlyEntries, annualEntries });
+    const annualEntries = await AnnualJackpotEntry.countDocuments({
+      userId: session.user._id,
+      timestamp: { $gte: startOfYear, $lte: endOfYear },
+    });
+
+    res.status(200).json({ weeklyEntries, monthlyEntries, annualEntries });
+  } catch (error) {
+    console.error('Error fetching jackpot entries:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  } finally {
+    await db.disconnect();
+  }
 }

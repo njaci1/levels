@@ -9,20 +9,20 @@ export default async function handler(req, res) {
 
   await db.connect();
 
-  switch (method) {
-    case 'GET':
-      try {
+  try {
+    switch (method) {
+      case 'GET':
         const notifications = await Notification.find({ userId, read: false });
         res.status(200).json({ success: true, data: notifications });
-        await db.disconnect();
-      } catch (error) {
-        res.status(400).json({ success: false });
-        await db.disconnect();
-      }
-      break;
-    default:
-      res.status(400).json({ success: false });
-      await db.disconnect();
-      break;
+        break;
+      default:
+        res.status(405).json({ success: false, message: 'Method Not Allowed' });
+        break;
+    }
+  } catch (error) {
+    console.error('Error fetching notifications:', error);
+    res.status(500).json({ success: false, message: 'Server Error' });
+  } finally {
+    await db.disconnect();
   }
 }

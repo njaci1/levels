@@ -1,5 +1,5 @@
 import db from '../../../lib/db';
-import Ad from '../../../models/AdsCollection'; // Import the Ad model
+import Ad from '../../../models/AdsCollection';
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
@@ -7,17 +7,17 @@ export default async function handler(req, res) {
       // Fetch ads from the database
       await db.connect();
       const ads = await Ad.find({ approvalStatus: 'approved' });
-      res.status(200).json(ads); // Send the fetched ads as JSON response
+      res.status(200).json(ads);
     } catch (error) {
       console.error('Error fetching ads:', error);
       res.status(500).json({ message: 'Internal server error' });
     }
   } else if (req.method === 'POST') {
     try {
-      // Fetch ads with pending status from the database
+      // Fetch ads with pending status from the database for review
       await db.connect();
       const ads = await Ad.find({ approvalStatus: 'pending' });
-      res.status(200).json(ads); // Send the fetched ads as JSON response
+      res.status(200).json(ads);
     } catch (error) {
       console.error('Error fetching ads:', error);
       res.status(500).json({ message: 'Internal server error' });

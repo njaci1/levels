@@ -3,30 +3,34 @@ import Interaction from '../../models/AdInteractions';
 import User from '../../models/User';
 
 export default async function handler(req, res) {
-  if (req.method === 'POST') {
-    const { adId, userId, doubleLiked, liked, disliked, adsWatched } = req.body;
+  if (req.method !== 'POST') {
+    res.setHeader('Allow', ['POST']);
+    return res.status(405).end(`Method ${req.method} Not Allowed`);
+  }
 
-    // Connect to the database
+  const { adId, userId, doubleLiked, liked, disliked, adsWatched } = req.body;
+
+  try {
     await db.connect();
 
-    // Try to find an existing interaction
-    let interaction = await Interaction.findOne({ adId, userId });
-
-    // update the user ads watched by finding the user and updating the ads watched
+    // Update the user's ads watched count
     await User.findOneAndUpdate(
       { _id: userId },
       { $set: { adsWatched: adsWatched } }
     );
 
+    // Check if interaction exists
+    let interaction = await Interaction.findOne({ adId, userId });
+
     if (interaction) {
-      // If an interaction exists, update it
+      // Update interaction if it exists
       interaction.doubleLiked = doubleLiked;
       interaction.liked = liked;
       interaction.disliked = disliked;
       interaction.viewed += 1;
       await interaction.save();
     } else {
-      // If no interaction exists, create a new one
+      // Create a new interaction if it doesn't exist
       interaction = await Interaction.create({
         adId,
         userId,
@@ -38,10 +42,10 @@ export default async function handler(req, res) {
     }
 
     res.status(200).json(interaction);
-  } else {
-    // Handle any other HTTP methods
-    res.setHeader('Allow', ['POST']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
+  } catch (error) {
+    console.error('Error handling interaction:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  } finally {
+    await db.disconnect();
   }
-  db.disconnect();
 }

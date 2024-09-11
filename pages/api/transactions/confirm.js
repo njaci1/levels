@@ -4,61 +4,60 @@ import Transactions from '../../../models/Transactions';
 
 const handler = async (req, res) => {
   if (req.method !== 'POST') {
-    return res.status(405).end();
+    return res.status(405).json({ message: 'Method not allowed' });
   }
-  const obj = JSON.parse(req.body);
 
-  const requestID = obj.Body.stkCallback.CheckoutRequestID;
-  const resultCode = obj.Body.stkCallback.ResultCode;
-  const mpesaReceiptNumber =
-    obj.Body.stkCallback.CallbackMetadata.Item[1].Value;
-  res.send({ ResultCode: '0', ResultDesc: 'Accepted' });
+  const obj = JSON.parse(req.body);
+  const {
+    CheckoutRequestID: requestID,
+    ResultCode: resultCode,
+    CallbackMetadata,
+  } = obj.Body.stkCallback;
+  const mpesaReceiptNumber = CallbackMetadata.Item[1].Value;
+
+  res.status(200).json({ ResultCode: '0', ResultDesc: 'Accepted' });
   console.log(`callback received for ${requestID}`);
 
   await db.connect();
 
-  const entry = await Transactions.findOne({ paymentRequestID: requestID });
-  if (entry) {
-    if (resultCode == 0) {
-      // update payment details in the database
+  try {
+    const entry = await Transactions.findOne({ paymentRequestID: requestID });
+
+    if (!entry) {
+      console.log('Transaction not found');
+      return;
+    }
+
+    if (resultCode === 0) {
       entry.paymentResultCode = resultCode;
       entry.mpesaReceiptNumber = mpesaReceiptNumber;
       entry.status = 'confirmed';
       await entry.save();
-      console.log('confirmation successful');
-      await db.disconnect();
-      // trigger commission payment to all levels
-      const amount = 10000;
-      const result = await distributeCommission(
-        amount, // hardcode for now, to be replaced with entry.transactionAmount
-        // entry.transactionAmount,
-        entry.user
-      );
+
+      console.log('Payment confirmation successful');
+
+      const result = await distributeCommission(10000, entry.user); // hardcoded for now
       if (result) {
-        await db.connect();
         entry.commissions = {
           level1: result.level1Inviter,
           level2: result.level2Inviter,
           level3: result.level3Inviter,
         };
         await entry.save();
-        await db.disconnect();
         console.log(result);
       }
     } else {
       entry.paymentResultCode = resultCode;
       entry.status = 'failed';
-
       await entry.save();
-      console.log('confirmation failed');
-      await db.disconnect();
+      console.log('Payment confirmation failed');
     }
-  } else {
-    console.log('transaction not found');
+  } catch (error) {
+    console.error('Error processing transaction:', error);
+    res.status(500).json({ message: 'Server Error' });
+  } finally {
     await db.disconnect();
   }
-
-  await db.disconnect();
 };
 
 export default handler;
