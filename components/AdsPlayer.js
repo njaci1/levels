@@ -251,7 +251,7 @@ function AdsPlayer() {
                   <i className="fas fa-step-backward"></i> Previous
                 </button>
                 <button style={{ margin: '10px' }} onClick={handleSkip}>
-                  <i class="fas fa-step-forward"></i> Skip
+                  <i className="fas fa-step-forward"></i> Skip
                 </button>
               </div>
               {showButtons && (
