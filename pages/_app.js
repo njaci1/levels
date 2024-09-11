@@ -9,7 +9,7 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <Component {...pageProps} />
-      <ToastContainer position="top-right" autoClose={5000} />
+      <ToastContainer autoClose={7000} />
     </SessionProvider>
   );
 }

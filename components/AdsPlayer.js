@@ -259,7 +259,7 @@ function AdsPlayer() {
 
   return (
     <div>
-      <ToastContainer position="top-right" autoClose={5000} />
+      <ToastContainer autoClose={5000} />
       {adsQueue ? (
         adsQueue.length > 0 ? (
           <div style={{ position: 'relative' }}>

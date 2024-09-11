@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     try {
       // Fetch ads from the database
       await db.connect();
-      const ads = await Ad.find({});
+      const ads = await Ad.find({ approvalStatus: 'approved' });
       res.status(200).json(ads); // Send the fetched ads as JSON response
     } catch (error) {
       console.error('Error fetching ads:', error);
