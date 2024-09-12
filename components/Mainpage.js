@@ -92,9 +92,9 @@ export default function Mainpage() {
       </Box>
 
       {/* Jackpot Cards */}
-      <Grid container spacing={3}>
+      <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Typography variant="h5" align="center" gutterBottom>
+          <Typography variant="h3" align="center" sx={{ mb: 0 }}>
             Active Jackpots
           </Typography>
         </Grid>

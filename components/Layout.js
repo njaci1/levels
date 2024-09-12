@@ -86,7 +86,9 @@ export default function Layout({ title, children }) {
             )}
           </nav>
         </header>
-        <main className="container m-auto mt-4 px-4">{children}</main>
+        <main className="container mx-auto px-4 flex-grow overflow-y-auto">
+          {children}
+        </main>
         <footer className="flex h-10 justify-center items-center shadow-inner">
           <p>Copyright © </p>
         </footer>

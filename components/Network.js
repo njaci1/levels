@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   Card,
-  CardContent,
   Typography,
   Button,
-  Grid,
-  styled,
   Box,
   Table,
   TableBody,
@@ -16,29 +13,13 @@ import {
 } from '@mui/material';
 import { useSession } from 'next-auth/react';
 
-import axios from 'axios';
-
-const Item = styled(Card)(({ theme }) => ({
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
-
-const StyledCard = styled(Card)({
-  margin: '1em',
-  padding: '1em',
-  backgroundColor: '#f5f5f5',
-  borderRadius: '15px',
-  boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
-});
-
 export default function NetworkCard({ networkSize }) {
   const { data: session } = useSession();
+
   const handleInviteFriend = () => {
-    const inviteLink = `http://localhost:3000/register?inviteCode=${session.user.inviteCode}&redirect=/`;
-    let whatsappMessage = `Hey, I would like to invite you to join this cool platform. Please use the following link to register:${inviteLink}`;
-    let whatsappUrl = `https://wa.me/?text=${encodeURIComponent(
+    const inviteLink = `${process.env.NEXT_PUBLIC_BASE_URL}/register?inviteCode=${session?.user?.inviteCode}&redirect=/`;
+    const whatsappMessage = `Hey, I would like to invite you to join this cool platform. Please use the following link to register: ${inviteLink}`;
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(
       whatsappMessage
     )}`;
     window.open(whatsappUrl);
@@ -51,7 +32,7 @@ export default function NetworkCard({ networkSize }) {
         flexDirection: 'column',
         alignItems: 'center',
         gap: 2,
-        maxWidth: '30vw', // Adjust the table size to occupy 40% of the window width
+        width: { xs: '90vw', sm: '60vw', md: '40vw' }, // Adjust the width for different screen sizes
         margin: 'auto',
       }}
     >
@@ -62,22 +43,32 @@ export default function NetworkCard({ networkSize }) {
           justifyContent: 'center',
           alignItems: 'center',
           width: '100%',
+          gap: 1,
+          flexWrap: 'wrap', // To handle small screens better
         }}
       >
-        <Typography variant="h7" component="span">
+        <Typography
+          variant="h6"
+          component="span"
+          sx={{ fontSize: { xs: '0.9rem', sm: '1rem' } }}
+        >
           Grow your network:&nbsp;
         </Typography>
         <Button
           variant="contained"
           onClick={handleInviteFriend}
-          sx={{ padding: '3px 6px', fontSize: '0.675rem' }}
+          sx={{
+            padding: { xs: '3px 6px', sm: '4px 8px' },
+            fontSize: { xs: '0.7rem', sm: '0.8rem' },
+            minWidth: 'auto',
+          }}
         >
           Invite a Friend
         </Button>
       </Box>
 
       <TableContainer>
-        <Table size="small">
+        <Table size="small" sx={{ width: '100%' }}>
           <TableHead>
             <TableRow>
               <TableCell>

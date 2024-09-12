@@ -13,6 +13,8 @@ function AdsPlayer() {
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
   // const [canProceed, setCanProceed] = useState(false); // Disable next ad until rated
+  const [isVideoVisible, setIsVideoVisible] = useState(false);
+  const observerRef = useRef(null); // Reference to IntersectionObserver
   const videoRef = useRef(null);
   const { data: session } = useSession();
   const [adsWatched, setAdsWatched] = useState(0);
@@ -60,6 +62,38 @@ function AdsPlayer() {
       console.error('Error fetching interaction data:', error);
     }
   };
+
+  // Lazy loading: IntersectionObserver to detect if video is in the viewport
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        setIsVideoVisible(entry.isIntersecting);
+      },
+      { threshold: 0.5 } // Trigger when 50% of the video is visible
+    );
+
+    if (videoRef.current) {
+      observer.observe(videoRef.current);
+    }
+
+    observerRef.current = observer;
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, []);
+
+  // Play or pause video based on visibility
+  useEffect(() => {
+    if (isVideoVisible && videoRef.current) {
+      videoRef.current.play();
+    } else if (!isVideoVisible && videoRef.current) {
+      videoRef.current.pause();
+    }
+  }, [isVideoVisible]);
 
   useEffect(() => {
     if (registrationStatus === 'pending' && adsWatched >= 3) {
@@ -136,7 +170,10 @@ function AdsPlayer() {
       const video = videoRef.current;
       if (video) {
         video.onloadeddata = () => {
-          video.play(); // Autoplay the next video
+          video.muted = true;
+          video.play().catch((error) => {
+            console.error('Autoplay failed:', error);
+          });
         };
       }
       return newIndex;
@@ -149,7 +186,10 @@ function AdsPlayer() {
       const newIndex = prevIndex + 1 < adsQueue.length ? prevIndex + 1 : 0;
       const video = videoRef.current;
       if (video) {
-        video.onloadeddata = () => video.play();
+        video.onloadeddata = () => {
+          video.muted = true;
+          video.play(); // Autoplay the next video
+        };
       }
       fetchInteractionData(adsQueue[newIndex]._id);
       updateViews(prevIndex);
@@ -242,16 +282,18 @@ function AdsPlayer() {
               id="ad-video"
               src={adsQueue[currentAdIndex]?.videoUrl}
               controls
-              onClick={handlePlayPause} // Add click to toggle play/pause
+              preload="none"
+              poster="/images/placeholder.jpeg"
+              onClick={handlePlayPause} // makes clicking in the video to pause/resume
               style={{ cursor: 'pointer' }} // Show pointer to indicate interaction
             />
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <div>
                 <button style={{ margin: '10px' }} onClick={handlePrevious}>
-                  <i className="fas fa-step-backward"></i> Previous
+                  <i className="fas fa-step-backward"></i>{' '}
                 </button>
                 <button style={{ margin: '10px' }} onClick={handleSkip}>
-                  <i className="fas fa-step-forward"></i> Skip
+                  <i className="fas fa-step-forward"></i>{' '}
                 </button>
               </div>
               {showButtons && (
