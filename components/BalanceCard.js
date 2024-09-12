@@ -30,6 +30,7 @@ const StyledCard = styled(Card)({
 export default function BalanceCard({ balance }) {
   const { data: session, status } = useSession();
   const loading = status === 'loading';
+  console.log('balance: ', balance);
 
   const handleCashOut = () => {
     console.log('Cash Out button clicked');

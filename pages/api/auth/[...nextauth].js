@@ -19,6 +19,7 @@ export default NextAuth({
     async session({ session, token }) {
       session.user = {
         _id: token._id,
+        name: token.name,
         isAdmin: token.isAdmin,
         inviteCode: token.inviteCode,
         phoneNumber: token.phoneNumber,
