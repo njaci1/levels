@@ -116,12 +116,13 @@ const getNextDrawDate = (name) => {
 
 const JackpotCard = ({ name, amount, entries }) => {
   const drawDate = getNextDrawDate(name);
-  const formattedAmount = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'KES',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
+  const formattedAmount =
+    new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'KES',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount) * 1000;
 
   return (
     <StyledCard>
