@@ -20,10 +20,10 @@ export default function Hello() {
       .then((response) => response.json())
       .then((data) => {
         setJackpots({
-          joinersTotal: data.joinersTotal,
-          weeklyTotal: data.weeklyTotal,
-          monthlyTotal: data.monthlyTotal,
-          annualTotal: data.annualTotal,
+          joinersTotal: data.joinersTotal * 1000,
+          weeklyTotal: data.weeklyTotal * 1000,
+          monthlyTotal: data.monthlyTotal * 1000,
+          annualTotal: data.annualTotal * 1000,
         });
       });
   }, []);
@@ -40,7 +40,15 @@ export default function Hello() {
           </Typography>
           <Typography variant="h6">
             Watch ads for a chance to win this week&apos;s jackpot of{' '}
-            <strong>KSH {jackpots.weeklyTotal}</strong>.
+            <strong
+              style={{
+                color: '#b8860b', // Darker shade of gold
+                fontSize: '1.2rem', // Slightly larger font size
+                fontWeight: 'bold',
+              }}
+            >
+              KSH {jackpots.weeklyTotal}
+            </strong>
           </Typography>
           <Button
             href={`/register?inviteCode=&redirect=${redirect || '/'}`}
