@@ -13,7 +13,7 @@ export default NextAuth({
       if (user) {
         token = { ...token, ...user }; // Merge user info into token
       }
-      console.log('token:', token);
+
       return token;
     },
     async session({ session, token }) {
@@ -25,7 +25,7 @@ export default NextAuth({
         phoneNumber: token.phoneNumber,
         registrationStatus: token.registrationStatus,
       };
-      console.log('session:', session);
+
       return session;
     },
   },

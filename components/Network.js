@@ -15,7 +15,6 @@ import { useSession } from 'next-auth/react';
 
 export default function NetworkCard({ networkSize }) {
   const { data: session } = useSession();
-  console.log('networkSize: ', networkSize);
 
   const handleInviteFriend = () => {
     const inviteLink = `${process.env.NEXT_PUBLIC_BASE_URL}/register?inviteCode=${session?.user?.inviteCode}&redirect=/`;
@@ -75,7 +74,7 @@ export default function NetworkCard({ networkSize }) {
               <TableCell>
                 <strong>Network Level</strong>
               </TableCell>
-              <TableCell align="right">
+              <TableCell align="center">
                 <strong>No. Invited</strong>
               </TableCell>
             </TableRow>
