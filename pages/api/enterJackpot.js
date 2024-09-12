@@ -33,17 +33,17 @@ export default async function handler(req, res) {
           await entry.save();
 
           // If the count reaches 10, add an entry to the weekly jackpot
-          if (entry.count === 10 || entry.count % 10 === 0) {
+          if (entry.count === 2 || entry.count % 2 === 0) {
             await WeeklyJackpotEntry.create({ userId });
           }
 
           // If the count reaches 20, add an entry to the monthly jackpot
-          if (entry.count === 20 || entry.count % 20 === 0) {
+          if (entry.count === 3 || entry.count % 3 === 0) {
             await MonthlyJackpotEntry.create({ userId });
           }
 
           // If the count reaches 30, add an entry to the annual jackpot
-          if (entry.count === 30 || entry.count % 30 === 0) {
+          if (entry.count === 5 || entry.count % 5 === 0) {
             await AnnualJackpotEntry.create({ userId });
           }
         } else {
