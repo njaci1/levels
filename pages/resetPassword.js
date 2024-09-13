@@ -49,7 +49,7 @@ export default function ResetPasswordScreen() {
     }
   };
   return (
-    <Layout title="Create Account">
+    <Layout title="Reset Password">
       <form
         className="max-auto max-w-screen-md"
         onSubmit={handleSubmit(submitHandler)}
