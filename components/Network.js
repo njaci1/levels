@@ -85,7 +85,7 @@ export default function NetworkCard({ networkSize }) {
                 <TableCell component="th" scope="row">
                   Level {level}
                 </TableCell>
-                <TableCell align="right">{networkSize[level - 1]}</TableCell>
+                <TableCell align="center">{networkSize[level - 1]}</TableCell>
               </TableRow>
             ))}
           </TableBody>
