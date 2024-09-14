@@ -12,7 +12,6 @@ export default function LoginScreen() {
   const { data: session } = useSession();
   const router = useRouter();
   const { redirect, inviteCode } = router.query;
-  console.log(inviteCode);
   const {
     handleSubmit,
     register,
@@ -23,7 +22,6 @@ export default function LoginScreen() {
 
   useEffect(() => {
     if (session?.user) {
-      console.log(session.user);
       router.push(redirect || '/');
     }
     if (inviteCode) {
@@ -54,11 +52,9 @@ export default function LoginScreen() {
         password,
       });
       if (result.error) {
+        console.log(result);
         toast.error(result.error);
       }
-      //  else {
-      //   router.push(redirect || '/');
-      // }
     } catch (err) {
       toast.error(getError(err));
     }

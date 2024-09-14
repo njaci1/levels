@@ -6,7 +6,6 @@ async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: `${req.method} not supported` });
   }
-
   const {
     f_name: firstName,
     l_name: lastName,
@@ -49,7 +48,7 @@ async function handler(req, res) {
       firstName,
       lastName,
       phoneNumber,
-      password: hashedPassword,
+      password,
       inviter: inviter._id,
     });
 
