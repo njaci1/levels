@@ -257,7 +257,6 @@ function AdsPlayer() {
         body: JSON.stringify({ userId, adId }),
       });
       const data = await response.json();
-      console.log(data);
     } catch (error) {
       console.error('Error entering jackpot:', error);
     }
