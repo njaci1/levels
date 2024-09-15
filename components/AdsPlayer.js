@@ -15,6 +15,7 @@ function AdsPlayer() {
   // const [canProceed, setCanProceed] = useState(false); // Disable next ad until rated
   const [isVideoVisible, setIsVideoVisible] = useState(false);
   const observerRef = useRef(null); // Reference to IntersectionObserver
+  const [muteState, setMuteState] = useState(false); // Track mute state across videos
   const videoRef = useRef(null);
   const { data: session } = useSession();
   const [adsWatched, setAdsWatched] = useState(0);
@@ -42,6 +43,12 @@ function AdsPlayer() {
 
     fetchAds();
   }, []);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = muteState;
+    }
+  }, [muteState]);
 
   const fetchInteractionData = async (adId) => {
     try {
@@ -170,10 +177,8 @@ function AdsPlayer() {
       const video = videoRef.current;
       if (video) {
         video.onloadeddata = () => {
-          video.muted = true;
-          video.play().catch((error) => {
-            console.error('Autoplay failed:', error);
-          });
+          video.muted = muteState; // Use mute state across videos
+          video.play();
         };
       }
       return newIndex;
@@ -187,7 +192,7 @@ function AdsPlayer() {
       const video = videoRef.current;
       if (video) {
         video.onloadeddata = () => {
-          video.muted = true;
+          video.muted = muteState; // Use mute state across videos
           video.play(); // Autoplay the next video
         };
       }
@@ -269,6 +274,12 @@ function AdsPlayer() {
       toast.error(message);
     }
   };
+  // const toggleMute = () => {
+  //   const video = videoRef.current;
+  //   video.muted = !video.muted;
+
+  //   setMuteState(!video.muted); // Update mute state globally
+  // };
 
   return (
     <div>
@@ -281,10 +292,12 @@ function AdsPlayer() {
               id="ad-video"
               src={adsQueue[currentAdIndex]?.videoUrl}
               controls
+              muted={muteState}
               preload="none"
               poster="/images/placeholder.jpeg"
               onClick={handlePlayPause} // makes clicking in the video to pause/resume
               style={{ cursor: 'pointer' }} // Show pointer to indicate interaction
+              // onVolumeChange={toggleMute} // Handle user unmute/mute
             />
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <div>
