@@ -73,7 +73,7 @@ export default function Mainpage() {
       <Box
         sx={{
           position: 'fixed',
-          top: 50, // Stick to the top
+          top: 45, // Stick to the top
           left: 0, // Align to the left
           right: 0, // Align to the right (full width)
           zIndex: 1000,
