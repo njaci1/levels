@@ -1,4 +1,4 @@
-import bcryptjs from 'bcryptjs';
+import bcrypt from 'bcrypt';
 import User from '../../../models/User';
 import db from '../../../lib/db';
 
@@ -8,6 +8,7 @@ async function handler(req, res) {
   }
 
   const { email, password, code } = req.body;
+  console.log({ email, password, code });
 
   if (!code || !email || (password && password.trim().length < 5)) {
     return res.status(422).json({ message: 'Input validation error' });
@@ -16,10 +17,12 @@ async function handler(req, res) {
   await db.connect();
 
   try {
-    const toUpdateUser = await User.findOne({ email });
+    const toUpdateUser = await User.findOne({ username: email });
 
-    if (toUpdateUser && toUpdateUser.passwordResetCode === code) {
-      toUpdateUser.password = bcryptjs.hashSync(password);
+    console.log({ toUpdateUser });
+
+    if (toUpdateUser && toUpdateUser.resetCode == code) {
+      toUpdateUser.password = password;
       await toUpdateUser.save();
       res.status(200).json({ message: 'Password updated successfully!' });
     } else {

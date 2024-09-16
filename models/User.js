@@ -24,6 +24,7 @@ const UserSchema = new mongoose.Schema(
     withdrawals: { type: Number, default: 0 },
     registrationStatus: { type: String, default: 'pending' },
     adsWatched: { type: Number, default: 0 },
+    resetCode: { type: String },
   },
   {
     timestamps: true,
