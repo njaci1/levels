@@ -286,7 +286,15 @@ function AdsPlayer() {
       <ToastContainer autoClose={5000} />
       {adsQueue ? (
         adsQueue.length > 0 ? (
-          <div style={{ position: 'relative' }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              overflowY: 'auto',
+              height: '100vh',
+              position: 'relative',
+            }}
+          >
             <video
               ref={videoRef}
               id="ad-video"
@@ -296,8 +304,12 @@ function AdsPlayer() {
               preload="none"
               poster="/images/placeholder.jpeg"
               onClick={handlePlayPause} // makes clicking in the video to pause/resume
-              style={{ cursor: 'pointer' }} // Show pointer to indicate interaction
-              // onVolumeChange={toggleMute} // Handle user unmute/mute
+              style={{
+                cursor: 'pointer',
+                width: '100vw', // Full width of the viewport
+                height: '100vh', // Full height of the viewport
+                objectFit: 'cover', // Make sure the video covers the screen without distortion
+              }}
             />
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <div>

@@ -19,11 +19,11 @@ function Ads() {
       {session ? (
         <Container maxWidth="md">
           <Box my={4}>
-            <Typography variant="h4" component="h1" gutterBottom>
+            {/* <Typography variant="h4" component="h1" gutterBottom>
               Ads of the day
-            </Typography>
+            </Typography> */}
             <Typography variant="body1" gutterBottom>
-              Rate this ad with a{' '}
+              {/* Rate the videos with a{' '}
               <span style={{ display: 'inline-flex', alignItems: 'center' }}>
                 <span style={{ display: 'inline-flex', alignItems: 'center' }}>
                   <ThumbsUp />
@@ -32,8 +32,8 @@ function Ads() {
                 <span style={{ display: 'inline-flex' }}>
                   <ThumbsDown />
                 </span>
-              </span>
-              for a chance to win this week&apos;s jackpot.
+              </span> */}
+              Rate the Ads for a chance to win the current jackpots.
             </Typography>
             <Box my={2}>
               <Paper elevation={3}>

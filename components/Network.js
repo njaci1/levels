@@ -48,9 +48,13 @@ export default function NetworkCard({ networkSize }) {
         }}
       >
         <Typography
-          variant="h7"
+          variant="h8"
           component="span"
-          sx={{ fontSize: { xs: '0.9rem', sm: '1rem' } }}
+          sx={{
+            fontSize: { xs: '1.1rem', sm: '1.3rem' },
+            fontWeight: 'bold',
+            color: '#333',
+          }}
         >
           Grow your network:&nbsp;
         </Typography>
@@ -59,7 +63,7 @@ export default function NetworkCard({ networkSize }) {
           onClick={handleInviteFriend}
           sx={{
             padding: { xs: '3px 6px', sm: '4px 8px' },
-            fontSize: { xs: '0.7rem', sm: '0.8rem' },
+            fontSize: { xs: '0.75rem', sm: '0.85rem' }, // Slightly smaller for contrast
             minWidth: 'auto',
             backgroundColor: '#5D3FD3',
           }}
