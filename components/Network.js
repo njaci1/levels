@@ -48,7 +48,7 @@ export default function NetworkCard({ networkSize }) {
         }}
       >
         <Typography
-          variant="h6"
+          variant="h5"
           component="span"
           sx={{ fontSize: { xs: '0.9rem', sm: '1rem' } }}
         >
@@ -61,6 +61,7 @@ export default function NetworkCard({ networkSize }) {
             padding: { xs: '3px 6px', sm: '4px 8px' },
             fontSize: { xs: '0.7rem', sm: '0.8rem' },
             minWidth: 'auto',
+            backgroundColor: '#5D3FD3',
           }}
         >
           Invite a Friend

@@ -89,7 +89,11 @@ export default function BalanceCard({ balance }) {
         Balance: KES <span id="total-winnings">{Math.floor(balance)} </span>
         <Button
           variant="contained"
-          sx={{ padding: '2px 4px', fontSize: '0.525rem' }}
+          sx={{
+            padding: '2px 4px',
+            fontSize: '0.525rem',
+            backgroundColor: '#56BD00 ',
+          }}
         >
           Cash Out
         </Button>
