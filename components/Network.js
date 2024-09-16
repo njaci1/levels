@@ -48,7 +48,7 @@ export default function NetworkCard({ networkSize }) {
         }}
       >
         <Typography
-          variant="h4"
+          variant="h7"
           component="span"
           sx={{ fontSize: { xs: '0.9rem', sm: '1rem' } }}
         >
