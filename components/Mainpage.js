@@ -69,8 +69,19 @@ export default function Mainpage() {
 
   return (
     <Layout>
-      {/* Mobile-First Design for Balance */}
-      <Box sx={{ mb: 2 }}>
+      {/* Fixed Header with Balance and Network */}
+      <Box
+        sx={{
+          position: 'fixed',
+          top: 40, // Stick to the top
+          left: 0, // Align to the left
+          right: 0, // Align to the right (full width)
+          zIndex: 1000,
+          backgroundColor: 'white',
+          paddingBottom: '10px',
+          paddingTop: '10px',
+        }}
+      >
         <BalanceCard
           balance={networkData.balance}
           status={networkData.status}
@@ -80,55 +91,53 @@ export default function Mainpage() {
             networkData.inviteesLevel3Count,
           ]}
         />
-      </Box>
-      <Box sx={{ mb: 2 }}>
         <NetworkCard
           networkSize={[
             networkData.inviteesLevel1Count,
             networkData.inviteesLevel2Count,
             networkData.inviteesLevel3Count,
           ]}
-        />{' '}
+        />
+        <Typography
+          variant="h3"
+          align="center"
+          sx={{ mb: 0, marginTop: '30px' }}
+        >
+          Active Jackpots
+        </Typography>
       </Box>
 
-      {/* Jackpot Cards */}
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Typography variant="h3" align="center" sx={{ mb: 0 }}>
-            Active Jackpots
-          </Typography>
+      {/* Jackpot Cards with scrollable area */}
+      <Box sx={{ marginTop: '290px' }}>
+        {' '}
+        {/* Adjust this value to create space below the fixed section */}
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6} md={4}>
+            <JackpotCard
+              name="Weekly"
+              amount={jackpots.weekly}
+              entries={jackpotEntries.weekly}
+              drawDate={'Fri 8 PM'}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <JackpotCard
+              name="Monthly"
+              amount={jackpots.monthly}
+              entries={jackpotEntries.monthly}
+              drawDate={'1st Sat'}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <JackpotCard
+              name="Annual"
+              amount={jackpots.annual}
+              entries={jackpotEntries.annual}
+              drawDate={'1st Jan'}
+            />
+          </Grid>
         </Grid>
-
-        {/* Weekly Jackpot */}
-        <Grid item xs={12} sm={6} md={4}>
-          <JackpotCard
-            name="Weekly"
-            amount={jackpots.weekly}
-            entries={jackpotEntries.weekly}
-            drawDate={'Fri 8 PM'}
-          />
-        </Grid>
-
-        {/* Monthly Jackpot */}
-        <Grid item xs={12} sm={6} md={4}>
-          <JackpotCard
-            name="Monthly"
-            amount={jackpots.monthly}
-            entries={jackpotEntries.monthly}
-            drawDate={'1st Sat'}
-          />
-        </Grid>
-
-        {/* Annual Jackpot */}
-        <Grid item xs={12} sm={6} md={4}>
-          <JackpotCard
-            name="Annual"
-            amount={jackpots.annual}
-            entries={jackpotEntries.annual}
-            drawDate={'1st Jan'}
-          />
-        </Grid>
-      </Grid>
+      </Box>
     </Layout>
   );
 }

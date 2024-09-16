@@ -84,7 +84,7 @@ export default function BalanceCard({ balance }) {
         gap: 2,
       }}
     >
-      <Typography variant="h3">Hey, {session.user.name}!</Typography>
+      {/* <Typography variant="h3">Hey, {session.user.name}!</Typography> */}
       <Typography variant="h8" component="div" gutterBottom>
         Balance: KES <span id="total-winnings">{Math.floor(balance)} </span>
         <Button
