@@ -8,7 +8,6 @@ async function handler(req, res) {
   }
 
   const { email, password, code } = req.body;
-  console.log({ email, password, code });
 
   if (!code || !email || (password && password.trim().length < 5)) {
     return res.status(422).json({ message: 'Input validation error' });
@@ -18,8 +17,6 @@ async function handler(req, res) {
 
   try {
     const toUpdateUser = await User.findOne({ username: email });
-
-    console.log({ toUpdateUser });
 
     if (toUpdateUser && toUpdateUser.resetCode == code) {
       toUpdateUser.password = password;
