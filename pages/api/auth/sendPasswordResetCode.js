@@ -33,6 +33,7 @@ async function handler(req, res) {
       text: `Your password reset code is ${verificationCode}. Use this link to reset your password ${passwordResetLink}`,
       html: `<p>Your password reset code is ${verificationCode}. Use this link to reset your password ${passwordResetLink}</p>`,
     };
+    console.log({ username: email, resetCode: verificationCode });
 
     await sgMail.send(msg);
 
