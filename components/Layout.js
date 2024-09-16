@@ -71,10 +71,10 @@ export default function Layout({ title, children }) {
                 <Menu.Button className="text-blue-600 mr-4">
                   {session.user.name}
                 </Menu.Button>
-                <Menu.Items className="absolute card bg-white opacity-100 right-5 w-40 origin-top-right">
-                  <Menu.Item>
+                <Menu.Items className="absolute card bg-white opacity-90 right-0 w-25 origin-top-right">
+                  {/* <Menu.Item>
                     <p>Placeholder</p>
-                  </Menu.Item>
+                  </Menu.Item> */}
                   <Menu.Item>
                     <a
                       className="dropdown-link"

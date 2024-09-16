@@ -76,7 +76,7 @@ export default function Mainpage() {
           top: 45, // Stick to the top
           left: 0, // Align to the left
           right: 0, // Align to the right (full width)
-          zIndex: 1000,
+          zIndex: 990,
           backgroundColor: 'white',
           paddingBottom: '10px',
           paddingTop: '10px',
@@ -108,7 +108,7 @@ export default function Mainpage() {
       </Box>
 
       {/* Jackpot Cards with scrollable area */}
-      <Box sx={{ marginTop: '290px' }}>
+      <Box sx={{ marginTop: '350px' }}>
         {' '}
         {/* Adjust this value to create space below the fixed section */}
         <Grid container spacing={2}>
