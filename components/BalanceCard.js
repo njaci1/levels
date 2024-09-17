@@ -94,11 +94,11 @@ export default function BalanceCard({ balance }) {
             fontSize: '0.525rem',
             backgroundColor: '#56BD00 ',
           }}
+          disabled={balance === 0}
         >
           Cash Out
         </Button>
       </Typography>
-      {/* Other component logic */}
     </Box>
   );
 }
