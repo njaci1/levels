@@ -82,6 +82,7 @@ export default function JackpotButton({ name }) {
     <StyledButton
       variant="contained"
       color="primary"
+      sx={{ backgroundColor: '#6bbd00' }}
       onClick={name === 'Joiners' ? handleInviteFriend : handleGoToAds}
     >
       {name === 'Joiners' ? 'Invite Friend' : 'Join Now!'}
