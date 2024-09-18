@@ -10,7 +10,7 @@ async function handler(req, res) {
   try {
     await db.connect();
     const user = await User.findOne({ username: email });
-    const passwordResetLink = process.env.RESET_PASSWORD_URLRESET_PASSWORD_URL;
+    const passwordResetLink = process.env.RESET_PASSWORD_URL;
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
@@ -30,8 +30,10 @@ async function handler(req, res) {
       to: email,
       from: 'kevlaude@gmail.com',
       subject: 'Password reset code',
-      text: `Your password reset code is ${verificationCode}. Use this link to reset your password ${passwordResetLink}`,
-      html: `<p>Your password reset code is ${verificationCode}. Use this link to reset your password ${passwordResetLink}</p>`,
+      text: `Your password reset code is ${verificationCode}.
+      Use this link to reset your password: ${passwordResetLink}`,
+      html: `<p>Your password reset code is ${verificationCode}.
+      Use this link to reset your password: ${passwordResetLink}</p>`,
     };
     console.log({ username: email, resetCode: verificationCode });
 
