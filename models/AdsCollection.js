@@ -81,8 +81,17 @@ const adSchema = new mongoose.Schema({
   },
 });
 
-// Create the Ad model
+const triviaSchema = new mongoose.Schema({
+  question: String,
+  answers: [String],
+  correctAnswer: String,
+  sponsor: { type: mongoose.Schema.Types.ObjectId, ref: 'Ad' },
+
+  createdAt: { type: Date, default: Date.now },
+});
+const Trivia = mongoose.models.Trivia || mongoose.model('Trivia', triviaSchema);
+
 const Ad = mongoose.models.Ad || mongoose.model('Ad', adSchema);
 
-// Export the Ad model
 module.exports = Ad;
+module.exports = Trivia;
