@@ -12,7 +12,7 @@ const adSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ['video', 'banner'], // Type can be either 'video' or 'banner'
+    enum: ['video', 'banner', 'trivia'], // Type can be either 'video' or 'banner'
     required: true,
   },
   priority: {
