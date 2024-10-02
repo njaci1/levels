@@ -31,6 +31,10 @@ const interactionSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  answered: {
+    type: String,
+    enum: ['correct', 'incorrect'],
+  },
 });
 
 const Interaction =
