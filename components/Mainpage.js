@@ -101,7 +101,7 @@ export default function Mainpage() {
         <Typography
           variant="h3"
           align="center"
-          sx={{ mb: 0, marginTop: '25px' }}
+          sx={{ mb: 0, marginTop: '15px' }}
         >
           Active Jackpots
         </Typography>
