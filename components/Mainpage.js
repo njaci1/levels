@@ -101,14 +101,14 @@ export default function Mainpage() {
         <Typography
           variant="h3"
           align="center"
-          sx={{ mb: 0, marginTop: '30px' }}
+          sx={{ mb: 0, marginTop: '25px' }}
         >
           Active Jackpots
         </Typography>
       </Box>
 
       {/* Jackpot Cards with scrollable area */}
-      <Box sx={{ marginTop: '350px' }}>
+      <Box sx={{ marginTop: '340px' }}>
         {' '}
         {/* Adjust this value to create space below the fixed section */}
         <Grid container spacing={2}>
