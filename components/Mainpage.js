@@ -108,7 +108,7 @@ export default function Mainpage() {
       </Box>
 
       {/* Jackpot Cards with scrollable area */}
-      <Box sx={{ marginTop: '315px' }}>
+      <Box sx={{ marginTop: '318px' }}>
         {' '}
         {/* Adjust this value to create space below the fixed section */}
         <Grid container spacing={2}>
