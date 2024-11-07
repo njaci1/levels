@@ -38,7 +38,7 @@ export default function Layout({ title, children }) {
       <Head>
         <title>{title ? title + ' - Levels' : 'Levels'}</title>
         <meta name="description" content="Mynet" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favi.png" />
       </Head>
 
       <div className="flex min-h-screen flex-col justify-between">
