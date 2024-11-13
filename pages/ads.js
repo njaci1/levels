@@ -17,36 +17,9 @@ function Ads() {
   return (
     <Layout title="Ads">
       {session ? (
-        <Container maxWidth="md">
-          <Box my={4}>
-            {/* <Typography variant="h4" component="h1" gutterBottom>
-              Ads of the day
-            </Typography> */}
-            <Typography variant="body1" gutterBottom>
-              {/* Rate the videos with a{' '}
-              <span style={{ display: 'inline-flex', alignItems: 'center' }}>
-                <span style={{ display: 'inline-flex', alignItems: 'center' }}>
-                  <ThumbsUp />
-                </span>{' '}
-                or a{' '}
-                <span style={{ display: 'inline-flex' }}>
-                  <ThumbsDown />
-                </span>
-              </span> */}
-              Rate the Ads for a chance to win the current jackpots.
-            </Typography>
-            <Box my={2}>
-              <Paper elevation={3}>
-                <Box p={2}>
-                  {/* <Typography variant="h6" gutterBottom>
-                    Video Ad
-                  </Typography> */}
-                  <AdPlayer type="video" />
-                </Box>
-              </Paper>
-            </Box>
-          </Box>
-        </Container>
+        <div className="w-full h-full mt-0">
+          <AdPlayer type="video" className="w-full h-full object-cover" />
+        </div>
       ) : (
         <Hello />
       )}
