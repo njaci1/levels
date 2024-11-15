@@ -14,8 +14,10 @@ import { styled } from '@mui/system';
 const StyledCard = styled(Card)(({ theme }) => ({
   margin: '1em',
   padding: '1.5em',
-  backgroundColor: '#f5f5f5',
+  // backgroundColor: '#f5f5f5',
   borderRadius: '15px',
+
+  height: '85%',
   boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
   transition: 'all 0.3s ease', // Smooth hover transition
   '&:hover': {
@@ -38,19 +40,19 @@ const Title = styled(Typography)(({ theme }) => ({
 }));
 
 // Button with enhanced hover styles and larger touch area
-const JoinButton = styled(Button)(({ theme }) => ({
-  marginTop: '1em',
-  backgroundColor: '#3f51b5',
-  color: 'white',
-  padding: '0.75em 2em', // Larger button for better mobile interaction
-  '&:hover': {
-    backgroundColor: '#303f9f',
-  },
-  [theme.breakpoints.down('sm')]: {
-    width: '100%', // Full-width button on mobile
-    padding: '0.5em 0', // Compact padding on smaller screens
-  },
-}));
+// const JoinButton = styled(Button)(({ theme }) => ({
+//   marginTop: '1em',
+//   backgroundColor: '#3f51b5',
+//   color: 'white',
+//   padding: '0.75em 2em', // Larger button for better mobile interaction
+//   '&:hover': {
+//     backgroundColor: '#303f9f',
+//   },
+//   [theme.breakpoints.down('sm')]: {
+//     width: '100%', // Full-width button on mobile
+//     padding: '0.5em 0', // Compact padding on smaller screens
+//   },
+// }));
 
 // Amount styling with bold and responsive font size
 const Amount = styled(Typography)(({ theme }) => ({
@@ -128,23 +130,17 @@ const JackpotCard = ({ name, amount, entries }) => {
       <CardContent>
         <Title variant="h4">{name}</Title>
         <Amount>{formattedAmount}</Amount>
-        <Typography variant="body1" align="center">
-          Your Entries: {entries}
-        </Typography>
-        <Typography variant="body2" align="center" color="textSecondary">
+        <Typography align="center">Your Entries: {entries}</Typography>
+        <Typography align="center" color="textSecondary">
           Next Draw in:
         </Typography>
-        <Typography
-          variant="body1"
-          align="center"
-          sx={{ color: 'primary.main' }}
-        >
+        <Typography align="center" sx={{ color: 'primary.main' }}>
           {drawDate}
         </Typography>
         {/* <JoinButton variant="contained">Join</JoinButton> */}
 
-        <Box sx={{ textAlign: 'center', marginTop: '1.5em' }}>
-          <JackpotButton variant="contained" name={name} />
+        <Box sx={{ textAlign: 'center' }}>
+          <JackpotButton name={name} />
         </Box>
       </CardContent>
     </StyledCard>

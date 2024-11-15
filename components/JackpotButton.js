@@ -8,7 +8,7 @@ import { styled } from '@mui/system';
 // Styled button to maintain consistency with other button styles
 const StyledButton = styled(Button)(({ theme }) => ({
   marginTop: '1em',
-  backgroundColor: '#3f51b5',
+  // backgroundColor: '3f51b5#',
   color: 'white',
   padding: '0.75em 2em', // Larger button for better interaction
   '&:hover': {
@@ -81,7 +81,6 @@ export default function JackpotButton({ name }) {
   return (
     <StyledButton
       variant="contained"
-      color="primary"
       sx={{ backgroundColor: '#6bbd00' }}
       onClick={name === 'Joiners' ? handleInviteFriend : handleGoToAds}
     >
