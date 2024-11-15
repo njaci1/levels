@@ -97,7 +97,7 @@ export default function Mainpage() {
           <Typography
             variant="h4"
             align="center"
-            sx={{ mb: 0, marginTop: '15px' }}
+            sx={{ mb: 0, marginTop: '35px' }}
           >
             Prize Pool
           </Typography>

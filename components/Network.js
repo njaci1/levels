@@ -74,7 +74,7 @@ export default function NetworkCard({ networkSize }) {
 
       <TableContainer>
         <Table size="small" sx={{ width: '100%' }}>
-          <TableHead>
+          {/* <TableHead>
             <TableRow>
               <TableCell>
                 <strong>Network Level</strong>
@@ -83,7 +83,7 @@ export default function NetworkCard({ networkSize }) {
                 <strong>No. Invited</strong>
               </TableCell>
             </TableRow>
-          </TableHead>
+          </TableHead> */}
           <TableBody>
             {[1, 2, 3].map((level) => (
               <TableRow key={level}>
