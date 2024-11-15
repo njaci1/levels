@@ -103,7 +103,7 @@ export default function Mainpage() {
           align="center"
           sx={{ mb: 0, marginTop: '15px' }}
         >
-          Active Jackpots
+          Prize Pool
         </Typography>
       </Box>
 
