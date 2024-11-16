@@ -2,23 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
-import { Button } from '@mui/material';
-import { styled } from '@mui/system';
-
-// Styled button to maintain consistency with other button styles
-const StyledButton = styled(Button)(({ theme }) => ({
-  marginTop: '1em',
-  // backgroundColor: '3f51b5#',
-  color: 'white',
-  padding: '0.75em 2em', // Larger button for better interaction
-  '&:hover': {
-    backgroundColor: '#303f9f',
-  },
-  [theme.breakpoints.down('sm')]: {
-    width: '100%', // Full-width button on mobile
-    padding: '0.5em 0', // Compact padding on smaller screens
-  },
-}));
 
 export default function JackpotButton({ name }) {
   const router = useRouter();
@@ -79,12 +62,11 @@ export default function JackpotButton({ name }) {
   };
 
   return (
-    <StyledButton
-      variant="contained"
-      sx={{ backgroundColor: '#6bbd00' }}
+    <button
+      className="bg-customGreen hover:bg-customGreen-dark text-white mt-4 py-3 px-8 sm:w-full sm:py-2 sm:px-0 rounded"
       onClick={name === 'Joiners' ? handleInviteFriend : handleGoToAds}
     >
       {name === 'Joiners' ? 'Invite Friend' : 'Join Now!'}
-    </StyledButton>
+    </button>
   );
 }

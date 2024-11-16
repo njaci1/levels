@@ -58,18 +58,12 @@ export default function NetworkCard({ networkSize }) {
         >
           Grow your network:&nbsp;
         </Typography>
-        <Button
-          variant="contained"
+        <button
+          class="bg-customPurple hover:bg-customPurple-dark text-white py-1 px-2 sm:py-1.5 sm:px-3 text-xs sm:text-sm rounded"
           onClick={handleInviteFriend}
-          sx={{
-            padding: { xs: '3px 6px', sm: '4px 8px' },
-            fontSize: { xs: '0.75rem', sm: '0.85rem' }, // Slightly smaller for contrast
-            minWidth: 'auto',
-            backgroundColor: '#5D3FD3',
-          }}
         >
           Invite a Friend
-        </Button>
+        </button>
       </Box>
 
       <TableContainer>

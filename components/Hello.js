@@ -36,18 +36,18 @@ export default function Hello() {
           sx={{ backgroundColor: '#f5f5f5', p: 3, borderRadius: '8px', mb: 4 }}
         >
           <Typography variant="h4" gutterBottom fontWeight="bold">
-            Watch Ads, Stand a Chance to Win Jackpots!
+            Watch Ads, Stand a Chance to Win Cash Prizes!
           </Typography>
           <Typography variant="h6">
-            Watch ads for a chance to win this week&apos;s jackpot of{' '}
+            Watch and rate ads for a chance to win up to{' '}
             <strong
               style={{
-                color: '#b8860b', // Darker shade of gold
+                color: '#f2b41e',
                 fontSize: '1.2rem', // Slightly larger font size
                 fontWeight: 'bold',
               }}
             >
-              KSH {jackpots.weeklyTotal}
+              <span className="text-sm">KSh. </span> {jackpots.weeklyTotal}
             </strong>
           </Typography>
           <Button
@@ -85,7 +85,8 @@ export default function Hello() {
                     {jackpot} Jackpot
                   </Typography>
                   <Typography variant="h5" fontWeight="bold" color="primary">
-                    KSH {jackpots[`${jackpot.toLowerCase()}Total`]}
+                    <span className="text-sm">KSh. </span>
+                    {jackpots[`${jackpot.toLowerCase()}Total`]}
                   </Typography>
                   <Button
                     href={`/register?inviteCode=&redirect=${redirect || '/'}`}

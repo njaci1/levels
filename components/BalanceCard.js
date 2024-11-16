@@ -1,31 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Card,
-  CardContent,
-  Typography,
-  Button,
-  Grid,
-  styled,
-  Box,
-} from '@mui/material';
+import { Typography, Box } from '@mui/material';
 import { useSession } from 'next-auth/react';
 
 import axios from 'axios';
-
-const Item = styled(Card)(({ theme }) => ({
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
-
-const StyledCard = styled(Card)({
-  margin: '1em',
-  padding: '1em',
-  backgroundColor: '#f5f5f5',
-  borderRadius: '15px',
-  boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)',
-});
 
 export default function BalanceCard({ balance }) {
   const { data: session, status } = useSession();
@@ -86,18 +63,14 @@ export default function BalanceCard({ balance }) {
     >
       <Typography variant="h5">Hey, {session.user.name}!</Typography>
       <Typography variant="h8" component="div" gutterBottom>
-        Balance: KES <span id="total-winnings">{Math.floor(balance)} </span>
-        <Button
-          variant="contained"
-          sx={{
-            padding: '2px 4px',
-            fontSize: '0.525rem',
-            backgroundColor: '#56BD00 ',
-          }}
+        Balance: <span className="text-xs">KES.</span>
+        <span id="total-winnings">{Math.floor(balance)} </span>
+        <button
+          className="bg-customGreen hover:bg-customGreen-dark text-white py-0.5 px-1 text-xs rounded"
           disabled={balance === 0}
         >
           Cash Out
-        </Button>
+        </button>
       </Typography>
     </Box>
   );

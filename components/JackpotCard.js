@@ -118,9 +118,7 @@ const getNextDrawDate = (name) => {
 
 const JackpotCard = ({ name, amount, entries }) => {
   const drawDate = getNextDrawDate(name);
-  const formattedAmount = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'KES',
+  const formattedAmount = new Intl.NumberFormat('en-IN', {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(amount * 1000);
@@ -129,7 +127,10 @@ const JackpotCard = ({ name, amount, entries }) => {
     <StyledCard>
       <CardContent>
         <Title variant="h4">{name}</Title>
-        <Amount>{formattedAmount}</Amount>
+        <Amount>
+          <span className="text-sm">KES.</span>
+          {formattedAmount}
+        </Amount>
         <Typography align="center">Your Entries: {entries}</Typography>
         <Typography align="center" color="textSecondary">
           Next Draw in:
