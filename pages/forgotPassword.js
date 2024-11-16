@@ -43,11 +43,11 @@ export default function ForgotPasswordScreen() {
   return (
     <Layout title="Forgot Password">
       <form
-        className="max-auto max-w-screen-md"
+        className="max-auto max-w-screen-md justify-center text-center p-10"
         onSubmit={handleSubmit(submitHandler)}
       >
         <h1 className="mb-4 text-xl">Forgot Password</h1>
-        <div className="mb-4">
+        <div className="mb-4 text-start">
           <label htmlFor="email">Email Address</label>
           <input
             type="email"
