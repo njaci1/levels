@@ -43,11 +43,10 @@ export default function LoginScreen() {
   return (
     <Layout title="Login">
       <form
-        className="max-auto max-w-screen-md"
+        className="max-auto max-w-screen-md justify-center text-center p-10"
         onSubmit={handleSubmit(submitHandler)}
       >
-        <h1 className="mb-4 text-xl">Login</h1>
-        <div className="mb-4">
+        <div className="mb-4 text-start">
           <label htmlFor="email">Email</label>
           <input
             type="email"
@@ -66,8 +65,10 @@ export default function LoginScreen() {
             <div className="text-red-500">{errors.email.message}</div>
           )}
         </div>
-        <div className="mb-4">
-          <label htmlFor="password">Password</label>
+        <div className="mb-4 text-start">
+          <label htmlFor="password" className="text-start">
+            Password
+          </label>
           <input
             type="password"
             {...register('password', {
