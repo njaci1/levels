@@ -14,8 +14,8 @@ import {
   getCloudinarySignature,
   uploadFileToCloudinary,
   saveAdToDatabase,
-} from '../lib/uploaderService';
-import calculatePrice from '../lib/priceCalculator';
+  calculatePrice,
+} from '../../lib/uploaderService';
 
 const Uploader = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -162,8 +162,6 @@ const Uploader = () => {
 
         <Box sx={{ mt: 3, textAlign: 'center' }}>
           <Button
-            variant="contained"
-            color="primary"
             type="submit"
             disabled={isSubmitting || !selectedFile || !title || !description}
           >

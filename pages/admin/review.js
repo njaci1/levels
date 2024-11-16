@@ -45,13 +45,12 @@ const ReviewPage = () => {
       {ads.length === 0 ? (
         <Box textAlign="center">
           <Typography variant="h6">No pending items</Typography>
-          <Button
-            variant="contained"
-            color="primary"
+          <button
+            className="btn btn-primary"
             onClick={() => window.location.reload()}
           >
             Refresh
-          </Button>
+          </button>
         </Box>
       ) : (
         ads.map((ad) => (
@@ -65,21 +64,18 @@ const ReviewPage = () => {
             <Typography variant="h6">{ad.title}</Typography>
             <Typography>ID: {ad._id}</Typography>
             <Box mt={2}>
-              <Button
-                variant="contained"
-                color="success"
+              <button
+                className="btn btn-success mr-2"
                 onClick={() => handleAction('approve', ad._id)}
-                sx={{ mr: 2 }}
               >
                 Approve
-              </Button>
-              <Button
-                variant="contained"
-                color="error"
+              </button>
+              <button
+                className="btn btn-danger"
                 onClick={() => handleAction('reject', ad._id)}
               >
                 Reject
-              </Button>
+              </button>
             </Box>
           </Box>
         ))
