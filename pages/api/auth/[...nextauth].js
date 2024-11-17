@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import db from '../../../lib/db';
 import User from '../../../models/User';
+import AdminUser from '../../../models/AdminUser';
 
 export default NextAuth({
   session: {
@@ -33,9 +34,13 @@ export default NextAuth({
     CredentialsProvider({
       async authorize(credentials) {
         await db.connect();
-        const user = await User.findOne({
-          username: credentials.email,
-        });
+        let user;
+        if (credentials.callbackUrl.includes('/admin')) {
+          user = await AdminUser.findOne({ email: credentials.email });
+        } else {
+          user = await User.findOne({ username: credentials.email });
+        }
+
         await db.disconnect();
         if (user && bcrypt.compareSync(credentials.password, user.password)) {
           return {
