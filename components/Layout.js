@@ -51,7 +51,7 @@ export default function Layout({ title, children }) {
           }}
         >
           <nav className="flex h-12 items-center px-4 justify-between">
-            <Link className="text-lg font-bold" href="/">
+            <Link className="text-lg font-bold ml-5" href="/">
               Home
             </Link>
             {loading ? (
