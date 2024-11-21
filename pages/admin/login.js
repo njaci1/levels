@@ -13,7 +13,7 @@ export default function LoginScreen() {
   const { redirect } = router.query;
 
   useEffect(() => {
-    if (session?.adminUser) {
+    if (session?.role === 'admin') {
       router.push(redirect || '/admin/home');
     }
   }, [router, session, redirect]);
@@ -26,10 +26,11 @@ export default function LoginScreen() {
 
   const submitHandler = async ({ email, password }) => {
     try {
-      const result = await signIn('credentials', {
+      const result = await signIn('admin-credentials', {
         redirect: false,
         email,
         password,
+        callbackUrl: '/admin/home',
       });
       if (result.error) {
         toast.error(result.error);

@@ -10,9 +10,12 @@ export default NextAuth({
     strategy: 'jwt',
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
       if (user) {
         token = { ...token, ...user }; // Merge user info into token
+        if (account?.provider === 'admin-credentials') {
+          token.role = admin;
+        }
       }
 
       return token;
@@ -21,7 +24,7 @@ export default NextAuth({
       session.user = {
         _id: token._id,
         name: token.name,
-        isAdmin: token.isAdmin,
+        role: token.role,
         inviteCode: token.inviteCode,
         phoneNumber: token.phoneNumber,
         registrationStatus: token.registrationStatus,
@@ -32,6 +35,8 @@ export default NextAuth({
   },
   providers: [
     CredentialsProvider({
+      id: 'credentials',
+      name: 'Credentials',
       async authorize(credentials) {
         await db.connect();
         let user;
@@ -47,6 +52,7 @@ export default NextAuth({
             _id: user._id,
             name: user.firstName,
             email: user.username,
+            role: user.role,
             image: 'f',
             inviteCode: user.inviteCode,
             phoneNumber: user.phoneNumber,
