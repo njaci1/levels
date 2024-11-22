@@ -11,7 +11,6 @@ export default NextAuth({
   },
   callbacks: {
     async jwt({ token, user, account }) {
-      console.log('JWT Callback user', user);
       if (user) {
         token = { ...token, ...user }; // Merge user info into token
         if (account?.provider === 'credentials') {
