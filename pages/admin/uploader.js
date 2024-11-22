@@ -81,11 +81,16 @@ const Uploader = () => {
       });
 
       alert('Ad uploaded successfully!');
+      setTitle('');
+      setDescription('');
+      setDuration('1 week');
+      setPriority('high');
+      setType('video');
+      setSelectedFile(null);
       setIsSubmitting(false);
     } catch (error) {
       setIsSubmitting(false);
       setErrorMessage(error.message);
-      console.error(error);
     }
   };
 
