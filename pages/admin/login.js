@@ -13,7 +13,6 @@ export default function AdminLoginScreen() {
   const { redirect } = router.query;
 
   useEffect(() => {
-    console.log('Session:', session);
     if (status === 'loading') return;
     if (session?.role === 'admin') {
       router.push(redirect || '/admin/review');

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { fetchAdsForReview, reviewAd } from '../../lib/reviewAds';
+import AdminLayout from '../../components/AdminLayout';
 
 const ReviewPage = () => {
   const { data: session, status } = useSession();
@@ -54,45 +55,47 @@ const ReviewPage = () => {
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Pending Ads</h1>
-        <button
-          className="bg-blue-500 text-white px-4 py-2 rounded"
-          onClick={() => router.push('/admin/uploader')}
-        >
-          Create New
-        </button>
-      </div>
-      {ads.length === 0 ? (
-        <div className="text-center">
-          <p className="text-lg">No pending items</p>
+    <AdminLayout title="Review Ads">
+      <div className="container mx-auto p-4">
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-2xl font-bold">Pending Ads</h1>
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded"
+            onClick={() => router.push('/admin/uploader')}
+          >
+            Create New
+          </button>
         </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {ads.map((ad) => (
-            <div key={ad._id} className="border p-4 rounded shadow">
-              <h2 className="text-xl font-semibold">{ad.title}</h2>
-              <p>{ad.description}</p>
-              <div className="flex justify-end space-x-2 mt-4">
-                <button
-                  className="bg-green-500 text-white px-4 py-2 rounded"
-                  onClick={() => handleAction('approve', ad._id)}
-                >
-                  Approve
-                </button>
-                <button
-                  className="bg-red-500 text-white px-4 py-2 rounded"
-                  onClick={() => handleAction('reject', ad._id)}
-                >
-                  Reject
-                </button>
+        {ads.length === 0 ? (
+          <div className="text-center">
+            <p className="text-lg">No pending items</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {ads.map((ad) => (
+              <div key={ad._id} className="border p-4 rounded shadow">
+                <h2 className="text-xl font-semibold">{ad.title}</h2>
+                <p>{ad.description}</p>
+                <div className="flex justify-end space-x-2 mt-4">
+                  <button
+                    className="bg-green-500 text-white px-4 py-2 rounded"
+                    onClick={() => handleAction('approve', ad._id)}
+                  >
+                    Approve
+                  </button>
+                  <button
+                    className="bg-red-500 text-white px-4 py-2 rounded"
+                    onClick={() => handleAction('reject', ad._id)}
+                  >
+                    Reject
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </AdminLayout>
   );
 };
 

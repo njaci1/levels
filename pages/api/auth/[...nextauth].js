@@ -24,6 +24,7 @@ export default NextAuth({
       session.user = {
         _id: token._id,
         name: token.name,
+        username: token.username,
         role: token.role,
         inviteCode: token.inviteCode,
         phoneNumber: token.phoneNumber,
@@ -51,7 +52,7 @@ export default NextAuth({
           return {
             _id: user._id,
             name: user.firstName,
-            email: user.username,
+            username: user.username,
             role: user.role,
             image: 'f',
             inviteCode: user.inviteCode,

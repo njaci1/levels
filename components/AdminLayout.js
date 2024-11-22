@@ -5,7 +5,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Bell } from 'react-feather';
+import { User } from 'react-feather';
 
 export default function AdminLayout({ title, children }) {
   const { data: session, status } = useSession();
@@ -42,6 +42,7 @@ export default function AdminLayout({ title, children }) {
             ) : session?.user ? (
               <Menu as="div" className="relative inline-block z-60">
                 <Menu.Button className="text-blue-600 mr-4">
+                  <User className="inline" />
                   {session.user.username}
                 </Menu.Button>
                 <Menu.Items className="absolute card bg-white opacity-90 right-0 w-25 origin-top-right">

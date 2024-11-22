@@ -8,6 +8,7 @@ import {
   saveAdToDatabase,
 } from '../../lib/uploaderService';
 import calculatePrice from '../../lib/priceCalculator';
+import AdminLayout from '../../components/AdminLayout';
 
 const Uploader = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -95,133 +96,135 @@ const Uploader = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-      >
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="type"
-          >
-            Type
-          </label>
-          <select
-            id="type"
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          >
-            <option value="video">Video</option>
-            <option value="banner">Banner</option>
-            <option value="survey">Survey</option>
-          </select>
-        </div>
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="title"
-          >
-            Title
-          </label>
-          <input
-            id="title"
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
+    <AdminLayout title={'Create New Ad'}>
+      <div className="container mx-auto p-4">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+        >
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="type"
+            >
+              Type
+            </label>
+            <select
+              id="type"
+              value={type}
+              onChange={(e) => setType(e.target.value)}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            >
+              <option value="video">Video</option>
+              <option value="banner">Banner</option>
+              <option value="survey">Survey</option>
+            </select>
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="title"
+            >
+              Title
+            </label>
+            <input
+              id="title"
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          </div>
 
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="description"
-          >
-            Description
-          </label>
-          <textarea
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="duration"
-          >
-            Duration
-          </label>
-          <select
-            id="duration"
-            value={duration}
-            onChange={(e) => setDuration(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          >
-            <option value="1 week">1 week</option>
-            <option value="2 weeks">2 weeks</option>
-            <option value="1 month">1 month</option>
-          </select>
-        </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="description"
+            >
+              Description
+            </label>
+            <textarea
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="duration"
+            >
+              Duration
+            </label>
+            <select
+              id="duration"
+              value={duration}
+              onChange={(e) => setDuration(e.target.value)}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            >
+              <option value="1 week">1 week</option>
+              <option value="2 weeks">2 weeks</option>
+              <option value="1 month">1 month</option>
+            </select>
+          </div>
 
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="priority"
-          >
-            Priority
-          </label>
-          <select
-            id="priority"
-            value={priority}
-            onChange={(e) => setPriority(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          >
-            <option value="high">High</option>
-            <option value="medium">Medium</option>
-            <option value="low">Low</option>
-          </select>
-        </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="priority"
+            >
+              Priority
+            </label>
+            <select
+              id="priority"
+              value={priority}
+              onChange={(e) => setPriority(e.target.value)}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            >
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
+            </select>
+          </div>
 
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="file"
-          >
-            File
-          </label>
-          <input
-            id="file"
-            type="file"
-            onChange={(e) => setSelectedFile(e.target.files[0])}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="file"
+            >
+              File
+            </label>
+            <input
+              id="file"
+              type="file"
+              onChange={(e) => setSelectedFile(e.target.files[0])}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          </div>
 
-        {errorMessage && (
-          <p className="text-red-500 text-xs italic text-center">
-            {errorMessage}
-          </p>
-        )}
+          {errorMessage && (
+            <p className="text-red-500 text-xs italic text-center">
+              {errorMessage}
+            </p>
+          )}
 
-        <div className="flex items-center justify-center mt-4">
-          <button
-            type="submit"
-            disabled={isSubmitting || !selectedFile || !title || !description}
-            className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${
-              isSubmitting || !selectedFile || !title || !description
-                ? 'opacity-50 cursor-not-allowed'
-                : ''
-            }`}
-          >
-            {isSubmitting ? <div className="loader"></div> : 'Upload'}
-          </button>
-        </div>
-      </form>
-    </div>
+          <div className="flex items-center justify-center mt-4">
+            <button
+              type="submit"
+              disabled={isSubmitting || !selectedFile || !title || !description}
+              className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${
+                isSubmitting || !selectedFile || !title || !description
+                  ? 'opacity-50 cursor-not-allowed'
+                  : ''
+              }`}
+            >
+              {isSubmitting ? <div className="loader"></div> : 'Upload'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </AdminLayout>
   );
 };
 
