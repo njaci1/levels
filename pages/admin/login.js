@@ -7,16 +7,18 @@ import { getError } from '../../utils/error';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 
-export default function LoginScreen() {
-  const { data: session } = useSession();
+export default function AdminLoginScreen() {
+  const { data: session, status } = useSession();
   const router = useRouter();
   const { redirect } = router.query;
 
   useEffect(() => {
+    console.log('Session:', session);
+    if (status === 'loading') return;
     if (session?.role === 'admin') {
-      router.push(redirect || '/admin/home');
+      router.push(redirect || '/admin/review');
     }
-  }, [router, session, redirect]);
+  }, [router, session, status, redirect]);
 
   const {
     handleSubmit,
@@ -26,16 +28,16 @@ export default function LoginScreen() {
 
   const submitHandler = async ({ email, password }) => {
     try {
-      const result = await signIn('admin-credentials', {
+      const result = await signIn('credentials', {
         redirect: false,
         email,
         password,
-        callbackUrl: '/admin/home',
+        callbackUrl: '/admin/review',
       });
       if (result.error) {
         toast.error(result.error);
       } else {
-        router.push(redirect || '/admin/home');
+        router.push(redirect || '/admin/review');
       }
     } catch (err) {
       toast.error(getError(err));
