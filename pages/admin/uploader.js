@@ -6,8 +6,8 @@ import {
   getCloudinarySignature,
   uploadFileToCloudinary,
   saveAdToDatabase,
-  calculatePrice,
 } from '../../lib/uploaderService';
+import calculatePrice from '../../lib/priceCalculator';
 
 const Uploader = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);

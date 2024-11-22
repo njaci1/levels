@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     });
 
     await newAd.save();
-    res.status(200).json({ message: 'Ad uploaded to db successfully' });
+    res.status(200).json({ message: 'success' });
   } catch (error) {
     console.error('Error uploading ad:', error);
     res.status(500).json({ message: 'Failed to upload ad to db' });
