@@ -117,11 +117,12 @@ const getNextDrawDate = (name) => {
 };
 
 const JackpotCard = ({ name, amount, entries }) => {
+  const displayAmount = Number(amount) || 0; // Defaults to 0 if amount is NAN
   const drawDate = getNextDrawDate(name);
   const formattedAmount = new Intl.NumberFormat('en-IN', {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
-  }).format(amount * 1000);
+  }).format(displayAmount * 1000);
 
   return (
     <StyledCard>
