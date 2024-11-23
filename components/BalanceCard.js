@@ -7,6 +7,7 @@ import axios from 'axios';
 export default function BalanceCard({ balance }) {
   const { data: session, status } = useSession();
   const loading = status === 'loading';
+  const displayBalance = Number(balance) || 0; // Defaults to 0 if balance is falsy
 
   const handleCashOut = () => {
     console.log('Cash Out button clicked');
@@ -44,6 +45,7 @@ export default function BalanceCard({ balance }) {
       // Handle error here. For instance, you can show an error message to the user
     }
   };
+
   if (loading) {
     return <Typography>Loading...</Typography>;
   }
@@ -64,10 +66,10 @@ export default function BalanceCard({ balance }) {
       <Typography variant="h5">Hey, {session.user.name}!</Typography>
       <Typography variant="h8" component="div" gutterBottom>
         Balance: <span className="text-xs">KES.</span>
-        <span id="total-winnings">{Math.floor(balance)} </span>
+        <span id="total-winnings">{Math.floor(displayBalance)} </span>
         <button
-          className="bg-customGreen hover:bg-customGreen-dark text-white py-0.5 px-1 text-xs rounded"
-          disabled={balance === 0}
+          className="bg-customGreen hover:bg-customGreen-dark text-white py-0.5 px-1 text-xs rounded disabled:bg-gray-400 disabled:cursor-not-allowed"
+          disabled={displayBalance === 0}
         >
           Cash Out
         </button>
