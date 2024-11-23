@@ -68,7 +68,7 @@ export default function BalanceCard({ balance }) {
         Balance: <span className="text-xs">KES.</span>
         <span id="total-winnings">{Math.floor(displayBalance)} </span>
         <button
-          className="bg-customGreen hover:bg-customGreen-dark text-white py-0.5 px-1 text-xs rounded disabled:bg-gray-400 disabled:cursor-not-allowed"
+          className="bg-customGreen hover:bg-customGreen-dark text-white py-0 px-0.5 text-xxs rounded disabled:bg-gray-400 disabled:cursor-not-allowed"
           disabled={displayBalance === 0}
         >
           Cash Out

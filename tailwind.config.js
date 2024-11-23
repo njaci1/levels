@@ -23,6 +23,9 @@ module.exports = {
           dark: '#5ca000',
         },
       },
+      fontSize: {
+        xxs: '0.625rem', // 10px
+      },
     },
   },
   plugins: [],
