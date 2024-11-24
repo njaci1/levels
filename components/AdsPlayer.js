@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSwipeable } from 'react-swipeable';
 
 function AdsPlayer() {
   const [adsQueue, setAdsQueue] = useState(null);
@@ -94,15 +95,6 @@ function AdsPlayer() {
     };
   }, []);
 
-  // Play or pause video based on visibility
-  // useEffect(() => {
-  //   if (isVideoVisible && videoRef.current) {
-  //     videoRef.current.play();
-  //   } else if (!isVideoVisible && videoRef.current) {
-  //     videoRef.current.pause();
-  //   }
-  // }, [isVideoVisible]);
-
   useEffect(() => {
     if (registrationStatus === 'pending' && adsWatched >= 3) {
       const completeRegistration = async () => {
@@ -129,7 +121,6 @@ function AdsPlayer() {
   const handleVideoEnd = () => {
     setShowButtons(true);
     setIsPlaying(false);
-    // setCanProceed(false); // Require rating before allowing to proceed
   };
 
   useEffect(() => {
@@ -147,7 +138,6 @@ function AdsPlayer() {
     setLiked(false);
     setDisliked(false);
     setShowButtons(false);
-    // setCanProceed(false); // Reset the ability to proceed to next ad
   }, [currentAdIndex]);
 
   const handlePlayPause = () => {
@@ -278,9 +268,20 @@ function AdsPlayer() {
   const toggleMute = () => {
     setMuteState((prevState) => !prevState);
   };
+  const swipeHandlers = useSwipeable({
+    onSwipedUp: () => handleSkip(),
+
+    onSwipedDown: () => handlePrevious(),
+    delta: 10, // Min distance in px before a swipe is detected
+    preventDefaultTouchmoveEvent: true,
+    trackTouch: true,
+  });
 
   return (
-    <div>
+    <div
+      {...swipeHandlers} // Add swipe handlers here
+      className="relative w-full h-screen"
+    >
       <ToastContainer autoClose={5000} />
       {adsQueue ? (
         adsQueue.length > 0 ? (
@@ -303,12 +304,8 @@ function AdsPlayer() {
               preload="none"
               poster="/images/placeholder.jpeg"
               onClick={handlePlayPause} // makes clicking in the video to pause/resume
-              style={{
-                cursor: 'pointer',
-                width: '100vw', // Full width of the viewport
-                height: '100vh', // Full height of the viewport
-                objectFit: 'cover', // Make sure the video covers the screen without distortion
-              }}
+              className="w-full h-full object-cover"
+              playsInline
             />
             <div className="absolute top-1/2 right-2 transform -translate-y-1/2 flex flex-col gap-3 sm:gap-4 sm:right-5">
               <button
@@ -323,24 +320,15 @@ function AdsPlayer() {
               >
                 <i className="fas fa-step-forward "></i>
               </button>
-              <button
-                className="rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center text-white bg-transparent border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
-                onClick={toggleMute}
-              >
-                {muteState ? (
-                  <i className="fas fa-volume-up"></i>
-                ) : (
-                  <i className="fas fa-volume-mute"></i>
-                )}
-              </button>
+
               {showButtons && (
                 <>
-                  <button
+                  {/* <button
                     className="rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center text-white bg-transparent border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
                     onClick={handleReplay}
                   >
                     <i className="fas fa-redo"></i>
-                  </button>
+                  </button> */}
                   <button
                     className={`rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center bg-transparent border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none ${
                       liked ? 'text-green-500' : 'text-white'
@@ -367,6 +355,16 @@ function AdsPlayer() {
                   </button>
                 </>
               )}
+              <button
+                className="rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center text-white bg-transparent border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
+                onClick={toggleMute}
+              >
+                {muteState ? (
+                  <i className="fas fa-volume-up"></i>
+                ) : (
+                  <i className="fas fa-volume-mute"></i>
+                )}
+              </button>
             </div>
           </div>
         ) : (
