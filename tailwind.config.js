@@ -12,6 +12,19 @@ module.exports = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      iconButtonStyle: {
+        border: '1px solid white',
+        borderRadius: '50%',
+        width: '50px',
+        height: '50px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'transparent',
+        color: 'white',
+        cursor: 'pointer',
+        outline: 'none',
+      },
 
       colors: {
         customPurple: {
