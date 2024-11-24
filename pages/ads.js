@@ -17,7 +17,7 @@ function Ads() {
   return (
     <Layout title="Ads">
       {session ? (
-        <div className="w-full h-full mt-0">
+        <div className="w-full h-full mt-0 justify-center text-center">
           <AdPlayer type="video" className="w-full h-full object-cover" />
         </div>
       ) : (
