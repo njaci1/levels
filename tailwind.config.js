@@ -12,18 +12,24 @@ module.exports = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
-      iconButtonStyle: {
-        border: '1px solid white',
-        borderRadius: '50%',
-        width: '50px',
-        height: '50px',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'transparent',
-        color: 'white',
-        cursor: 'pointer',
-        outline: 'none',
+      boxShadow: {
+        'button-glow': '0 0 8px rgba(255, 255, 255, 0.8)', // White glow
+        'button-glow-dark': '0 0 8px rgba(0, 0, 0, 0.8)', // Black glow
+        'icon-light': '0 0 4px rgba(200, 200, 200, 0.8)', // Light grey shadow
+        'icon-dark': '0 0 4px rgba(50, 50, 50, 0.8)', // Dark shadow for hover effect
+      },
+      colors: {
+        'button-bg': 'rgba(0, 0, 0, 0.5)', // Semi-transparent black
+      },
+      borderRadius: {
+        circle: '50%',
+      },
+      spacing: {
+        'btn-size': '60px', // For button dimensions
+        'btn-mobile': '50px', // Smaller button size for mobile
+      },
+      fontSize: {
+        icon: '20px',
       },
 
       colors: {

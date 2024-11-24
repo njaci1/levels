@@ -310,57 +310,62 @@ function AdsPlayer() {
                 objectFit: 'cover', // Make sure the video covers the screen without distortion
               }}
             />
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <div>
-                <button style={{ margin: '10px' }} onClick={handlePrevious}>
-                  <i className="fas fa-step-backward"></i>{' '}
-                </button>
-                <button style={{ margin: '10px' }} onClick={handleSkip}>
-                  <i className="fas fa-step-forward"></i>{' '}
-                </button>
-                <button onClick={toggleMute}>
-                  {muteState ? 'Unmute' : 'Mute'}
-                </button>
-              </div>
+            <div className="absolute top-1/2 right-2 transform -translate-y-1/2 flex flex-col gap-3 sm:gap-4 sm:right-5">
+              <button
+                className="rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center text-white bg-transparent border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
+                onClick={handlePrevious}
+              >
+                <i className="fas fa-step-backward "></i>
+              </button>
+              <button
+                className="rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center text-white bg-transparent border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
+                onClick={handleSkip}
+              >
+                <i className="fas fa-step-forward "></i>
+              </button>
+              <button
+                className="rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center text-white bg-transparent border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
+                onClick={toggleMute}
+              >
+                {muteState ? (
+                  <i className="fas fa-volume-up"></i>
+                ) : (
+                  <i className="fas fa-volume-mute"></i>
+                )}
+              </button>
               {showButtons && (
-                <div style={{ display: 'flex', gap: '10px' }}>
+                <>
                   <button
+                    className="rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center text-white bg-transparent border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
                     onClick={handleReplay}
-                    style={{ color: 'black', padding: '10px' }}
                   >
                     <i className="fas fa-redo"></i>
                   </button>
-                  {/* <button
-                    onClick={() => handleInteraction('doubleLike')}
-                    style={{ color: doubleLiked ? 'green' : 'black' }}
-                    disabled={liked || disliked}
-                  >
-                    <i className="fas fa-thumbs-up"></i> Double Like
-                  </button> */}
                   <button
+                    className={`rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center bg-transparent border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none ${
+                      liked ? 'text-green-500' : 'text-white'
+                    }`}
                     onClick={() => handleInteraction('like')}
-                    style={{
-                      color: liked ? 'green' : 'black',
-                      padding: '10px',
-                    }}
                     disabled={liked || disliked}
                   >
                     <i className="fas fa-thumbs-up"></i>
                   </button>
                   <button
+                    className={`rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center bg-transparent border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none ${
+                      disliked ? 'text-red-500' : 'text-white'
+                    }`}
                     onClick={() => handleInteraction('dislike')}
-                    style={{
-                      color: disliked ? 'red' : 'black',
-                      padding: '10px',
-                    }}
                     disabled={liked || disliked}
                   >
                     <i className="fas fa-thumbs-down"></i>
                   </button>
-                  <button onClick={handleNext} style={{ padding: '10px' }}>
-                    Next <i className="fas fa-step-forward"></i>
+                  <button
+                    className="rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center text-white bg-transparent border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
+                    onClick={handleNext}
+                  >
+                    <i className="fas fa-step-forward"></i>
                   </button>
-                </div>
+                </>
               )}
             </div>
           </div>
