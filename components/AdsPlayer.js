@@ -47,8 +47,9 @@ function AdsPlayer() {
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.muted = muteState;
+      videoRef.current.play();
     }
-  }, [muteState]);
+  }, [currentAdIndex, muteState]);
 
   const fetchInteractionData = async (adId) => {
     try {
@@ -94,13 +95,13 @@ function AdsPlayer() {
   }, []);
 
   // Play or pause video based on visibility
-  useEffect(() => {
-    if (isVideoVisible && videoRef.current) {
-      videoRef.current.play();
-    } else if (!isVideoVisible && videoRef.current) {
-      videoRef.current.pause();
-    }
-  }, [isVideoVisible]);
+  // useEffect(() => {
+  //   if (isVideoVisible && videoRef.current) {
+  //     videoRef.current.play();
+  //   } else if (!isVideoVisible && videoRef.current) {
+  //     videoRef.current.pause();
+  //   }
+  // }, [isVideoVisible]);
 
   useEffect(() => {
     if (registrationStatus === 'pending' && adsWatched >= 3) {
@@ -185,7 +186,6 @@ function AdsPlayer() {
     });
   };
   const handleNext = () => {
-    // if (!canProceed) return; // Prevent skipping if no interaction
     setShowButtons(false);
     setCurrentAdIndex((prevIndex) => {
       const newIndex = prevIndex + 1 < adsQueue.length ? prevIndex + 1 : 0;
@@ -274,12 +274,10 @@ function AdsPlayer() {
       toast.error(message);
     }
   };
-  // const toggleMute = () => {
-  //   const video = videoRef.current;
-  //   video.muted = !video.muted;
 
-  //   setMuteState(!video.muted); // Update mute state globally
-  // };
+  const toggleMute = () => {
+    setMuteState((prevState) => !prevState);
+  };
 
   return (
     <div>
@@ -299,8 +297,9 @@ function AdsPlayer() {
               ref={videoRef}
               id="ad-video"
               src={adsQueue[currentAdIndex]?.videoUrl}
-              controls
               muted={muteState}
+              controls
+              autoPlay
               preload="none"
               poster="/images/placeholder.jpeg"
               onClick={handlePlayPause} // makes clicking in the video to pause/resume
@@ -318,6 +317,9 @@ function AdsPlayer() {
                 </button>
                 <button style={{ margin: '10px' }} onClick={handleSkip}>
                   <i className="fas fa-step-forward"></i>{' '}
+                </button>
+                <button onClick={toggleMute}>
+                  {muteState ? 'Unmute' : 'Mute'}
                 </button>
               </div>
               {showButtons && (
