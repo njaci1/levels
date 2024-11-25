@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSwipeable } from 'react-swipeable';
+import Image from 'next/image';
 
 function AdsPlayer() {
   const [adsQueue, setAdsQueue] = useState(null);
@@ -30,7 +31,6 @@ function AdsPlayer() {
       try {
         const response = await axios.get('/api/ads/ads');
         const ads = response.data;
-
         if (ads && ads.length > 0) {
           setAdsQueue(ads);
           fetchInteractionData(ads[0]._id);
@@ -294,19 +294,40 @@ function AdsPlayer() {
               position: 'relative',
             }}
           >
-            <video
-              ref={videoRef}
-              id="ad-video"
-              src={adsQueue[currentAdIndex]?.videoUrl}
-              muted={muteState}
-              controls
-              autoPlay
-              preload="none"
-              poster="/images/placeholder.jpeg"
-              onClick={handlePlayPause} // makes clicking in the video to pause/resume
-              className="w-full h-full object-cover"
-              playsInline
-            />
+            {adsQueue[currentAdIndex]?.type === 'video' && (
+              <video
+                ref={videoRef}
+                id="ad-video"
+                src={adsQueue[currentAdIndex].videoUrl}
+                muted={muteState}
+                controls
+                autoPlay
+                preload="none"
+                poster="/images/placeholder.jpeg"
+                onClick={handlePlayPause} // makes clicking in the video to pause/resume
+                className="w-full h-full object-cover"
+                playsInline
+              />
+            )}
+            {adsQueue[currentAdIndex]?.type === 'banner' && (
+              <div className="relative w-full h-screen sm:w-[90%] sm:h-[70vh] lg:w-[80%] lg:h-[60vh] mx-auto">
+                <Image
+                  src={adsQueue[currentAdIndex].videoUrl}
+                  alt="Banner Ad"
+                  fill
+                  priority
+                  onLoad={() => setShowButtons(true)}
+                  className="object-cover"
+                />
+              </div>
+            )}
+            {adsQueue[currentAdIndex]?.type === 'survey' && (
+              <iframe
+                src={adsQueue[0].url}
+                className="h-full w-auto"
+                title="Survey"
+              />
+            )}
             <div className="absolute top-1/2 right-2 transform -translate-y-1/2 flex flex-col gap-3 sm:gap-4 sm:right-5">
               <button
                 className="rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center text-white bg-transparent border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"

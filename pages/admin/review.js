@@ -14,7 +14,6 @@ const ReviewPage = () => {
   useEffect(() => {
     if (status === 'loading') return; // Do nothing while loading
     if (!session.user.role === 'admin') {
-      console.log('Session:', session);
       router.push('/access-denied');
       return;
     }

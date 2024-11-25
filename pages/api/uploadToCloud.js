@@ -5,14 +5,12 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method Not Allowed' });
   }
-
   await db.connect();
-
   try {
     const newAd = new Ad({
       title: req.body.title,
       description: req.body.description,
-      type: 'video',
+      type: req.body.type.toLowerCase(),
       duration: req.body.duration,
       amountPaid: req.body.amountPaid,
       videoUrl: req.body.secure_url,
