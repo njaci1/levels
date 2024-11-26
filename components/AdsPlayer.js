@@ -330,7 +330,7 @@ function AdsPlayer() {
                 title="Survey"
               />
             )}
-            <div className="absolute bottom-4 right-4">
+            <div className="absolute bottom-14 right-4">
               <button
                 className="rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center text-white bg-transparent border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
                 onClick={toggleMute}
