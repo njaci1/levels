@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     res.setHeader('Allow', ['POST']);
     return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
-  console.log(req.body);
+
   const { adId, userId, doubleLiked, liked, disliked, adsWatched } = req.body;
 
   try {
@@ -24,7 +24,6 @@ export default async function handler(req, res) {
     let interaction = await Interaction.findOne({ adId, userId });
 
     if (interaction) {
-      console.log('interaction exists:', interaction);
       // Update interaction if it exists
       interaction.doubleLiked = doubleLiked;
       interaction.liked = liked;
@@ -33,7 +32,6 @@ export default async function handler(req, res) {
       await interaction.save();
       res.status(200).json({ message: 'interaction updated' });
     } else {
-      console.log('interaction does not exist');
       // Create a new interaction if it doesn't exist
       interaction = await Interaction.create({
         adId,
@@ -43,7 +41,6 @@ export default async function handler(req, res) {
         disliked,
       });
       try {
-        console.log('jackpot entry leg');
         // Check if the userId exists in the user engagement collection
         let entry = await UserEngagement.findOne({ userId: userId });
 
