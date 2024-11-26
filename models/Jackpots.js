@@ -4,17 +4,17 @@ const { type } = require('os');
 const Schema = mongoose.Schema;
 
 // Schema for UserEngagement
-const userEngagementSchema = new Schema({
-  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-  adIds: [{ type: Schema.Types.ObjectId, ref: 'Ad' }],
+// const userEngagementSchema = new Schema({
+//   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+//   adIds: [{ type: Schema.Types.ObjectId, ref: 'Ad' }],
 
-  count: {
-    type: Number,
-    default: 1,
-  },
-  timestamp: { type: Date, default: Date.now },
-});
-userEngagementSchema.index({ userId: 1 });
+//   count: {
+//     type: Number,
+//     default: 1,
+//   },
+//   timestamp: { type: Date, default: Date.now },
+// });
+// userEngagementSchema.index({ userId: 1 });
 
 // Schema for WeeklyJackpotEntry
 const weeklyJackpotEntrySchema = new Schema({
@@ -84,9 +84,9 @@ const jackpotTotalsSchema = new mongoose.Schema({
 });
 
 // Compile models from the schemas
-const UserEngagement =
-  mongoose.models.UserEngagement ||
-  mongoose.model('UserEngagement', userEngagementSchema);
+// const UserEngagement =
+//   mongoose.models.UserEngagement ||
+//   mongoose.model('UserEngagement', userEngagementSchema);
 const WeeklyJackpotEntry =
   mongoose.models.WeeklyJackpotEntry ||
   mongoose.model('WeeklyJackpotEntry', weeklyJackpotEntrySchema);
@@ -99,8 +99,8 @@ const AnnualJackpotEntry =
 const WelcomeJackpotEntry =
   mongoose.models.WelcomeJackpotEntry ||
   mongoose.model('WelcomeJackpotEntry', welcomeJackpotEntrySchema);
-const Winner =
-  mongoose.models.Winner || mongoose.model('Winner', winnersSchema);
+// const Winner =
+//   mongoose.models.Winner || mongoose.model('Winner', winnersSchema);
 
 const JackpotAllocation =
   mongoose.models.JackpotAllocation ||
@@ -111,12 +111,12 @@ const JackpotTotals =
   mongoose.model('JackpotTotals', jackpotTotalsSchema);
 
 module.exports = {
-  UserEngagement,
+  // UserEngagement,
   WeeklyJackpotEntry,
   MonthlyJackpotEntry,
   AnnualJackpotEntry,
   WelcomeJackpotEntry,
-  Winner,
+  // Winner,
   JackpotAllocation,
   JackpotTotals,
 };

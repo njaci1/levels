@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     res.setHeader('Allow', ['POST']);
     return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
-
+  console.log('handling Interaction');
   const { adId, userId, doubleLiked, liked, disliked, adsWatched } = req.body;
 
   try {
