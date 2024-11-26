@@ -33,7 +33,7 @@ function AdsPlayer() {
         const ads = response.data;
         if (ads && ads.length > 0) {
           setAdsQueue(ads);
-          fetchInteractionData(ads[0]._id);
+          fetchInteractionData(ads[currentAdIndex]._id);
         } else {
           setAdsQueue([]);
         }
@@ -159,6 +159,7 @@ function AdsPlayer() {
   const handlePrevious = () => {
     setCurrentAdIndex((prevIndex) => {
       const newIndex = prevIndex - 1 >= 0 ? prevIndex - 1 : adsQueue.length - 1;
+      fetchInteractionData(adsQueue[newIndex]._id);
       return newIndex;
     });
   };
@@ -172,6 +173,7 @@ function AdsPlayer() {
           video.play();
         };
       }
+      fetchInteractionData(adsQueue[newIndex]._id);
       return newIndex;
     });
   };
@@ -222,7 +224,7 @@ function AdsPlayer() {
       });
 
       setAdsWatched((prev) => prev + 1);
-      handleJackpotEntry(userId, adsQueue[currentAdIndex]._id);
+      // handleJackpotEntry(userId, adsQueue[currentAdIndex]._id);
 
       if (interactionType === 'doubleLike') {
         setDoubleLiked(true);
@@ -355,7 +357,7 @@ function AdsPlayer() {
                       liked ? 'text-green-500' : 'text-white'
                     }`}
                     onClick={() => handleInteraction('like')}
-                    disabled={liked || disliked}
+                    disabled={liked}
                   >
                     <i className="fas fa-thumbs-up"></i>
                   </button>
@@ -364,7 +366,7 @@ function AdsPlayer() {
                       disliked ? 'text-red-500' : 'text-white'
                     }`}
                     onClick={() => handleInteraction('dislike')}
-                    disabled={liked || disliked}
+                    disabled={disliked}
                   >
                     <i className="fas fa-thumbs-down"></i>
                   </button>

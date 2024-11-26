@@ -37,6 +37,16 @@ const interactionSchema = new mongoose.Schema({
   },
 });
 
+interactionSchema.pre('findOneAndUpdate', function (next) {
+  this.set({ timestamp: Date.now() });
+  next();
+});
+
+interactionSchema.pre('update', function (next) {
+  this.set({ timestamp: Date.now() });
+  next();
+});
+
 const Interaction =
   mongoose.models.Interaction ||
   mongoose.model('Interaction', interactionSchema);

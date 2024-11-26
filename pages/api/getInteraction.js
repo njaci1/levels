@@ -13,7 +13,7 @@ export default async function handler(req, res) {
       if (interaction) {
         res.status(200).json(interaction); // Return the interaction
       } else {
-        res.status(201).json('This is a new interaction');
+        res.status(201).json({});
       }
     } catch (error) {
       console.error('Error fetching interaction:', error);
