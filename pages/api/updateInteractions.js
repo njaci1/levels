@@ -2,6 +2,12 @@ import db from '../../lib/db';
 import Interaction from '../../models/AdInteractions';
 import User from '../../models/User';
 import UserEngagement from '../../models/UserEngagement';
+import {
+  WeeklyJackpotEntry,
+  MonthlyJackpotEntry,
+  AnnualJackpotEntry,
+  WelcomeJackpotEntry,
+} from '../../models/Jackpots';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -30,8 +36,10 @@ export default async function handler(req, res) {
       interaction.disliked = disliked;
 
       await interaction.save();
+      console.log('interaction updated');
       res.status(200).json({ message: 'interaction updated' });
     } else {
+      console.log('creating new interaction');
       // Create a new interaction if it doesn't exist
       interaction = await Interaction.create({
         adId,
