@@ -330,28 +330,40 @@ function AdsPlayer() {
                 title="Survey"
               />
             )}
-            <div className="absolute top-1/2 right-2 transform -translate-y-1/2 flex flex-col gap-3 sm:gap-4 sm:right-5">
+            <div className="absolute bottom-4 right-4">
               <button
                 className="rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center text-white bg-transparent border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
+                onClick={toggleMute}
+              >
+                {muteState ? (
+                  <i className="fas fa-volume-up"></i>
+                ) : (
+                  <i className="fas fa-volume-mute"></i>
+                )}
+              </button>
+            </div>
+
+            <div className="absolute top-1/2 right-2 transform -translate-y-1/2 flex flex-col gap-3 sm:gap-4 sm:right-5">
+              <button
+                className="hidden md:flex rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size items-center justify-center text-white bg-transparent border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
                 onClick={handlePrevious}
               >
-                <i className="fas fa-step-backward "></i>
+                <i className="fas fa-step-backward"></i>
               </button>
-              {/* <button
-                className="rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center text-white bg-transparent border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
+              <button
+                className="hidden md:flex rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size items-center justify-center text-white bg-transparent border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
                 onClick={handleSkip}
               >
-                <i className="fas fa-step-forward "></i>
-              </button> */}
-
+                <i className="fas fa-step-forward"></i>
+              </button>
               {showButtons && (
                 <>
-                  {/* <button
+                  <button
                     className="rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center text-white bg-transparent border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
                     onClick={handleReplay}
                   >
                     <i className="fas fa-redo"></i>
-                  </button> */}
+                  </button>
                   <button
                     className={`rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center bg-transparent border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none ${
                       liked ? 'text-green-500' : 'text-white'
@@ -381,22 +393,6 @@ function AdsPlayer() {
                   </button>
                 </>
               )}
-              <button
-                className="rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center text-white bg-transparent border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
-                onClick={toggleMute}
-              >
-                {muteState ? (
-                  <i className="fas fa-volume-up"></i>
-                ) : (
-                  <i className="fas fa-volume-mute"></i>
-                )}
-              </button>
-              <button
-                className="rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center text-white bg-transparent border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
-                onClick={handleSkip}
-              >
-                <i className="fas fa-step-forward"></i>
-              </button>
             </div>
           </div>
         ) : (
