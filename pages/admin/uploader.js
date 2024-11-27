@@ -14,7 +14,7 @@ const Uploader = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [title, setTitle] = useState('');
-  const [type, setType] = useState('');
+  const [type, setType] = useState('video');
   const [description, setDescription] = useState('');
   const [duration, setDuration] = useState('1 week');
   const [priority, setPriority] = useState('high');
@@ -112,7 +112,9 @@ const Uploader = () => {
             <select
               id="type"
               value={type}
-              onChange={(e) => setType(e.target.value)}
+              onChange={(e) => {
+                setType(e.target.value);
+              }}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             >
               <option value="video">Video</option>
