@@ -8,7 +8,7 @@ import {
   Grid,
   Box,
 } from '@mui/material';
-import { styled } from '@mui/system';
+import { display, styled } from '@mui/system';
 
 // Styled card with responsive padding and box-shadow
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -38,21 +38,6 @@ const Title = styled(Typography)(({ theme }) => ({
     fontSize: '2rem',
   },
 }));
-
-// Button with enhanced hover styles and larger touch area
-// const JoinButton = styled(Button)(({ theme }) => ({
-//   marginTop: '1em',
-//   backgroundColor: '#3f51b5',
-//   color: 'white',
-//   padding: '0.75em 2em', // Larger button for better mobile interaction
-//   '&:hover': {
-//     backgroundColor: '#303f9f',
-//   },
-//   [theme.breakpoints.down('sm')]: {
-//     width: '100%', // Full-width button on mobile
-//     padding: '0.5em 0', // Compact padding on smaller screens
-//   },
-// }));
 
 // Amount styling with bold and responsive font size
 const Amount = styled(Typography)(({ theme }) => ({
@@ -117,12 +102,8 @@ const getNextDrawDate = (name) => {
 };
 
 const JackpotCard = ({ name, amount, entries }) => {
-  const displayAmount = Number(amount) || 0; // Defaults to 0 if amount is NAN
+  const displayAmount = amount.split('.')[0];
   const drawDate = getNextDrawDate(name);
-  const formattedAmount = new Intl.NumberFormat('en-IN', {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(displayAmount * 1000);
 
   return (
     <StyledCard>
@@ -130,7 +111,7 @@ const JackpotCard = ({ name, amount, entries }) => {
         <Title variant="h4">{name}</Title>
         <Amount>
           <span className="text-sm">KES.</span>
-          {formattedAmount}
+          {displayAmount}
         </Amount>
         <Typography align="center">Your Entries: {entries}</Typography>
         <Typography align="center" color="textSecondary">

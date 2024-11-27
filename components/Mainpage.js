@@ -31,8 +31,8 @@ export default function Mainpage() {
 
   const [jackpots, setJackpots] = useState({
     weekly: 1000,
-    monthly: 5000,
-    annual: 9000,
+    monthly: 1000,
+    annual: 1000,
     joiners: 10000,
   });
 
