@@ -102,7 +102,7 @@ const getNextDrawDate = (name) => {
 };
 
 const JackpotCard = ({ name, amount, entries }) => {
-  const displayAmount = amount.split('.')[0];
+  const displayAmount = amount.slice(0, amount.indexOf('.'));
   const drawDate = getNextDrawDate(name);
 
   return (
