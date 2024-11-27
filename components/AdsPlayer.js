@@ -312,14 +312,14 @@ function AdsPlayer() {
               />
             )}
             {adsQueue[currentAdIndex]?.type === 'banner' && (
-              <div className="relative w-full h-screen sm:w-[90%] sm:h-[70vh] lg:w-[80%] lg:h-[60vh] mx-auto">
+              <div className="flex justify-center text-center relative w-full h-screen sm:w-[100%] sm:h-[80vh] md:w-[100%] md:h-[85vh] lg:w-[100%] lg:h-[90vh] mx-auto">
                 <Image
                   src={adsQueue[currentAdIndex].videoUrl}
                   alt="Banner Ad"
                   fill
                   priority
                   onLoad={() => setShowButtons(true)}
-                  className="object-cover"
+                  className="object-contain"
                 />
               </div>
             )}
