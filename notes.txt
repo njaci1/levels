@@ -24,3 +24,9 @@ Interaction.aggregate([
   console.log('Most liked ad within the specified time period:', result);
 });
 handle jackpot
+
+Name: Bboard
+Tagline: Attention That Counts
+Description: Bboard is a platform that connects advertisers with users who are willing to view ads in exchange for rewards. Users can earn rewards by clicking on ads or referring others to the platform. Advertisers can reach a targeted audience and track the performance of their ads. Bboard aims to provide a win-win solution for both advertisers and users.
+Stake your Attention for fun, kaching, and bits of knowledge.
+
