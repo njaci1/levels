@@ -20,10 +20,10 @@ export default function Hello() {
       .then((response) => response.json())
       .then((data) => {
         setJackpots({
-          joinersTotal: data.joinersTotal.split('.')[0],
-          weeklyTotal: data.weeklyTotal.split('.')[0],
-          monthlyTotal: data.monthlyTotal.split('.')[0],
-          annualTotal: data.annualTotal.split('.')[0],
+          joinersTotal: data.joinersTotal,
+          weeklyTotal: data.weeklyTotal,
+          monthlyTotal: data.monthlyTotal,
+          annualTotal: data.annualTotal,
         });
       });
   }, []);
