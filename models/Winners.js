@@ -4,7 +4,7 @@ const winnersSchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   jackpotType: {
     type: String,
-    enum: ['weekly', 'monthly', 'annual', 'welcome'],
+    enum: ['daily', 'weekly', 'monthly', 'annual', 'welcome'],
     required: true,
   },
   amount: { type: Number, required: true },

@@ -39,7 +39,7 @@ export default async function handler(req, res) {
       // If approved, trigger allocation
       if (action === 'approve') {
         // const totalPaid = calculatePrice(targetAd.priority, targetAd.duration);
-        await calculateAndAllocateFunds(targetAd._id, targetAd.amountPaid);
+        await calculateAndAllocateFunds(targetAd.amountPaid);
       }
 
       // (Future) - Trigger email notification
