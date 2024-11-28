@@ -34,7 +34,7 @@ export default async function handler(req, res) {
 
         // If the count reaches 10, add an entry to the weekly jackpot
         if (entry.count === 2 || entry.count % 2 === 0) {
-          console.log('adding weekly jackpot entry');
+          console.log('adding daily jackpot entry');
           await DailyJackpotEntry.create({ userId });
         }
 

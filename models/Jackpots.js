@@ -8,7 +8,7 @@ const dailyJackpotEntrySchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   timestamp: { type: Date, default: Date.now },
 });
-weeklyJackpotEntrySchema.index({ userId: 1, timestamp: 1 });
+
 // Schema for WeeklyJackpotEntry
 const weeklyJackpotEntrySchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
