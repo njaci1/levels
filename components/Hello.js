@@ -47,7 +47,8 @@ export default function Hello() {
                 fontWeight: 'bold',
               }}
             >
-              <span className="text-sm">KSh.</span> {jackpots.weeklyTotal}
+              <span className="text-sm">KSh.</span>
+              {jackpots.weeklyTotal}
             </strong>
           </Typography>
           <Button

@@ -37,7 +37,7 @@ export default function Layout({ title, children }) {
     <>
       <Head>
         <title>{title ? title + ' - Levels' : 'Levels'}</title>
-        <meta name="description" content="Mynet" />
+        <meta name="description" content="Bboard" />
         <link rel="icon" href="/favi.png" />
       </Head>
 
