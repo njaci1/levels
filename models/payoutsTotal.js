@@ -6,6 +6,6 @@ const PayoutsTotalSchema = new mongoose.Schema({
 
 const payoutsTotal =
   mongoose.models.PayoutsTotal ||
-  mongoose.model('payoutTotals', PayoutsTotalSchema);
+  mongoose.model('payoutTotal', PayoutsTotalSchema);
 
 export default payoutsTotal;
