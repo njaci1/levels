@@ -47,7 +47,7 @@ export default function Hello() {
                 fontWeight: 'bold',
               }}
             >
-              <span className="text-sm">KSh. </span> {jackpots.weeklyTotal}
+              <span className="text-sm">KSh.</span> {jackpots.weeklyTotal}
             </strong>
           </Typography>
           <Button
@@ -85,7 +85,7 @@ export default function Hello() {
                     {jackpot} Prize
                   </Typography>
                   <Typography variant="h5" fontWeight="bold" color="primary">
-                    <span className="text-sm">KSh. </span>
+                    <span className="text-sm">KSh.</span>
                     {jackpots[`${jackpot.toLowerCase()}Total`]}
                   </Typography>
                   <Button
