@@ -82,7 +82,7 @@ export default function Hello() {
                   }}
                 >
                   <Typography variant="h6" fontWeight="bold">
-                    {jackpot} Jackpot
+                    {jackpot} Prize
                   </Typography>
                   <Typography variant="h5" fontWeight="bold" color="primary">
                     <span className="text-sm">KSh. </span>
