@@ -35,6 +35,10 @@ const interactionSchema = new mongoose.Schema({
     type: String,
     enum: ['correct', 'incorrect'],
   },
+  clicked: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 interactionSchema.pre('findOneAndUpdate', function (next) {

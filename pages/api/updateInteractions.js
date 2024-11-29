@@ -17,7 +17,8 @@ export default async function handler(req, res) {
     return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 
-  const { adId, userId, doubleLiked, liked, disliked, adsWatched } = req.body;
+  const { adId, userId, doubleLiked, liked, disliked, adsWatched, clicked } =
+    req.body;
 
   try {
     await db.connect();
@@ -34,6 +35,7 @@ export default async function handler(req, res) {
     if (liked) updateFields['engagement.likes'] = 1;
     if (disliked) updateFields['engagement.dislikes'] = 1;
     if (doubleLiked) updateFields['engagement.doubleLikes'] = 1;
+    if (clicked) updateFields['engagement.clicks'] = 1;
 
     const result = await Ad.findByIdAndUpdate(
       adId,
@@ -66,6 +68,7 @@ export default async function handler(req, res) {
         doubleLiked,
         liked,
         disliked,
+        clicked,
       });
       try {
         // Check if the userId exists in the user engagement collection
