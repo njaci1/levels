@@ -1,3 +1,4 @@
+import { link } from 'fs';
 import db from '../../lib/db';
 import Ad from '../../models/AdsCollection';
 
@@ -10,6 +11,8 @@ export default async function handler(req, res) {
     const newAd = new Ad({
       title: req.body.title,
       description: req.body.description,
+      link: req.body.link,
+      phone: req.body.phone,
       type: req.body.type.toLowerCase(),
       duration: req.body.duration,
       amountPaid: req.body.amountPaid,

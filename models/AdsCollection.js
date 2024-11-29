@@ -88,7 +88,7 @@ const adSchema = new mongoose.Schema({
     type: String, // External URL
   },
   phone: {
-    type: String, // Phone number for calls
+    type: String,
   },
 });
 
