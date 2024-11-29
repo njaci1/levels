@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-
-// Define the schema for ads
 const adSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -12,7 +10,7 @@ const adSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ['video', 'banner', 'trivia'], // Type can be either 'video' or 'banner'
+    enum: ['video', 'banner', 'trivia'],
     required: true,
   },
   priority: {
@@ -37,7 +35,7 @@ const adSchema = new mongoose.Schema({
     enum: ['approved', 'pending', 'rejected'],
     default: 'pending',
   },
-  // add duration field
+
   duration: {
     type: String,
     enum: ['1 week', '2 weeks', '1 month'],
@@ -56,12 +54,12 @@ const adSchema = new mongoose.Schema({
     type: Date,
     default: () => Date.now() + 30 * 24 * 60 * 60 * 1000, // Default value is the current date plus 30 days
   },
-  // add filed for whetehr the ad has been extended or not
+
   extended: {
     type: Boolean,
     default: false,
   },
-  // add a field for whetther add has been rebooked or not
+
   rebooked: {
     type: Boolean,
     default: false,
@@ -78,6 +76,19 @@ const adSchema = new mongoose.Schema({
   updatedAt: {
     type: Date,
     default: Date.now,
+  },
+  engagement: {
+    likes: { type: Number, default: 0 },
+    doubleLikes: { type: Number, default: 0 },
+    dislikes: { type: Number, default: 0 },
+    clicks: { type: Number, default: 0 }, // Tracks clicks on link/phone
+  },
+
+  link: {
+    type: String, // External URL
+  },
+  phone: {
+    type: String, // Phone number for calls
   },
 });
 
