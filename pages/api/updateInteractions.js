@@ -2,10 +2,12 @@ import db from '../../lib/db';
 import Interaction from '../../models/AdInteractions';
 import User from '../../models/User';
 import UserEngagement from '../../models/UserEngagement';
+import Ad from '../../models/AdsCollection';
 import {
   WeeklyJackpotEntry,
   MonthlyJackpotEntry,
   AnnualJackpotEntry,
+  DailyJackpotEntry,
   WelcomeJackpotEntry,
 } from '../../models/Jackpots';
 
@@ -25,6 +27,23 @@ export default async function handler(req, res) {
       { _id: userId },
       { $set: { adsWatched: adsWatched } }
     );
+
+    // update ad interactions
+
+    const updateFields = {};
+    if (liked) updateFields['engagement.likes'] = 1;
+    if (disliked) updateFields['engagement.dislikes'] = 1;
+    if (doubleLiked) updateFields['engagement.doubleLikes'] = 1;
+
+    const result = await Ad.findByIdAndUpdate(
+      adId,
+      { $inc: updateFields },
+      { new: true } // Return the updated document
+    );
+
+    if (!result) {
+      throw new Error(`Ad with ID ${adId} not found`);
+    }
 
     // Check if interaction exists
     let interaction = await Interaction.findOne({ adId, userId });
@@ -59,12 +78,18 @@ export default async function handler(req, res) {
 
           // If the count reaches 10, add an entry to the weekly jackpot
           if (entry.count === 2 || entry.count % 2 === 0) {
+            console.log('adding daily jackpot entry');
+            await DailyJackpotEntry.create({ userId });
+          }
+
+          // If the count reaches 10, add an entry to the weekly jackpot
+          if (entry.count === 3 || entry.count % 3 === 0) {
             console.log('adding weekly jackpot entry');
             await WeeklyJackpotEntry.create({ userId });
           }
 
           // If the count reaches 20, add an entry to the monthly jackpot
-          if (entry.count === 3 || entry.count % 3 === 0) {
+          if (entry.count === 4 || entry.count % 4 === 0) {
             console.log('adding monthly jackpot entry');
             await MonthlyJackpotEntry.create({ userId });
           }
