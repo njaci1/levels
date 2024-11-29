@@ -34,7 +34,7 @@ export default function Mainpage() {
     weekly: 'loading...',
     monthly: 'loading...',
     annual: 'loading...',
-    joiners: 'loading...',
+    welcome: 'loading...',
   });
 
   const [jackpotEntries, setJackpotEntries] = useState({
@@ -53,7 +53,7 @@ export default function Mainpage() {
           weekly: data.weeklyTotal,
           monthly: data.monthlyTotal,
           annual: data.annualTotal,
-          joiners: data.joinersTotal,
+          welcome: data.joinersTotal,
         });
       });
   }, []);
