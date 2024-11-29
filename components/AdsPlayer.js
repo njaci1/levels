@@ -332,7 +332,7 @@ function AdsPlayer() {
             )}
             <div className="absolute bottom-14 right-4">
               <button
-                className="rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center text-white bg-transparent border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
+                className="rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center text-white bg-black/50 border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
                 onClick={toggleMute}
               >
                 {muteState ? (
@@ -345,13 +345,13 @@ function AdsPlayer() {
 
             <div className="absolute top-1/2 right-2 transform -translate-y-1/2 flex flex-col gap-3 sm:gap-4 sm:right-5">
               <button
-                className="hidden md:flex rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size items-center justify-center text-white bg-transparent border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
+                className="hidden md:flex rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size items-center justify-center text-white bg-black/50 border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
                 onClick={handlePrevious}
               >
                 <i className="fas fa-step-backward"></i>
               </button>
               <button
-                className="hidden md:flex rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size items-center justify-center text-white bg-transparent border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
+                className="hidden md:flex rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size items-center justify-center text-white bg-black/50 border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
                 onClick={handleSkip}
               >
                 <i className="fas fa-step-forward"></i>
@@ -359,13 +359,13 @@ function AdsPlayer() {
               {showButtons && (
                 <>
                   <button
-                    className="rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center text-white bg-transparent border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
+                    className="rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center text-white bg-black/50 border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
                     onClick={handleReplay}
                   >
                     <i className="fas fa-redo"></i>
                   </button>
                   <button
-                    className={`rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center bg-transparent border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none ${
+                    className={`rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center bg-black/50 border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none ${
                       liked ? 'text-green-500' : 'text-white'
                     }`}
                     onClick={() => handleInteraction('like')}
@@ -374,7 +374,7 @@ function AdsPlayer() {
                     <i className="fas fa-thumbs-up"></i>
                   </button>
                   <button
-                    className={`rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center bg-transparent border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none ${
+                    className={`rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center bg-black/50 border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none ${
                       doubleLiked ? 'text-yellow-500' : 'text-white'
                     }`}
                     onClick={() => handleInteraction('doubleLike')}
@@ -383,7 +383,7 @@ function AdsPlayer() {
                     <i class="fas fa-heart"></i>
                   </button>
                   <button
-                    className={`rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center bg-transparent border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none ${
+                    className={`rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center bg-black/50 border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none ${
                       disliked ? 'text-red-500' : 'text-white'
                     }`}
                     onClick={() => handleInteraction('dislike')}
