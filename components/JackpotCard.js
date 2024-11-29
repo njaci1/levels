@@ -54,45 +54,29 @@ const getNextDrawDate = (name) => {
   const now = new Date();
   let drawDate;
 
-  if (name === 'Weekly') {
-    drawDate = new Date();
-    drawDate.setDate(
-      now.getDay() >= 5
-        ? now.getDate() + 7 - now.getDay()
-        : now.getDate() + 5 - now.getDay()
-    );
-    drawDate.setHours(20, 0, 0, 0);
-  } else if (name === 'Joiners') {
-    drawDate = new Date();
-    drawDate.setDate(
-      now.getDay() >= 5
-        ? now.getDate() + 7 - now.getDay()
-        : now.getDate() + 5 - now.getDay()
-    );
-    drawDate.setHours(19, 0, 0, 0);
+  if (name === 'Daily') {
+    drawDate = new Date(now);
+    drawDate.setHours(24, 0, 0, 0); // Next midnight
+  } else if (name === 'Weekly') {
+    drawDate = new Date(now);
+    const dayOfWeek = now.getDay();
+    const daysUntilThursday = (4 - dayOfWeek + 7) % 7; // Thursday = 4
+    drawDate.setDate(now.getDate() + daysUntilThursday);
+    drawDate.setHours(0, 0, 0, 0); // Midnight
   } else if (name === 'Monthly') {
-    drawDate = new Date(
-      now.getFullYear(),
-      now.getMonth() + (now.getDate() > 1 ? 1 : 0),
-      1,
-      20,
-      0,
-      0
-    );
+    drawDate = new Date(now.getFullYear(), now.getMonth() + 1, 0); // Last day of the current month
+    drawDate.setHours(0, 0, 0, 0); // Midnight
   } else if (name === 'Annual') {
-    drawDate = new Date(
-      now.getFullYear() +
-        (now.getMonth() > 11 || (now.getMonth() === 11 && now.getDate() > 12)
-          ? 1
-          : 0),
-      11,
-      12,
-      20,
-      0,
-      0
-    );
+    drawDate = new Date(now.getFullYear(), 11, 12); // December 12
+    if (now > drawDate) {
+      drawDate.setFullYear(now.getFullYear() + 1); // Move to next year
+    }
+    drawDate.setHours(0, 0, 0, 0); // Midnight
+  } else {
+    return 'Invalid draw name';
   }
 
+  // Calculate the countdown
   const diff = drawDate - now;
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
   const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -102,8 +86,25 @@ const getNextDrawDate = (name) => {
 };
 
 const JackpotCard = ({ name, amount, entries }) => {
+  let drawName = name;
+  switch (drawName) {
+    case 'Today!':
+      drawName = 'Daily';
+      break;
+    case 'This Week':
+      drawName = 'Weekly';
+      break;
+    case 'End Month':
+      drawName = 'Monthly';
+      break;
+    case 'End of Year':
+      drawName = 'Annual';
+      break;
+    default:
+      return <div>Invalid Jackpot name</div>;
+  }
   const displayAmount = amount;
-  const drawDate = getNextDrawDate(name);
+  const drawDate = getNextDrawDate(drawName);
 
   return (
     <StyledCard>

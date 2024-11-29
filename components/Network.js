@@ -31,7 +31,7 @@ export default function NetworkCard({ networkSize }) {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: 2,
+        gap: 0,
         width: { xs: '90vw', sm: '60vw', md: '40vw' }, // Adjust the width for different screen sizes
         margin: 'auto',
       }}
@@ -44,6 +44,8 @@ export default function NetworkCard({ networkSize }) {
           alignItems: 'center',
           width: '100%',
           gap: 1,
+          marginTop: 2,
+          mb: 0,
           flexWrap: 'wrap', // To handle small screens better
         }}
       >
@@ -67,7 +69,7 @@ export default function NetworkCard({ networkSize }) {
       </Box>
 
       <TableContainer>
-        <Table size="small" sx={{ width: '100%' }}>
+        <Table className="mt:0" size="small" sx={{ width: '100%' }}>
           {/* <TableHead>
             <TableRow>
               <TableCell>

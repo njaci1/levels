@@ -9,10 +9,10 @@ import { Grid, Box, Typography } from '@mui/material';
 export default function Mainpage() {
   // State for storing network data
   const [networkData, setNetworkData] = useState({
-    inviteesLevel1Count: 0,
-    inviteesLevel2Count: 0,
-    inviteesLevel3Count: 0,
-    balance: 0,
+    inviteesLevel1Count: 'loading...',
+    inviteesLevel2Count: 'loading...',
+    inviteesLevel3Count: 'loading...',
+    balance: 'loading...',
     status: 'pending',
   });
 
@@ -30,16 +30,18 @@ export default function Mainpage() {
   }, []);
 
   const [jackpots, setJackpots] = useState({
-    weekly: 1000,
-    monthly: 1000,
-    annual: 1000,
-    joiners: 10000,
+    daily: 'loading...',
+    weekly: 'loading...',
+    monthly: 'loading...',
+    annual: 'loading...',
+    joiners: 'loading...',
   });
 
   const [jackpotEntries, setJackpotEntries] = useState({
-    weekly: 1,
-    monthly: 3,
-    annual: 10,
+    daily: 'loading...',
+    weekly: 'loading...',
+    monthly: 'loading...',
+    annual: 'loading...',
   });
 
   useEffect(() => {
@@ -47,6 +49,7 @@ export default function Mainpage() {
       .then((response) => response.json())
       .then((data) => {
         setJackpots({
+          daily: data.dailyTotal,
           weekly: data.weeklyTotal,
           monthly: data.monthlyTotal,
           annual: data.annualTotal,
@@ -60,6 +63,7 @@ export default function Mainpage() {
       .then((response) => response.json())
       .then((data) => {
         setJackpotEntries({
+          daily: data.dailyEntries,
           weekly: data.weeklyEntries,
           monthly: data.monthlyEntries,
           annual: data.annualEntries,
@@ -107,10 +111,18 @@ export default function Mainpage() {
         <Box sx={{ flex: 1, overflowY: 'auto', marginTop: '325px' }}>
           {' '}
           {/* Adjust this value to create space below the fixed section */}
+          <Grid item xs={12} sm={6} md={4}>
+            <JackpotCard
+              name="Today!"
+              amount={jackpots.daily}
+              entries={jackpotEntries.daily}
+              drawDate={'Fri 8 PM'}
+            />
+          </Grid>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6} md={4}>
               <JackpotCard
-                name="Weekly"
+                name="This Week"
                 amount={jackpots.weekly}
                 entries={jackpotEntries.weekly}
                 drawDate={'Fri 8 PM'}
@@ -118,7 +130,7 @@ export default function Mainpage() {
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
               <JackpotCard
-                name="Monthly"
+                name="End Month"
                 amount={jackpots.monthly}
                 entries={jackpotEntries.monthly}
                 drawDate={'1st Sat'}
@@ -126,10 +138,10 @@ export default function Mainpage() {
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
               <JackpotCard
-                name="Annual"
+                name="End of Year"
                 amount={jackpots.annual}
                 entries={jackpotEntries.annual}
-                drawDate={'1st Jan'}
+                drawDate={'12th Dec'}
               />
             </Grid>
           </Grid>
