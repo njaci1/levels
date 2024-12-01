@@ -272,9 +272,8 @@ function AdsPlayer() {
   };
   const swipeHandlers = useSwipeable({
     onSwipedUp: () => handleSkip(),
-
     onSwipedDown: () => handlePrevious(),
-    delta: 10, // Min distance in px before a swipe is detected
+    delta: 100, // Min distance in px before a swipe is detected
     preventDefaultTouchmoveEvent: true,
     trackTouch: true,
   });
