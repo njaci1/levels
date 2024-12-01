@@ -273,7 +273,7 @@ function AdsPlayer() {
   const swipeHandlers = useSwipeable({
     onSwipedUp: () => handleSkip(),
     onSwipedDown: () => handlePrevious(),
-    delta: 100, // Min distance in px before a swipe is detected
+    delta: 30, // Min distance in px before a swipe is detected
     preventDefaultTouchmoveEvent: true,
     trackTouch: true,
   });
@@ -281,7 +281,7 @@ function AdsPlayer() {
   return (
     <div
       {...swipeHandlers} // Add swipe handlers here
-      className="relative w-full h-screen"
+      className="relative w-full h-screen overflow-hidden flex flex-col"
     >
       <ToastContainer autoClose={5000} />
       {adsQueue ? (
@@ -290,35 +290,37 @@ function AdsPlayer() {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              overflowY: 'auto',
+              overflow: 'hidden',
               height: '100vh',
               position: 'relative',
             }}
           >
             {adsQueue[currentAdIndex]?.type === 'video' && (
-              <video
-                ref={videoRef}
-                id="ad-video"
-                src={adsQueue[currentAdIndex].videoUrl}
-                muted={muteState}
-                controls
-                autoPlay
-                preload="none"
-                poster="/images/placeholder.jpeg"
-                onClick={handlePlayPause} // makes clicking in the video to pause/resume
-                className="w-full h-full object-cover"
-                playsInline
-              />
+              <div className="w-full h-full flex items-center justify-center">
+                <video
+                  ref={videoRef}
+                  id="ad-video"
+                  src={adsQueue[currentAdIndex].videoUrl}
+                  muted={muteState}
+                  controls
+                  autoPlay
+                  preload="none"
+                  poster="/images/placeholder.jpeg"
+                  onClick={handlePlayPause} // makes clicking in the video to pause/resume
+                  className="w-full h-full max-w-screen-lg object-contain"
+                  playsInline
+                />
+              </div>
             )}
             {adsQueue[currentAdIndex]?.type === 'banner' && (
-              <div className="flex justify-center text-center relative w-full h-screen sm:w-[100%] sm:h-[80vh] md:w-[100%] md:h-[85vh] lg:w-[100%] lg:h-[90vh] mx-auto">
+              <div className="flex justify-center w-full h-full">
                 <Image
                   src={adsQueue[currentAdIndex].videoUrl}
                   alt="Banner Ad"
-                  fill
                   priority
                   onLoad={() => setShowButtons(true)}
-                  className="object-contain"
+                  className="w-full h-full max-w-screen-lg object-contain"
+                  fill
                 />
               </div>
             )}
@@ -327,6 +329,7 @@ function AdsPlayer() {
                 src={adsQueue[0].url}
                 className="h-full w-auto"
                 title="Survey"
+                style={{ height: 'calc(100vh - 2.5rem)' }}
               />
             )}
             <div className="absolute bottom-14 right-4">
