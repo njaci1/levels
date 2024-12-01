@@ -5,6 +5,7 @@ import {
   WeeklyJackpotEntry,
   MonthlyJackpotEntry,
   AnnualJackpotEntry,
+  DailyJackpotEntry,
 } from '../../models/Jackpots';
 
 export default async function handler(req, res) {
@@ -19,6 +20,9 @@ export default async function handler(req, res) {
   try {
     moment.updateLocale('en', { week: { dow: 4 } });
 
+    const startOfDay = moment().startOf('day').toDate(); // Beginning of today
+    const endOfDay = moment().endOf('day').toDate(); // End of today
+
     const startOfWeek = moment().startOf('week').toDate();
     const endOfWeek = moment().endOf('week').toDate();
 
@@ -27,6 +31,11 @@ export default async function handler(req, res) {
 
     const startOfYear = moment().startOf('year').toDate();
     const endOfYear = moment().endOf('year').toDate();
+
+    const dailyEntries = await DailyJackpotEntry.countDocuments({
+      userId: session.user._id, // Replace with the correct user ID
+      timestamp: { $gte: startOfDay, $lte: endOfDay },
+    });
 
     const weeklyEntries = await WeeklyJackpotEntry.countDocuments({
       userId: session.user._id,
@@ -43,7 +52,9 @@ export default async function handler(req, res) {
       timestamp: { $gte: startOfYear, $lte: endOfYear },
     });
 
-    res.status(200).json({ weeklyEntries, monthlyEntries, annualEntries });
+    res
+      .status(200)
+      .json({ dailyEntries, weeklyEntries, monthlyEntries, annualEntries });
   } catch (error) {
     console.error('Error fetching jackpot entries:', error);
     res.status(500).json({ error: 'Internal Server Error' });
