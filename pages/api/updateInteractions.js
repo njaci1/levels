@@ -64,6 +64,7 @@ export default async function handler(req, res) {
         disliked,
         clicked,
       });
+      res.status(200).json({ message: 'success' });
       try {
         let entry = await UserEngagement.findOne({ userId });
 

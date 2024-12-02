@@ -34,8 +34,8 @@ export default async function handler(req, res) {
     };
 
     const results = {};
-    for (const [type, { start, end }] of Object.entries(dateRanges)) {
-      results[`${type}Entries`] = await JackpotEntry.countDocuments({
+    for (const [jackpotType, { start, end }] of Object.entries(dateRanges)) {
+      results[`${jackpotType}Entries`] = await JackpotEntry.countDocuments({
         userId: session.user._id,
         jackpotType,
         timestamp: { $gte: start, $lte: end },
