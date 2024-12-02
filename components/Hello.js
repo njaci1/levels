@@ -9,7 +9,7 @@ export default function Hello() {
   const { redirect } = router.query;
 
   const [jackpots, setJackpots] = useState({
-    joinersTotal: 0,
+    welcomeTotal: 0,
     weeklyTotal: 0,
     monthlyTotal: 0,
     annualTotal: 0,
@@ -20,7 +20,7 @@ export default function Hello() {
       .then((response) => response.json())
       .then((data) => {
         setJackpots({
-          joinersTotal: data.joinersTotal,
+          welcomeTotal: data.welcomeTotal,
           weeklyTotal: data.weeklyTotal,
           monthlyTotal: data.monthlyTotal,
           annualTotal: data.annualTotal,
@@ -71,7 +71,7 @@ export default function Hello() {
         {/* Jackpot Cards Section */}
         <Box sx={{ px: 3 }}>
           <Grid container spacing={3} justifyContent="center">
-            {['Joiners', 'Weekly', 'Monthly', 'Annual'].map((jackpot) => (
+            {['Welcome', 'Weekly', 'Monthly', 'Annual'].map((jackpot) => (
               <Grid item xs={12} sm={6} md={3} key={jackpot}>
                 <Paper
                   elevation={3}

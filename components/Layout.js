@@ -50,7 +50,7 @@ export default function Layout({ title, children }) {
             background: '#fff',
           }}
         >
-          <nav className="flex h-12 items-center px-4 justify-between">
+          <nav className="flex h-10 items-center px-4 justify-between">
             <Link className="text-lg font-bold ml-5" href="/">
               Home
             </Link>
