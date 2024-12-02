@@ -3,13 +3,7 @@ import Interaction from '../../models/AdInteractions';
 import User from '../../models/User';
 import UserEngagement from '../../models/UserEngagement';
 import Ad from '../../models/AdsCollection';
-import {
-  WeeklyJackpotEntry,
-  MonthlyJackpotEntry,
-  AnnualJackpotEntry,
-  DailyJackpotEntry,
-  WelcomeJackpotEntry,
-} from '../../models/Jackpots';
+import JackpotEntry from '../../models/JackpotEntry';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -71,46 +65,31 @@ export default async function handler(req, res) {
         clicked,
       });
       try {
-        // Check if the userId exists in the user engagement collection
-        let entry = await UserEngagement.findOne({ userId: userId });
+        let entry = await UserEngagement.findOne({ userId });
 
-        // If entry exists, increment the count in the user engagement
         if (entry) {
           entry.count += 1;
           await entry.save();
 
-          // If the count reaches 10, add an entry to the weekly jackpot
-          if (entry.count === 2 || entry.count % 2 === 0) {
-            console.log('adding daily jackpot entry');
-            await DailyJackpotEntry.create({ userId });
-          }
+          const types = [
+            { count: 2, type: 'daily' },
+            { count: 3, type: 'weekly' },
+            { count: 4, type: 'monthly' },
+            { count: 5, type: 'annual' },
+          ];
 
-          // If the count reaches 10, add an entry to the weekly jackpot
-          if (entry.count === 3 || entry.count % 3 === 0) {
-            console.log('adding weekly jackpot entry');
-            await WeeklyJackpotEntry.create({ userId });
-          }
-
-          // If the count reaches 20, add an entry to the monthly jackpot
-          if (entry.count === 4 || entry.count % 4 === 0) {
-            console.log('adding monthly jackpot entry');
-            await MonthlyJackpotEntry.create({ userId });
-          }
-
-          // If the count reaches 30, add an entry to the annual jackpot
-          if (entry.count === 5 || entry.count % 5 === 0) {
-            console.log('adding annual jackpot entry');
-            await AnnualJackpotEntry.create({ userId });
+          for (const { count, type } of types) {
+            if (entry.count === count || entry.count % count === 0) {
+              console.log(`Adding ${type} jackpot entry`);
+              await JackpotEntry.create({ userId, type });
+            }
           }
         } else {
-          // If userId doesn't exist, create a new one
-          console.log('first time engagement with ad');
+          console.log('First-time engagement with ad');
           entry = await UserEngagement.create({ userId });
         }
-
-        res.status(200).json({ message: 'count incremented' });
       } catch (error) {
-        console.error('Error processing engagement:', error);
+        console.error('Error updating jackpot entries:', error);
       }
     }
   } catch (error) {
