@@ -1,6 +1,5 @@
-const { time } = require('console');
 const mongoose = require('mongoose');
-const { type } = require('os');
+
 const Schema = mongoose.Schema;
 
 // Schema for DailyJackpotEntry
@@ -66,16 +65,6 @@ const jackpotAllocationSchema = new mongoose.Schema({
   timestamp: { type: Date, default: Date.now },
 });
 
-// Schema for JackpotTotals
-const jackpotTotalsSchema = new mongoose.Schema({
-  joinersTotal: { type: Number, default: 0 },
-  weeklyTotal: { type: Number, default: 0 },
-  monthlyTotal: { type: Number, default: 0 },
-  annualTotal: { type: Number, default: 0 },
-  platformShare: { type: Number, default: 0 },
-  timestamp: { type: Date, default: Date.now },
-});
-
 // Compile models from the schemas
 
 const DailyJackpotEntry =
@@ -98,10 +87,6 @@ const JackpotAllocation =
   mongoose.models.JackpotAllocation ||
   mongoose.model('JackpotAllocation', jackpotAllocationSchema);
 
-const JackpotTotals =
-  mongoose.models.JackpotTotals ||
-  mongoose.model('JackpotTotals', jackpotTotalsSchema);
-
 module.exports = {
   DailyJackpotEntry,
   WeeklyJackpotEntry,
@@ -110,5 +95,4 @@ module.exports = {
   WelcomeJackpotEntry,
 
   JackpotAllocation,
-  JackpotTotals,
 };
