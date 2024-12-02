@@ -72,16 +72,16 @@ export default async function handler(req, res) {
           await entry.save();
 
           const types = [
-            { count: 2, type: 'daily' },
-            { count: 3, type: 'weekly' },
-            { count: 4, type: 'monthly' },
-            { count: 5, type: 'annual' },
+            { count: 2, jackpotType: 'daily' },
+            { count: 3, jackpotType: 'weekly' },
+            { count: 4, jackpotType: 'monthly' },
+            { count: 5, jackpotType: 'annual' },
           ];
 
-          for (const { count, type } of types) {
+          for (const { count, jackpotType } of types) {
             if (entry.count === count || entry.count % count === 0) {
-              console.log(`Adding ${type} jackpot entry`);
-              await JackpotEntry.create({ userId, type });
+              console.log(`Adding ${jackpotType} jackpot entry`);
+              await JackpotEntry.create({ userId, jackpotType });
             }
           }
         } else {
