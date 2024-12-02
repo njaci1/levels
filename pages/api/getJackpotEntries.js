@@ -1,12 +1,7 @@
 import db from '../../lib/db';
 import { getSession } from 'next-auth/react';
 import moment from 'moment';
-import {
-  WeeklyJackpotEntry,
-  MonthlyJackpotEntry,
-  AnnualJackpotEntry,
-  DailyJackpotEntry,
-} from '../../models/Jackpots';
+import JackpotEntry from '../../models/JackpotEntry';
 
 export default async function handler(req, res) {
   const session = await getSession({ req });
@@ -18,43 +13,36 @@ export default async function handler(req, res) {
   await db.connect();
 
   try {
-    moment.updateLocale('en', { week: { dow: 4 } });
+    const now = moment();
+    const dateRanges = {
+      daily: {
+        start: now.startOf('day').toDate(),
+        end: now.endOf('day').toDate(),
+      },
+      weekly: {
+        start: now.startOf('week').toDate(),
+        end: now.endOf('week').toDate(),
+      },
+      monthly: {
+        start: now.startOf('month').toDate(),
+        end: now.endOf('month').toDate(),
+      },
+      annual: {
+        start: now.startOf('year').toDate(),
+        end: now.endOf('year').toDate(),
+      },
+    };
 
-    const startOfDay = moment().startOf('day').toDate(); // Beginning of today
-    const endOfDay = moment().endOf('day').toDate(); // End of today
+    const results = {};
+    for (const [type, { start, end }] of Object.entries(dateRanges)) {
+      results[`${type}Entries`] = await JackpotEntry.countDocuments({
+        userId: session.user._id,
+        type,
+        timestamp: { $gte: start, $lte: end },
+      });
+    }
 
-    const startOfWeek = moment().startOf('week').toDate();
-    const endOfWeek = moment().endOf('week').toDate();
-
-    const startOfMonth = moment().startOf('month').toDate();
-    const endOfMonth = moment().endOf('month').toDate();
-
-    const startOfYear = moment().startOf('year').toDate();
-    const endOfYear = moment().endOf('year').toDate();
-
-    const dailyEntries = await DailyJackpotEntry.countDocuments({
-      userId: session.user._id, // Replace with the correct user ID
-      timestamp: { $gte: startOfDay, $lte: endOfDay },
-    });
-
-    const weeklyEntries = await WeeklyJackpotEntry.countDocuments({
-      userId: session.user._id,
-      timestamp: { $gte: startOfWeek, $lte: endOfWeek },
-    });
-
-    const monthlyEntries = await MonthlyJackpotEntry.countDocuments({
-      userId: session.user._id,
-      timestamp: { $gte: startOfMonth, $lte: endOfMonth },
-    });
-
-    const annualEntries = await AnnualJackpotEntry.countDocuments({
-      userId: session.user._id,
-      timestamp: { $gte: startOfYear, $lte: endOfYear },
-    });
-
-    res
-      .status(200)
-      .json({ dailyEntries, weeklyEntries, monthlyEntries, annualEntries });
+    res.status(200).json(results);
   } catch (error) {
     console.error('Error fetching jackpot entries:', error);
     res.status(500).json({ error: 'Internal Server Error' });
