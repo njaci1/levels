@@ -71,8 +71,6 @@ export default function Mainpage() {
       });
   }, []);
 
-  console.log(jackpotEntries.daily);
-
   return (
     <Layout>
       {/* Fixed Header with Balance and Network */}
