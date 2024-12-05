@@ -6,7 +6,14 @@ import axios from 'axios';
 
 export default function BalanceCard({ balance }) {
   const { data: session, status } = useSession();
-  const loading = status === 'loading';
+  const loading = status === 'loading..';
+
+  typeof balance !== 'number'
+    ? 'loading'
+    : new Intl.NumberFormat('en-US', {
+        maximumFractionDigits: 0,
+        minimumFractionDigits: 0,
+      }).format(balance);
 
   const handleCashOut = () => {
     console.log('Cash Out button clicked');
@@ -68,10 +75,7 @@ export default function BalanceCard({ balance }) {
           <span className="text-md">Balance:</span>{' '}
           <span className="text-xxs">KES.</span>
           <span id="total-winnings" className="text-base">
-            {new Intl.NumberFormat('en-US', {
-              maximumFractionDigits: 0,
-              minimumFractionDigits: 0,
-            }).format(balance)}
+            {balance}
           </span>
         </div>
         <div className="mb-0.5">
