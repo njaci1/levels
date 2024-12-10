@@ -49,7 +49,7 @@ function Notifications(userId) {
   };
 
   return (
-    <div>
+    <div className="flex flex-col">
       <div style={{ padding: '20px', maxWidth: '600px', margin: 'auto' }}></div>
       <h2>
         <strong>Notifications</strong>

@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useSwipeable } from 'react-swipeable';
 import Image from 'next/image';
 
-function AdsPlayer() {
+export default function AdsPlayer() {
   const [adsQueue, setAdsQueue] = useState(null);
   const [currentAdIndex, setCurrentAdIndex] = useState(0);
   const [showButtons, setShowButtons] = useState(false);
@@ -281,7 +281,6 @@ function AdsPlayer() {
   return (
     <div
       {...swipeHandlers} // Add swipe handlers here
-      className="relative w-full h-screen overflow-hidden flex flex-col"
     >
       <ToastContainer autoClose={5000} />
       {adsQueue ? (
@@ -291,8 +290,8 @@ function AdsPlayer() {
               display: 'flex',
               flexDirection: 'column',
               overflow: 'hidden',
-              height: '100vh',
-              position: 'relative',
+              height: 'calc(100vh - 2.5rem)',
+              // position: 'relative',
             }}
           >
             {adsQueue[currentAdIndex]?.type === 'video' && (
@@ -332,6 +331,20 @@ function AdsPlayer() {
                 style={{ height: 'calc(100vh - 2.5rem)' }}
               />
             )}
+            <div className="absolute top-1/4 right-2 transform -translate-y-1/2 flex flex-col gap-3 sm:gap-4 sm:right-5">
+              <button
+                className="hidden md:flex rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size items-center justify-center text-white bg-black/50 border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
+                onClick={handlePrevious}
+              >
+                <i className="fas fa-step-backward"></i>
+              </button>
+              <button
+                className="hidden md:flex rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size items-center justify-center text-white bg-black/50 border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
+                onClick={handleSkip}
+              >
+                <i className="fas fa-step-forward"></i>
+              </button>
+            </div>
             <div className="absolute bottom-14 right-4">
               <button
                 className="rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center text-white bg-black/50 border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
@@ -345,19 +358,7 @@ function AdsPlayer() {
               </button>
             </div>
 
-            <div className="absolute top-1/2 right-2 transform -translate-y-1/2 flex flex-col gap-3 sm:gap-4 sm:right-5">
-              <button
-                className="hidden md:flex rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size items-center justify-center text-white bg-black/50 border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
-                onClick={handlePrevious}
-              >
-                <i className="fas fa-step-backward"></i>
-              </button>
-              <button
-                className="hidden md:flex rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size items-center justify-center text-white bg-black/50 border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
-                onClick={handleSkip}
-              >
-                <i className="fas fa-step-forward"></i>
-              </button>
+            <div className="absolute bottom-2 right-2 transform -translate-y-1/2 flex flex-col gap-3 sm:gap-4 sm:right-5">
               {showButtons && (
                 <>
                   <button
@@ -406,5 +407,3 @@ function AdsPlayer() {
     </div>
   );
 }
-
-export default AdsPlayer;

@@ -36,8 +36,8 @@ export default function Layout({ title, children }) {
   return (
     <>
       <Head>
-        <title>{title ? title + ' - Levels' : 'Levels'}</title>
-        <meta name="description" content="Bboard" />
+        <title>{title ? title + ' - BBoad' : 'BBoad'}</title>
+        <meta name="description" content="Bboad" />
         <link rel="icon" href="/favi.png" />
       </Head>
 
@@ -47,7 +47,7 @@ export default function Layout({ title, children }) {
             position: 'sticky',
             top: 0,
             zIndex: 1000,
-            background: '#fff',
+            background: 'transparent',
           }}
         >
           <nav className="flex h-10 items-center px-4 justify-between">
