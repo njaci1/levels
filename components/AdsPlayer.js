@@ -308,19 +308,19 @@ export default function AdsPlayer() {
                   preload="none"
                   poster="/images/placeholder.jpeg"
                   onClick={handlePlayPause} // makes clicking in the video to pause/resume
-                  className="w-full h-full max-w-screen-lg object-contain"
+                  className="w-full h-full  object-contain"
                   playsInline
                 />
               </div>
             )}
             {adsQueue[currentAdIndex]?.type === 'banner' && (
-              <div className="flex justify-center w-full h-full">
+              <div className="w-full h-full flex items-center justify-center">
                 <Image
                   src={adsQueue[currentAdIndex].videoUrl}
                   alt="Banner Ad"
                   priority
                   onLoad={() => setShowButtons(true)}
-                  className="w-full h-full max-w-screen-lg object-contain"
+                  className="w-full h-full  object-contain"
                   fill
                 />
               </div>
@@ -399,6 +399,18 @@ export default function AdsPlayer() {
                 </>
               )}
             </div>
+            {adsQueue[currentAdIndex]?.link && (
+              <div className="absolute bottom-0 w-full">
+                <a
+                  href={adsQueue[currentAdIndex].link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full h-1/3 bg-blue-500 text-white text-center py-4"
+                >
+                  Visit Advertiser
+                </a>
+              </div>
+            )}
           </div>
         ) : (
           <p>No ads available.</p>

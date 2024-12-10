@@ -11,7 +11,7 @@ export default function Ads() {
   return (
     <>
       {session ? (
-        <div className="h-screen overflow-hidden flex flex-col justify-center text-center">
+        <div className="h-screen overflow-hidden ">
           <Layout title="Ads">
             <AdPlayer />
           </Layout>
