@@ -350,7 +350,7 @@ export default function AdsPlayer() {
                     <i className="fas fa-redo"></i>
                   </button> */}
                 <button
-                  className={`w-12 h-12 sm:w-14 sm:h-14 bg-black/50 border border-white text-white rounded-full hover:bg-black/70 shadow-lg ${
+                  className={`rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center bg-black/50 border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none ${
                     liked ? 'text-green-500' : 'text-white'
                   }`}
                   onClick={() => handleInteraction('like')}
@@ -359,7 +359,7 @@ export default function AdsPlayer() {
                   <i className="fas fa-thumbs-up"></i>
                 </button>
                 <button
-                  className={`w-12 h-12 sm:w-14 sm:h-14 bg-black/50 border border-white text-white rounded-full hover:bg-black/70 shadow-lg ${
+                  className={`rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center bg-black/50 border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none ${
                     doubleLiked ? 'text-yellow-500' : 'text-white'
                   }`}
                   onClick={() => handleInteraction('doubleLike')}
@@ -368,7 +368,7 @@ export default function AdsPlayer() {
                   <i class="fas fa-heart"></i>
                 </button>
                 <button
-                  className={`w-12 h-12 sm:w-14 sm:h-14 bg-black/50 border border-white text-white rounded-full hover:bg-black/70 shadow-lg ${
+                  className={`rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center bg-black/50 border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none ${
                     disliked ? 'text-red-500' : 'text-white'
                   }`}
                   onClick={() => handleInteraction('dislike')}
