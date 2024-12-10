@@ -287,18 +287,9 @@ export default function AdsPlayer() {
       <ToastContainer autoClose={5000} />
       {adsQueue ? (
         adsQueue.length > 0 ? (
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              overflow: 'hidden',
-              height: 'screen',
-              // height: 'calc(100vh - 2.5rem)',
-              // position: 'relative',
-            }}
-          >
+          <div className="flex flex-col items-center w-full min-h-screen overflow-hidden">
             {adsQueue[currentAdIndex]?.type === 'video' && (
-              <div className="w-full h-full flex items-center justify-center">
+              <div className="flex items-center justify-center w-full h-full">
                 <video
                   ref={videoRef}
                   id="ad-video"
@@ -315,13 +306,12 @@ export default function AdsPlayer() {
               </div>
             )}
             {adsQueue[currentAdIndex]?.type === 'banner' && (
-              <div className="w-full h-full flex items-center justify-center">
+              <div className="flex items-center justify-center w-full h-full">
                 <Image
                   src={adsQueue[currentAdIndex].videoUrl}
                   alt="Banner Ad"
-                  priority
                   onLoad={() => setShowButtons(true)}
-                  className="w-full h-full  object-contain"
+                  className="w-full h-full object-contain"
                   fill
                 />
               </div>
@@ -334,23 +324,64 @@ export default function AdsPlayer() {
                 style={{ height: 'calc(100vh - 2.5rem)' }}
               />
             )}
-            <div className="absolute top-1/4 right-2 transform -translate-y-1/2 flex flex-col gap-3 sm:gap-4 sm:right-5">
+
+            {/*  navigation buttons */}
+            <div className=" hidden sm:flex absolute top-1/4 right-2  flex-col gap-3 sm:gap-4">
               <button
-                className="hidden md:flex rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size items-center justify-center text-white bg-black/50 border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
+                className="rounded-full w-12 h-12 sm:w-14 sm:h-14 text-white bg-black/50 border border-white hover:bg-black/70 shadow-lg"
                 onClick={handlePrevious}
               >
                 <i className="fas fa-step-backward"></i>
               </button>
               <button
-                className="hidden md:flex rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size items-center justify-center text-white bg-black/50 border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
+                className="rounded-full w-12 h-12 sm:w-14 sm:h-14 text-white bg-black/50 border border-white hover:bg-black/70 shadow-lg"
                 onClick={handleSkip}
               >
                 <i className="fas fa-step-forward"></i>
               </button>
             </div>
-            <div className="absolute bottom-14 right-2">
+
+            {showButtons && (
+              <div className="absolute bottom-20 right-2 flex flex-col gap-4">
+                {/* <button
+                    className="rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center text-white bg-black/50 border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
+                    onClick={handleReplay}
+                  >
+                    <i className="fas fa-redo"></i>
+                  </button> */}
+                <button
+                  className={`w-12 h-12 sm:w-14 sm:h-14 bg-black/50 border border-white text-white rounded-full hover:bg-black/70 shadow-lg ${
+                    liked ? 'text-green-500' : 'text-white'
+                  }`}
+                  onClick={() => handleInteraction('like')}
+                  disabled={liked}
+                >
+                  <i className="fas fa-thumbs-up"></i>
+                </button>
+                <button
+                  className={`w-12 h-12 sm:w-14 sm:h-14 bg-black/50 border border-white text-white rounded-full hover:bg-black/70 shadow-lg ${
+                    doubleLiked ? 'text-yellow-500' : 'text-white'
+                  }`}
+                  onClick={() => handleInteraction('doubleLike')}
+                  disabled={doubleLiked}
+                >
+                  <i class="fas fa-heart"></i>
+                </button>
+                <button
+                  className={`w-12 h-12 sm:w-14 sm:h-14 bg-black/50 border border-white text-white rounded-full hover:bg-black/70 shadow-lg ${
+                    disliked ? 'text-red-500' : 'text-white'
+                  }`}
+                  onClick={() => handleInteraction('dislike')}
+                  disabled={disliked}
+                >
+                  <i className="fas fa-thumbs-down"></i>
+                </button>
+              </div>
+            )}
+
+            <div className="absolute bottom-12 left-4">
               <button
-                className="rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center text-white bg-black/50 border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
+                className="w-12 h-12 sm:w-14 sm:h-14 rounded-full text-white bg-black/50 border border-white hover:bg-black/70 shadow-lg"
                 onClick={toggleMute}
               >
                 {muteState ? (
@@ -360,53 +391,13 @@ export default function AdsPlayer() {
                 )}
               </button>
             </div>
-
-            <div className="absolute bottom-25 right-2 transform -translate-y-1/2 flex flex-col gap-3 sm:gap-4 sm:right-5 sm:bottom-16">
-              {showButtons && (
-                <>
-                  {/* <button
-                    className="rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center text-white bg-black/50 border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
-                    onClick={handleReplay}
-                  >
-                    <i className="fas fa-redo"></i>
-                  </button> */}
-                  <button
-                    className={`rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center bg-black/50 border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none ${
-                      liked ? 'text-green-500' : 'text-white'
-                    }`}
-                    onClick={() => handleInteraction('like')}
-                    disabled={liked}
-                  >
-                    <i className="fas fa-thumbs-up"></i>
-                  </button>
-                  <button
-                    className={`rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center bg-black/50 border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none ${
-                      doubleLiked ? 'text-yellow-500' : 'text-white'
-                    }`}
-                    onClick={() => handleInteraction('doubleLike')}
-                    disabled={doubleLiked}
-                  >
-                    <i class="fas fa-heart"></i>
-                  </button>
-                  <button
-                    className={`rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center bg-black/50 border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none ${
-                      disliked ? 'text-red-500' : 'text-white'
-                    }`}
-                    onClick={() => handleInteraction('dislike')}
-                    disabled={disliked}
-                  >
-                    <i className="fas fa-thumbs-down"></i>
-                  </button>
-                </>
-              )}
-            </div>
             {adsQueue[currentAdIndex]?.link && (
-              <div className="absolute bottom-0 w-full">
+              <div className="absolute bottom-0 w-full z-10">
                 <a
                   href={adsQueue[currentAdIndex].link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block w-full h-1/3 bg-blue-500 text-white text-center py-4"
+                  className="block w-full h-1/4 bg-blue-500 text-white text-center py-2"
                 >
                   Visit Advertiser
                 </a>
