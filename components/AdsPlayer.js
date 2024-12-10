@@ -290,7 +290,8 @@ export default function AdsPlayer() {
               display: 'flex',
               flexDirection: 'column',
               overflow: 'hidden',
-              height: 'calc(100vh - 2.5rem)',
+              height: 'screen',
+              // height: 'calc(100vh - 2.5rem)',
               // position: 'relative',
             }}
           >

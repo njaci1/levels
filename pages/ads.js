@@ -9,14 +9,16 @@ export default function Ads() {
   const { data: session } = useSession();
 
   return (
-    <Layout title="Ads">
+    <>
       {session ? (
-        <div className="overflow-hidden flex flex-col">
-          <AdPlayer />
+        <div className="h-screen overflow-hidden flex flex-col justify-center text-center">
+          <Layout title="Ads">
+            <AdPlayer />
+          </Layout>
         </div>
       ) : (
         <Hello />
       )}
-    </Layout>
+    </>
   );
 }
