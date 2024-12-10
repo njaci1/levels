@@ -282,6 +282,7 @@ export default function AdsPlayer() {
   return (
     <div
       {...swipeHandlers} // Add swipe handlers here
+      className="flex flex-col justify-center text-center"
     >
       <ToastContainer autoClose={5000} />
       {adsQueue ? (
@@ -360,7 +361,7 @@ export default function AdsPlayer() {
               </button>
             </div>
 
-            <div className="absolute bottom-16 right-2 transform -translate-y-1/2 flex flex-col gap-3 sm:gap-4 sm:right-5">
+            <div className="absolute bottom-25 right-2 transform -translate-y-1/2 flex flex-col gap-3 sm:gap-4 sm:right-5 sm:bottom-16">
               {showButtons && (
                 <>
                   {/* <button
