@@ -121,6 +121,7 @@ export default function AdsPlayer() {
   const handleVideoEnd = () => {
     setShowButtons(true);
     setIsPlaying(false);
+    handleReplay();
   };
 
   useEffect(() => {
@@ -359,15 +360,15 @@ export default function AdsPlayer() {
               </button>
             </div>
 
-            <div className="absolute bottom-2 right-2 transform -translate-y-1/2 flex flex-col gap-3 sm:gap-4 sm:right-5">
+            <div className="absolute bottom-16 right-2 transform -translate-y-1/2 flex flex-col gap-3 sm:gap-4 sm:right-5">
               {showButtons && (
                 <>
-                  <button
+                  {/* <button
                     className="rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center text-white bg-black/50 border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
                     onClick={handleReplay}
                   >
                     <i className="fas fa-redo"></i>
-                  </button>
+                  </button> */}
                   <button
                     className={`rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center bg-black/50 border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none ${
                       liked ? 'text-green-500' : 'text-white'
