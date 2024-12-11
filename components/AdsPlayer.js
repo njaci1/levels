@@ -287,7 +287,7 @@ export default function AdsPlayer() {
       <ToastContainer autoClose={5000} />
       {adsQueue ? (
         adsQueue.length > 0 ? (
-          <div className="flex flex-col items-center w-full min-h-screen overflow-hidden">
+          <div className="flex flex-col justify-center w-full min-h-screen overflow-hidden">
             {adsQueue[currentAdIndex]?.type === 'video' && (
               <div className="flex items-center justify-center w-full h-full">
                 <video
@@ -300,7 +300,7 @@ export default function AdsPlayer() {
                   preload="none"
                   poster="/images/placeholder.jpeg"
                   onClick={handlePlayPause} // makes clicking in the video to pause/resume
-                  className="w-full h-full  object-contain"
+                  className="w-full h-full object-contain"
                   playsInline
                 />
               </div>
@@ -326,7 +326,7 @@ export default function AdsPlayer() {
             )}
 
             {/*  navigation buttons */}
-            <div className=" hidden sm:flex absolute top-1/4 right-2  flex-col gap-3 sm:gap-4">
+            <div className=" hidden sm:flex absolute bottom-10 right-2  flex-col gap-3 sm:gap-4">
               <button
                 className="rounded-full w-12 h-12 sm:w-14 sm:h-14 text-white bg-black/50 border border-white hover:bg-black/70 shadow-lg"
                 onClick={handlePrevious}
@@ -342,7 +342,7 @@ export default function AdsPlayer() {
             </div>
 
             {showButtons && (
-              <div className="absolute bottom-20 right-2 flex flex-col gap-4">
+              <div className="absolute top-1/3 right-2 flex flex-col gap-4">
                 {/* <button
                     className="rounded-circle w-btn-mobile h-btn-mobile sm:w-btn-size sm:h-btn-size flex items-center justify-center text-white bg-black/50 border border-white shadow-icon-light hover:shadow-icon-dark focus:outline-none"
                     onClick={handleReplay}
