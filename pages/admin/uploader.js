@@ -23,6 +23,7 @@ const Uploader = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
   const { data: session, status } = useSession();
+  const { cta, setCTA } = useState('');
 
   useEffect(() => {
     if (status === 'loading') return; // Do nothing while loading
@@ -184,7 +185,7 @@ const Uploader = () => {
               id="cta"
               value={cta}
               onChange={(e) => {
-                setType(e.target.value);
+                setCTA(e.target.value);
               }}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             >
