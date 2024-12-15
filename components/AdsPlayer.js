@@ -399,7 +399,9 @@ export default function AdsPlayer() {
                   rel="noopener noreferrer"
                   className="block w-full h-1/4 bg-blue-500 text-white text-center py-2"
                 >
-                  Visit Advertiser
+                  {adsQueue[currentAdIndex]?.cta
+                    ? adsQueue[currentAdIndex].cta
+                    : 'More Details'}
                 </a>
               </div>
             )}

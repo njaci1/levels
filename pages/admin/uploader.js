@@ -78,6 +78,7 @@ const Uploader = () => {
         link,
         phone,
         duration,
+        cta,
         priority,
         amountPaid,
         type,
@@ -161,7 +162,7 @@ const Uploader = () => {
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="description"
+              htmlFor="link"
             >
               Link
             </label>
@@ -175,7 +176,27 @@ const Uploader = () => {
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="description"
+              htmlFor="cta"
+            >
+              CTA Message
+            </label>
+            <select
+              id="cta"
+              value={cta}
+              onChange={(e) => {
+                setType(e.target.value);
+              }}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            >
+              <option value="Shop Now">Shop Now</option>
+              <option value="Grab Offer">Grab Offer</option>
+              <option value="More Details">More Details</option>
+            </select>
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="phone"
             >
               Phone Number
             </label>

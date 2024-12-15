@@ -90,6 +90,11 @@ const adSchema = new mongoose.Schema({
   phone: {
     type: String,
   },
+  cta: {
+    type: String,
+    enum: ['Shop Now', 'Grab Offer', 'More Details'],
+    default: 'More Details',
+  },
 });
 
 const Ad = mongoose.models.Ad || mongoose.model('Ad', adSchema);

@@ -18,6 +18,7 @@ export default async function handler(req, res) {
       amountPaid: req.body.amountPaid,
       videoUrl: req.body.secure_url,
       cloudinaryId: req.body.public_id,
+      cta: req.body.cta,
     });
 
     await newAd.save();

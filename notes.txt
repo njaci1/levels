@@ -25,8 +25,13 @@ Interaction.aggregate([
 });
 handle jackpot
 
-Name: Bboard
+Name: Bboard option B AdBucks
 Tagline: Attention That Counts
 Description: Bboard is a platform that connects advertisers with users who are willing to view ads in exchange for rewards. Users can earn rewards by clicking on ads or referring others to the platform. Advertisers can reach a targeted audience and track the performance of their ads. Bboard aims to provide a win-win solution for both advertisers and users.
 Stake your Attention for fun, kaching, and bits of knowledge.
+
+Show a share button:
+  at random point while ad is playing. good for demoing attention
+  at the end. good since it's always available.
+Sharing on on your social media earns double points
 
