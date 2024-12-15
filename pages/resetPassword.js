@@ -56,7 +56,7 @@ export default function ResetPasswordScreen() {
       >
         <h1 className="mb-4 text-xl">Reset Password</h1>
 
-        <div className="mb-4 text-center">
+        <div className="mb-4 text-start">
           <label htmlFor="email">Email</label>
           <input
             type="email"
@@ -76,7 +76,7 @@ export default function ResetPasswordScreen() {
           )}
         </div>
 
-        <div className="mb-4">
+        <div className="mb-4 text-start">
           <label htmlFor="password">Password</label>
           <input
             type="password"
@@ -95,7 +95,7 @@ export default function ResetPasswordScreen() {
             <div className="text-red-500 ">{errors.password.message}</div>
           )}
         </div>
-        <div className="mb-4">
+        <div className="mb-4 text-start">
           <label htmlFor="confirmPassword">Confirm Password</label>
           <input
             className="w-full"
@@ -120,7 +120,7 @@ export default function ResetPasswordScreen() {
               <div className="text-red-500">Password do not match</div>
             )}
         </div>
-        <div className="mb-4">
+        <div className="mb-4 text-start">
           <label htmlFor="code">Verification Code</label>
           <input
             type="text"

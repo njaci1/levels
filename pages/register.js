@@ -62,10 +62,10 @@ export default function LoginScreen() {
   return (
     <Layout title="Create Account">
       <form
-        className="max-auto max-w-screen-md"
+        className="justify-center text-start p-10 max-auto max-w-screen-md"
         onSubmit={handleSubmit(submitHandler)}
       >
-        <h1 className="mb-4 text-xl">Create Account</h1>
+        <h1 className="mb-4 text-xl text-center">Create Account</h1>
         <div className="mb-4">
           <label htmlFor="email">Email</label>
           <input
@@ -188,12 +188,12 @@ export default function LoginScreen() {
           />
         </div>
 
-        <div className="mb-4">
+        <div className="mb-4 text-center">
           <button type="submit" className="primary-button">
             Register
           </button>
         </div>
-        <div className="mb-4">
+        <div className="mb-4 text-center">
           Have an account? &nbsp;{' '}
           {/* //&apos is apostrophe(') and &nbsp is admin-admin2 Gv9-5kajZ952@Bn
           space */}
