@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
+
 import BalanceCard from './BalanceCard';
 import NetworkCard from './Network';
 import Layout from './Layout';
@@ -16,8 +16,6 @@ export default function Mainpage() {
     status: 'pending',
   });
 
-  const { data: session } = useSession();
-
   // Fetch user network on component mount
   useEffect(() => {
     const fetchUserNetwork = async () => {
@@ -27,48 +25,6 @@ export default function Mainpage() {
     };
 
     fetchUserNetwork();
-  }, []);
-
-  const [jackpots, setJackpots] = useState({
-    daily: 'loading...',
-    weekly: 'loading...',
-    monthly: 'loading...',
-    annual: 'loading...',
-    welcome: 'loading...',
-  });
-
-  const [jackpotEntries, setJackpotEntries] = useState({
-    daily: 'loading...',
-    weekly: 'loading...',
-    monthly: 'loading...',
-    annual: 'loading...',
-  });
-
-  useEffect(() => {
-    fetch('/api/jackpotTotals')
-      .then((response) => response.json())
-      .then((data) => {
-        setJackpots({
-          daily: data.dailyTotal,
-          weekly: data.weeklyTotal,
-          monthly: data.monthlyTotal,
-          annual: data.annualTotal,
-          welcome: data.joinersTotal,
-        });
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch('/api/getJackpotEntries')
-      .then((response) => response.json())
-      .then((data) => {
-        setJackpotEntries({
-          daily: data.dailyEntries,
-          weekly: data.weeklyEntries,
-          monthly: data.monthlyEntries,
-          annual: data.annualEntries,
-        });
-      });
   }, []);
 
   return (
@@ -112,37 +68,17 @@ export default function Mainpage() {
           {' '}
           {/* Adjust this value to create space below the fixed section */}
           <Grid item xs={12} sm={6} md={4}>
-            <JackpotCard
-              name="Today!"
-              amount={jackpots.daily}
-              entries={jackpotEntries.daily}
-              drawDate={'Fri 8 PM'}
-            />
+            <JackpotCard name="Today!" />
           </Grid>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6} md={4}>
-              <JackpotCard
-                name="This Week"
-                amount={jackpots.weekly}
-                entries={jackpotEntries.weekly}
-                drawDate={'Fri 8 PM'}
-              />
+              <JackpotCard name="This Week" />
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
-              <JackpotCard
-                name="End Month"
-                amount={jackpots.monthly}
-                entries={jackpotEntries.monthly}
-                drawDate={'1st Sat'}
-              />
+              <JackpotCard name="End Month" />
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
-              <JackpotCard
-                name="End of Year"
-                amount={jackpots.annual}
-                entries={jackpotEntries.annual}
-                drawDate={'12th Dec'}
-              />
+              <JackpotCard name="End of Year" />
             </Grid>
           </Grid>
         </Box>

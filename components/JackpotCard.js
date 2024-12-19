@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import JackpotButton from './JackpotButton';
 import {
   Card,
@@ -62,16 +62,16 @@ const getNextDrawDate = (name) => {
     const dayOfWeek = now.getDay();
     const daysUntilThursday = (4 - dayOfWeek + 7) % 7; // Thursday = 4
     drawDate.setDate(now.getDate() + daysUntilThursday);
-    drawDate.setHours(0, 0, 0, 0); // Midnight
+    drawDate.setHours(24, 0, 0, 0); // Midnight
   } else if (name === 'Monthly') {
     drawDate = new Date(now.getFullYear(), now.getMonth() + 1, 0); // Last day of the current month
-    drawDate.setHours(0, 0, 0, 0); // Midnight
+    drawDate.setHours(24, 0, 0, 0); // Midnight
   } else if (name === 'Annual') {
-    drawDate = new Date(now.getFullYear(), 11, 12); // December 12
+    drawDate = new Date(now.getFullYear(), 11, 31); // December 31
     if (now > drawDate) {
       drawDate.setFullYear(now.getFullYear() + 1); // Move to next year
     }
-    drawDate.setHours(0, 0, 0, 0); // Midnight
+    drawDate.setHours(24, 0, 0, 0); // Midnight
   } else {
     return 'Invalid draw name';
   }
@@ -82,10 +82,52 @@ const getNextDrawDate = (name) => {
   const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
 
-  return days === 0 ? `${hours} hrs ${minutes} min` : `${days} Days`;
+  return days <= 0 ? `${hours} hrs ${minutes} min` : `${days} Days`;
 };
 
-const JackpotCard = ({ name, amount, entries }) => {
+const JackpotCard = ({ name }) => {
+  const [jackpots, setJackpots] = useState({
+    Daily: 'loading...',
+    Weekly: 'loading...',
+    Monthly: 'loading...',
+    Annual: 'loading...',
+    Welcome: 'loading...',
+  });
+
+  const [jackpotEntries, setJackpotEntries] = useState({
+    Daily: 'loading...',
+    Weekly: 'loading...',
+    Monthly: 'loading...',
+    Annual: 'loading...',
+  });
+
+  useEffect(() => {
+    fetch('/api/jackpotTotals')
+      .then((response) => response.json())
+      .then((data) => {
+        setJackpots({
+          Daily: data.dailyTotal,
+          Weekly: data.weeklyTotal,
+          Monthly: data.monthlyTotal,
+          Annual: data.annualTotal,
+          Welcome: data.joinersTotal,
+        });
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch('/api/getJackpotEntries')
+      .then((response) => response.json())
+      .then((data) => {
+        setJackpotEntries({
+          Daily: data.dailyEntries,
+          Weekly: data.weeklyEntries,
+          Monthly: data.monthlyEntries,
+          Annual: data.annualEntries,
+        });
+      });
+  }, []);
+
   let drawName = name;
   switch (drawName) {
     case 'Today!':
@@ -103,7 +145,7 @@ const JackpotCard = ({ name, amount, entries }) => {
     default:
       return <div>Invalid Jackpot name</div>;
   }
-  const displayAmount = amount;
+  // const displayAmount = amount;
   const drawDate = getNextDrawDate(drawName);
 
   return (
@@ -112,9 +154,11 @@ const JackpotCard = ({ name, amount, entries }) => {
         <Title variant="h4">{name}</Title>
         <Amount>
           <span className="text-sm">KES.</span>
-          {displayAmount}
+          {jackpots[drawName]}
         </Amount>
-        <Typography align="center">Your Entries: {entries}</Typography>
+        <Typography align="center">
+          Your Entries: {jackpotEntries[drawName]}
+        </Typography>
         <Typography align="center" color="textSecondary">
           Next Draw in:
         </Typography>
