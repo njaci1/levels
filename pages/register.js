@@ -52,7 +52,6 @@ export default function LoginScreen() {
         password,
       });
       if (result.error) {
-        console.log(result);
         toast.error(result.error);
       }
     } catch (err) {
