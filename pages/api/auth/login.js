@@ -9,7 +9,7 @@ export default async function handler(req, res) {
   }
 
   const { email, password } = req.body;
-  console.log(email, password);
+
   await db.connect();
   const user = await User.findOne({ username: email });
 
