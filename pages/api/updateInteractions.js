@@ -12,8 +12,17 @@ export default async function handler(req, res) {
     return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 
-  const { adId, userId, doubleLiked, liked, disliked, adsWatched, clicked } =
-    req.body;
+  const {
+    adId,
+    userId,
+    doubleLiked,
+    liked,
+    disliked,
+    adsWatched,
+    clicked,
+    questionId,
+    optionId,
+  } = req.body;
 
   try {
     await db.connect();
@@ -25,21 +34,38 @@ export default async function handler(req, res) {
     );
 
     // update ad interactions
+    if (questionId && optionId) {
+      const engagement = await AdsEngagement.findOneAndUpdate(
+        {
+          adId,
+          'responses.questionId': questionId,
+        },
+        {
+          $inc: {
+            [`responses.$.options.${optionId}`]: 1,
+          },
+        },
+        { upsert: true, new: true }
+      );
+      if (!engagement) {
+        throw new Error(`Ad with ID ${adId} not found`);
+      }
+    } else {
+      const updateFields = {};
+      if (liked) updateFields['engagement.likes'] = 1;
+      if (disliked) updateFields['engagement.dislikes'] = 1;
+      if (doubleLiked) updateFields['engagement.doubleLikes'] = 1;
+      if (clicked) updateFields['engagement.clicks'] = 1;
 
-    const updateFields = {};
-    if (liked) updateFields['engagement.likes'] = 1;
-    if (disliked) updateFields['engagement.dislikes'] = 1;
-    if (doubleLiked) updateFields['engagement.doubleLikes'] = 1;
-    if (clicked) updateFields['engagement.clicks'] = 1;
+      const result = await AdsEngagement.findByIdAndUpdate(
+        adId,
+        { $inc: updateFields },
+        { upsert: true, new: true } // Return the updated document
+      );
 
-    const result = await AdsEngagement.findByIdAndUpdate(
-      adId,
-      { $inc: updateFields },
-      { upsert: true, new: true } // Return the updated document
-    );
-
-    if (!result) {
-      throw new Error(`Ad with ID ${adId} not found`);
+      if (!result) {
+        throw new Error(`Ad with ID ${adId} not found`);
+      }
     }
 
     // Check if interaction exists
