@@ -1,15 +1,13 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-// Define the option schema for responses tracking
-const responseOptionSchema = new Schema({
-  optionId: { type: String, required: true }, // Option identifier
-  count: { type: Number, default: 0 }, // Tracks the number of times this option is selected
-});
-
-// Define the question schema
+// Define the question schema with a Map for options
 const responseQuestionSchema = new Schema({
   questionId: { type: String, required: true }, // Question identifier
-  options: [responseOptionSchema], // Array of options for this question
+  options: {
+    type: Map,
+    of: Number, // optionId as key, count as value
+    default: {}, // Default empty map
+  },
 });
 
 // Define the ads engagement schema
