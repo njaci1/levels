@@ -9,11 +9,14 @@ import {
 } from '../../lib/uploaderService';
 import calculatePrice from '../../lib/priceCalculator';
 import AdminLayout from '../../components/AdminLayout';
+import { set } from 'mongoose';
 
 const Uploader = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [title, setTitle] = useState('');
+  const [brand, setBrand] = useState('');
+  const [agent, setAgent] = useState('');
   const [type, setType] = useState('video');
   const [description, setDescription] = useState('');
   const [link, setLink] = useState('');
@@ -76,6 +79,8 @@ const Uploader = () => {
       await saveAdToDatabase({
         title,
         description,
+        brand,
+        agent,
         link,
         phone,
         duration,
@@ -92,6 +97,8 @@ const Uploader = () => {
       setDescription('');
       setLink('');
       setPhone('');
+      setBrand('');
+      setAgent('');
       setDuration('1 week');
       setPriority('high');
       setType('video');
@@ -128,6 +135,7 @@ const Uploader = () => {
               <option value="video">Video</option>
               <option value="banner">Banner</option>
               <option value="survey">Survey</option>
+              <option value="trivia">Trivia</option>
             </select>
           </div>
           <div className="mb-4">
@@ -145,7 +153,37 @@ const Uploader = () => {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="title"
+            >
+              Brand
+            </label>
+            <input
+              id="brand"
+              type="text"
+              value={brand}
+              onChange={(e) => setBrand(e.target.value)}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          </div>
 
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="title"
+            >
+              Agent
+            </label>
+            <input
+              id="agent"
+              type="text"
+              value={agent}
+              onChange={(e) => setAgent(e.target.value)}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          </div>
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
@@ -244,6 +282,7 @@ const Uploader = () => {
               <option value="high">High</option>
               <option value="medium">Medium</option>
               <option value="low">Low</option>
+              <option value="free">Free</option>
             </select>
           </div>
 
