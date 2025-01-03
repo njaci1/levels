@@ -2,6 +2,7 @@ import db from '../../lib/db';
 import Interaction from '../../models/AdInteractions';
 import User from '../../models/User';
 import UserEngagement from '../../models/UserEngagement';
+import AdsEngagement from '../../models/adsEngagement';
 import Ad from '../../models/AdsCollection';
 import JackpotEntry from '../../models/JackpotEntry';
 
@@ -31,10 +32,10 @@ export default async function handler(req, res) {
     if (doubleLiked) updateFields['engagement.doubleLikes'] = 1;
     if (clicked) updateFields['engagement.clicks'] = 1;
 
-    const result = await Ad.findByIdAndUpdate(
+    const result = await AdsEngagement.findByIdAndUpdate(
       adId,
       { $inc: updateFields },
-      { new: true } // Return the updated document
+      { upsert: true, new: true } // Return the updated document
     );
 
     if (!result) {
