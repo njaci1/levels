@@ -4,13 +4,21 @@ const adSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  brand: {
+    type: String,
+    required: false,
+  },
+  agent: {
+    type: String,
+    required: false,
+  },
   description: {
     type: String,
     required: true,
   },
   type: {
     type: String,
-    enum: ['video', 'banner', 'trivia'],
+    enum: ['video', 'banner', 'trivia', 'survey'],
     required: true,
   },
   priority: {
@@ -96,6 +104,31 @@ const adSchema = new mongoose.Schema({
     enum: ['Shop Now', 'Grab Offer', 'More Details'],
     default: 'More Details',
   },
+  // New Field for Survey/Trivia Ads
+  questions: [
+    {
+      id: {
+        type: String,
+        required: true,
+      },
+      text: {
+        type: String,
+        required: true,
+      },
+      options: [
+        {
+          id: {
+            type: String,
+            required: true,
+          },
+          text: {
+            type: String,
+            required: true,
+          },
+        },
+      ],
+    },
+  ],
 });
 
 const Ad = mongoose.models.Ad || mongoose.model('Ad', adSchema);
