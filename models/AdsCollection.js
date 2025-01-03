@@ -111,7 +111,7 @@ const adSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
-      text: {
+      question: {
         type: String,
         required: true,
       },
