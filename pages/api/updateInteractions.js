@@ -3,7 +3,6 @@ import Interaction from '../../models/AdInteractions';
 import User from '../../models/User';
 import UserEngagement from '../../models/UserEngagement';
 import AdsEngagement from '../../models/adsEngagement';
-import Ad from '../../models/AdsCollection';
 import JackpotEntry from '../../models/JackpotEntry';
 
 export default async function handler(req, res) {
@@ -127,3 +126,26 @@ export default async function handler(req, res) {
     await db.disconnect();
   }
 }
+// const getSurveyResults = async (adId) => {
+//   const results = await AdsEngagement.aggregate([
+//     { $match: { adId } },
+//     { $unwind: '$responses' },
+//     {
+//       $project: {
+//         questionId: '$responses.questionId',
+//         options: { $objectToArray: '$responses.options' }, // Convert Map to array for easy access
+//       },
+//     },
+//     { $unwind: '$options' },
+//     {
+//       $group: {
+//         _id: {
+//           questionId: '$questionId',
+//           optionId: '$options.k',
+//         },
+//         total: { $sum: '$options.v' },  // Sum counts for each option
+//       },
+//     },
+//   ]);
+//   return results;
+// };
