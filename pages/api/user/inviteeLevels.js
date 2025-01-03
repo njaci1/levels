@@ -1,20 +1,21 @@
 import db from '../../../lib/db';
-import { getSession } from 'next-auth/react';
 import User from '../../../models/User';
 
 export default async function handler(req, res) {
-  // Get session from request
-  const session = await getSession({ req });
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
 
-  // If no session found, user is not authenticated
-  if (!session) {
-    return res.status(401).json({ error: 'Unauthorized' });
+  const { _id } = req.body;
+
+  if (!_id) {
+    return res.status(400).json({ error: 'User ID is required' });
   }
 
   await db.connect();
   try {
-    // Fetch invitee levels from the user database
-    const user = await User.findById(session.user._id).select(
+    // Fetch user by _id from the request body
+    const user = await User.findById(_id).select(
       '-password -createdAt -updatedAt -inviter'
     );
 
@@ -22,6 +23,7 @@ export default async function handler(req, res) {
       return res.status(404).json({ error: 'User not found' });
     }
 
+    // Count invitees at different levels
     const inviteesLevel1Count = await User.countDocuments({
       _id: { $in: user.inviteesLevel1 },
     });
@@ -32,6 +34,7 @@ export default async function handler(req, res) {
       _id: { $in: user.inviteesLevel3 },
     });
 
+    // Calculate total earnings
     const totalEarnings = Math.floor(
       user.earningsLevel0 +
         user.earningsLevel1 +
@@ -39,6 +42,7 @@ export default async function handler(req, res) {
         user.earningsLevel3
     );
 
+    // Return response
     res.status(200).json({
       inviteesLevel1Count,
       inviteesLevel2Count,

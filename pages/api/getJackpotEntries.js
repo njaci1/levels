@@ -4,11 +4,11 @@ import moment from 'moment';
 import JackpotEntry from '../../models/JackpotEntry';
 
 export default async function handler(req, res) {
-  const session = await getSession({ req });
-
-  if (!session) {
-    return res.status(401).json({ error: 'Unauthorized' });
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
   }
+
+  const { _id } = req.body;
 
   await db.connect();
 
@@ -36,7 +36,7 @@ export default async function handler(req, res) {
     const results = {};
     for (const [jackpotType, { start, end }] of Object.entries(dateRanges)) {
       results[`${jackpotType}Entries`] = await JackpotEntry.countDocuments({
-        userId: session.user._id,
+        userId: _id,
         jackpotType,
         timestamp: { $gte: start, $lte: end },
       });

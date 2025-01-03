@@ -9,6 +9,10 @@ import {
   Box,
 } from '@mui/material';
 import { display, styled } from '@mui/system';
+import axios from 'axios';
+import { getSession } from 'next-auth/react';
+
+const session = getSession();
 
 // Styled card with responsive padding and box-shadow
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -86,6 +90,7 @@ const getNextDrawDate = (name) => {
 };
 
 const JackpotCard = ({ name }) => {
+  const _id = session.user.id;
   const [jackpots, setJackpots] = useState({
     Daily: 'loading...',
     Weekly: 'loading...',
@@ -116,17 +121,24 @@ const JackpotCard = ({ name }) => {
   }, []);
 
   useEffect(() => {
-    fetch('/api/getJackpotEntries')
-      .then((response) => response.json())
-      .then((data) => {
+    try {
+      const fetchUserNetwork = async () => {
+        const response = await axios.post('/api/getJackpotEntries', { _id });
         setJackpotEntries({
           Daily: data.dailyEntries,
           Weekly: data.weeklyEntries,
           Monthly: data.monthlyEntries,
           Annual: data.annualEntries,
         });
-      });
-  }, []);
+        return response.data;
+      };
+
+      fetchUserNetwork();
+    } catch (error) {
+      console.error('Error fetching invitee stats:', error);
+      throw error;
+    }
+  }, [_id]);
 
   let drawName = name;
   switch (drawName) {

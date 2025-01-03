@@ -217,31 +217,29 @@ export default function AdsPlayer() {
       adsWatched: adsWatched + 1,
     };
 
+    // Optimistic UI Update
+    if (interactionType === 'doubleLike') {
+      setDoubleLiked(true);
+      setLiked(false);
+      setDisliked(false);
+    } else if (interactionType === 'like') {
+      setLiked(true);
+      setDoubleLiked(false);
+      setDisliked(false);
+    } else {
+      setDisliked(true);
+      setLiked(false);
+      setDoubleLiked(false);
+    }
+
+    // Make the API call in the background
     try {
       await fetch('/api/updateInteractions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       });
-
       setAdsWatched((prev) => prev + 1);
-      // handleJackpotEntry(userId, adsQueue[currentAdIndex]._id);
-
-      if (interactionType === 'doubleLike') {
-        setDoubleLiked(true);
-        setLiked(false);
-        setDisliked(false);
-      } else if (interactionType === 'like') {
-        setLiked(true);
-        setDoubleLiked(false);
-        setDisliked(false);
-      } else {
-        setDisliked(true);
-        setLiked(false);
-        setDoubleLiked(false);
-      }
-
-      // setCanProceed(true); // Enable next ad after rating
     } catch (error) {
       console.error('Error handling interaction:', error);
     }

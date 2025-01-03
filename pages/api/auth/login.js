@@ -33,6 +33,8 @@ export default async function handler(req, res) {
     inviteCode: user.inviteCode,
     phoneNumber: user.phoneNumber,
     registrationStatus: user.registrationStatus,
+    balance: user.balance,
+    adsWatched: user.adsWatched,
   };
 
   // Sign the token

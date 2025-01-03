@@ -82,6 +82,7 @@ const adSchema = new mongoose.Schema({
     doubleLikes: { type: Number, default: 0 },
     dislikes: { type: Number, default: 0 },
     clicks: { type: Number, default: 0 }, // Tracks clicks on link/phone
+    shares: { type: Number, default: 0 },
   },
 
   link: {

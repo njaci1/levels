@@ -5,8 +5,14 @@ import NetworkCard from './Network';
 import Layout from './Layout';
 import JackpotCard from './JackpotCard';
 import { Grid, Box, Typography } from '@mui/material';
+import axios from 'axios';
+import { getSession } from 'next-auth/react';
 
 export default function Mainpage() {
+  // Get user session
+  const session = getSession();
+  // Get user ID from session
+  const _id = session.user._id;
   // State for storing network data
   const [networkData, setNetworkData] = useState({
     inviteesLevel1Count: 'loading...',
@@ -19,9 +25,15 @@ export default function Mainpage() {
   // Fetch user network on component mount
   useEffect(() => {
     const fetchUserNetwork = async () => {
-      const res = await fetch('/api/user/inviteeLevels');
-      const data = await res.json();
-      setNetworkData(data);
+      try {
+        const response = await axios.post('/api/user/inviteeLevels', { _id });
+        setNetworkData(response.data);
+
+        return response.data;
+      } catch (error) {
+        console.error('Error fetching invitee stats:', error);
+        throw error;
+      }
     };
 
     fetchUserNetwork();
